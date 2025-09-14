@@ -1,0 +1,50 @@
+  body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .navbar {
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+  }
+
+  .navbar-brand {
+      font-size: 1.5rem;
+  }
+
+  .actor-photo {
+      width: 100%;
+      max-width: 300px;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      margin-bottom: 1rem;
+  }
+
+  .actor-details p {
+      margin-bottom: 0.5rem;
+  }
+
+  .film-items ul {
+      padding-left: 1rem;
+  }
+
+  .film-items li {
+      margin-bottom: 0.5rem;
+  }
+
+  .film-items a {
+      color: #0dcaf0;
+      text-decoration: none;
+  }
+
+  .film-items a:hover {
+      text-decoration: underline;
+  }
+
+  footer {
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #1f1f1f;
+      color: #ccc;
+  }
