@@ -4,14 +4,16 @@
  */
 package dao;
 
+import util.DBContext;
 import java.sql.Connection;
-import entity.User;
+import model.User;
 /**
  *
  * @author Chau Tan Cuong - CE190026
  */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.UUID;
 
