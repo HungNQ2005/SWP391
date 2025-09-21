@@ -1,0 +1,95 @@
+.netflop-footer {
+    background-color: #141414;
+    /* netflop black */
+    color: #999;
+    padding: 40px 20px 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.netflop-footer .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.netflop-footer .footer-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.netflop-footer .footer-col h4.footer-logo {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.netflop-footer .footer-col h5 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.netflop-footer .footer-col p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.netflop-footer .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.netflop-footer .footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.netflop-footer .footer-col ul li a {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.netflop-footer .footer-col ul li a:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+.netflop-footer .social-icons a {
+    display: inline-block;
+    color: #999;
+    margin-right: 12px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.netflop-footer .social-icons a:hover {
+    color: #fff;
+}
+
+.netflop-footer hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 30px 0 15px;
+}
+
+.netflop-footer .footer-bottom {
+    text-align: center;
+    font-size: 12px;
+}
+
+.netflop-footer .footer-bottom a {
+    color: #999;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.netflop-footer .footer-bottom a:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+footer a:hover {
+    color: #ff0000 !important;
+    font-weight: 700;
+}
