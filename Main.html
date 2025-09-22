@@ -23,55 +23,130 @@
     <div class="banner">
       <div class="banner-layer active" id="layer1"></div>
       <div class="banner-layer" id="layer2"></div>
-    </div>
 
-    <div class="carousel">
-      <img
-        src="Images/Banner.jpg"
-        alt="Phim 1"
-        onclick="changeBanner('Images/Banner.jpg')"
-      />
-      <img
-        src="Images/Banner2.jpg"
-        alt="Phim 2"
-        onclick="changeBanner('Images/Banner2.jpg')"
-      />
-      <img
-        src="Images/Banner3.jpg"
-        alt="Phim 3"
-        onclick="changeBanner('Images/Banner3.jpg')"
-      />
-      <img
-        src="Images/Banner1.jpg"
-        alt="Phim 3"
-        onclick="changeBanner('Images/Banner1.jpg')"
-      />
-      <img
-        src="Images/Banner1.jpg"
-        alt="Phim 3"
-        onclick="changeBanner('Images/Banner1.jpg')"
-      />
+      <!-- Thông tin phim -->
+      <div class="banner-info">
+        <h1 id="movie-title">The Conjuring: Nghi Lễ Cuối Cùng</h1>
+        <p id="movie-original" class="movie-original">
+          The Conjuring: Last Rites
+        </p>
+        <p id="movie-meta">2025 | 1h50m |</p>
+        <div id="movie-genres" class="genres"></div>
+        <p id="movie-desc">
+          Đến với hồi kết của vũ trụ The Conjuring, Ed và Lorraine Warren đối
+          mặt với thế lực ác quỷ gieo rắc kinh hoàng cho gia đình Smurl...
+        </p>
+        <div class="banner-buttons">
+          <form action="???" method="get">
+            <input type="hidden" name="movieId" value="1" />
+            <button type="submit" class="btn btn-light">
+              <i class="fa fa-play"></i> Xem ngay
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Carousel -->
+      <div class="carousel">
+        <img
+          src="Images/Banner1.jpg"
+          alt="Phim 1"
+          onclick="changeBanner('Images/Banner1.jpg')"
+        />
+        <img
+          src="Images/Banner2.jpg"
+          alt="Phim 2"
+          onclick="changeBanner('Images/Banner2.jpg')"
+        />
+        <img
+          src="Images/Banner3.jpg"
+          alt="Phim 3"
+          onclick="changeBanner('Images/Banner3.jpg')"
+        />
+        <img
+          src="Images/Banner3.jpg"
+          alt="Phim 3"
+          onclick="changeBanner('Images/Banner3.jpg')"
+        />
+      </div>
     </div>
 
     <script>
       let current = document.getElementById("layer1");
       let next = document.getElementById("layer2");
 
+      const movies = {
+        "Images/Banner1.jpg": {
+          id: 1,
+          title: "The Conjuring: Nghi Lễ Cuối Cùng",
+          original: "The Conjuring: Last Rites",
+          meta: "2025 | 1h50m",
+          genres: ["Kinh dị", "Tâm lý"],
+          desc: "Ed và Lorraine Warren đối mặt với thế lực ác quỷ gieo rắc kinh hoàng...",
+        },
+        "Images/Banner2.jpg": {
+          id: 2,
+          title: "Avengers: Legacy",
+          original: "Avengers: Legacy",
+          meta: "2024 | 2h30m",
+          genres: ["Hành động", "Viễn tưởng"],
+          desc: "Đội Avengers thế hệ mới tiếp tục hành trình bảo vệ Trái Đất khỏi hiểm họa vũ trụ...",
+        },
+        "Images/Banner3.jpg": {
+          id: 3,
+          title: "Inside Out 2",
+          original: "Inside Out 2",
+          meta: "2023 | 1h40m |",
+          genres: ["Hoạt hình", "Hài hước"],
+          desc: "Những cảm xúc quen thuộc trở lại cùng nhiều cảm xúc mới trong cuộc phiêu lưu đầy ý nghĩa...",
+        },
+        "Images/Banner3.jpg": {
+          id: 4,
+          title: "Inside Out 2",
+          original: "Inside Out 2",
+          meta: "2023 | 1h40m | ",
+          genres: ["Hoạt hình", "Hài hước"],
+          desc: "Những cảm xúc quen thuộc trở lại cùng nhiều cảm xúc mới trong cuộc phiêu lưu đầy ý nghĩa...",
+        },
+      };
+
       function changeBanner(imageUrl) {
         next.style.backgroundImage = `url(${imageUrl})`;
 
-        // fade
+        // hiệu ứng fade
         next.classList.add("active");
         current.classList.remove("active");
 
-        // đổi chỗ current / next
+        // đổi current/next
         let temp = current;
         current = next;
         next = temp;
+
+        let movie = movies[imageUrl];
+
+        // cập nhật thông tin phim
+        document.getElementById("movie-title").innerText =
+          movies[imageUrl].title;
+        document.getElementById("movie-original").innerText =
+          movies[imageUrl].original;
+        document.getElementById("movie-meta").innerText = movies[imageUrl].meta;
+        document.getElementById("movie-desc").innerText = movies[imageUrl].desc;
+        let genresHtml = movie.genres
+          .map(
+            (g) =>
+              `<a href="Genre.jsp?name=${encodeURIComponent( 
+                g
+              )}" class="genre-tag">${g}</a>`
+          )
+          .join("");
+        document.getElementById("movie-genres").innerHTML = genresHtml;
+
+        document.querySelector("input[name='movieId']").value =
+          movies[imageUrl].id;
       }
 
       window.onload = () => {
-        changeBanner("Images/Banner.jpg");
+        changeBanner("Images/Banner1.jpg");
       };
     </script>
     <script>

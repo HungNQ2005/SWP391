@@ -17,11 +17,61 @@ body {
   background-position: center;
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
-  
 }
 
 .banner-layer.active {
   opacity: 1;
+}
+.banner-info {
+  position: absolute;
+  bottom: 150px;
+  left: 40px;
+  max-width: 600px;
+}
+.banner-info h1 {
+  font-family: "Cinzel", serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffffff; /* đỏ nổi bật */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.banner-info p {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+.movie-original {
+  font-size: 14px;
+  color: #fbfb00;
+  font-style: italic;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+.genres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.genre-tag {
+  background: rgba(255, 255, 255, 0.1); /* nền trắng trong suốt */
+  color: #ffffff; /* chữ trắng */
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.4); /* viền trắng mờ */
+  font-family: "Cinzel", serif;
+  backdrop-filter: blur(4px); /* hiệu ứng mờ kính */
+  transition: all 0.3s ease-in-out;
+}
+
+.genre-tag:hover {
+  background: rgba(255, 255, 255, 0.25); /* hover sáng hơn */
+  transform: scale(1.05);
 }
 
 .carousel {
@@ -29,16 +79,17 @@ body {
   gap: 10px;
   padding: 20px;
   overflow-x: auto;
-    position: absolute; 
-  bottom: 80px;     
-  right: 40px; 
+  position: absolute;
+  bottom: 80px;
+  right: 40px;
 }
 
 .carousel img {
-  width: 70px;
+  width: 100px;
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.3s;
+  opacity: 0.8;
 }
 
 .carousel img:hover {
