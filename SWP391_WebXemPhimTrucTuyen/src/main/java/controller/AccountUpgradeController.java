@@ -110,6 +110,6 @@ public class AccountUpgradeController extends HttpServlet {
 
         // Gửi message về lại JSP
         request.setAttribute("message", message);
-        request.getRequestDispatcher("jsp/activation.jsp").forward(request, response);
+        request.getRequestDispatcher("upgrade/activation.jsp").forward(request, response);
     }
 }
