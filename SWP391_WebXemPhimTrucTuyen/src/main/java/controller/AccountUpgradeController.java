@@ -38,19 +38,23 @@ public class AccountUpgradeController extends HttpServlet {
                 String userLevel = rs.getString("user_level");
 
                 if (!"USR".equals(userLevel)) {
-                    message = "Only normal users can upgrade!";
+                    if ("PRE".equals(userLevel)) {
+                        message = "You Are Already A Premium User!! Thank You For Your Support!";
+                    } else {
+                        message = "Only normal users can upgrade their account status!";
+                    }
                 } else {
-                    // 2. Check key
+                    // 2. Check CDkey
                     String sqlKey = "SELECT key_ID, key_status FROM CDKey WHERE key_code = ?";
                     ps = conn.prepareStatement(sqlKey);
-                    ps.setString(1, cdkey);
+                    ps.setString(1, cdkey.trim().toUpperCase());
                     rs = ps.executeQuery();
 
                     if (!rs.next()) {
                         message = "CD Key not found!";
                     } else {
                         int keyId = rs.getInt("key_ID");
-                        String status = rs.getString("key_status");
+                        String status = rs.getString("key_status").trim();
 
                         if (!"UNUSED".equalsIgnoreCase(status)) {
                             message = "CD Key already used or invalid!";
@@ -84,9 +88,24 @@ public class AccountUpgradeController extends HttpServlet {
             e.printStackTrace();
             message = "Error: " + e.getMessage();
         } finally {
-            try { if (rs != null) rs.close(); } catch (Exception ignored) {}
-            try { if (ps != null) ps.close(); } catch (Exception ignored) {}
-            try { if (conn != null) conn.close(); } catch (Exception ignored) {}
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception ignored) {
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception ignored) {
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ignored) {
+            }
         }
 
         // Gửi message về lại JSP
