@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.sql.*;
 import util.DBContext;
 
+/**
+ *
+ * @author Nguyen Quoc Hung - CE190870
+ */
+
 @WebServlet("/activation")
 public class AccountUpgradeController extends HttpServlet {
 
