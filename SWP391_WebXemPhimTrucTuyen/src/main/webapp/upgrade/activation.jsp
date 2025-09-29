@@ -52,6 +52,12 @@
             <input type="text" name="username" required />
             <label>CD Key:</label>
             <input type="text" name="cdkey" required placeholder="XXXXX-XXXXX-XXXXX"/>
+
+            <div style="margin: 10px 0;">
+                    <input type="checkbox" name="agree" required />
+                    <label for="agree">Tôi đồng ý với <a href="#">Điều khoản sử dụng</a></label>
+            </div>
+
             <input type="submit" value="Activate"/>
         </form>
         <%
