@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark navbar-bg fixed-top">
     <div class="container-fluid">
       <!--logo-->
-      <a class="navbar-brand" href="/" aria-label="Trang chủ MyWebsite">
+      <a class="navbar-brand" href="Main.html" aria-label="Trang chủ MyWebsite">
         <img
           src="../Images/logo.png"
           alt="MyWebsite logo"
@@ -34,7 +34,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-5">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Main.html">Home</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#">
               Thể loại

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Thông tin diễn viên</title>
+  <title>Trang Phim gì đó</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/Header.css" />
@@ -33,13 +33,10 @@
         mặt với thế lực ác quỷ gieo rắc kinh hoàng cho gia đình Smurl...
       </p>
       <div class="banner-buttons">
-        <form action="???" method="get">
-          <input type="hidden" name="movieId" value="1" />
-          <button type="submit" class="btn btn-light">
-            <i class="fa fa-play"></i> Xem ngay
-          </button>
-        </form>
-      </div>
+  <a id="watch-now" href="#" class="btn btn-light">
+    <i class="fa fa-play"></i> Xem ngay
+  </a>
+</div>
     </div>
 
     <!-- Carousel -->
@@ -58,50 +55,50 @@
 
   <div>
     <div class="hot-tredinglist">
-      <a href="#"><img src="/Images/Banner1.jpg" alt="Phim 1"></a>
-      <a href="#"><img src="/Images/Banner2.jpg" alt="Phim 2"></a>
-      <a href="#"><img src="/Images/Banner3.jpg" alt="Phim 3"></a>
-      <a href="#"><img src="/Images/Banner1.jpg" alt="Phim 4"></a>
+      <a href="MovieInfo.html?id=1"><img src="Images/Banner1.jpg"></a>
+      <a href="MovieInfo.html?id=2"><img src="Images/Banner2.jpg"></a>
+      <a href="MovieInfo.html?id=3"><img src="Images/Banner3.jpg"></a>
+      <a href="MovieInfo.jsp?id=4"><img src="Images/Banner1.jpg" alt="Phim 4"></a>
     </div>
   </div>
   </div>
   <div class="Title">
-  <h2>Top 10</h2>
-</div>
-
-<div class="top10-wrapper">
-  <div class="top10-list" id="top10">
-    <a href="#"><img src="Images/Banner1.jpg" alt="Phim 1"></a>
-    <a href="#"><img src="Images/Banner2.jpg" alt="Phim 2"></a>
-    <a href="#"><img src="Images/Banner3.jpg" alt="Phim 3"></a>
-    <a href="#"><img src="Images/Banner1.jpg" alt="Phim 4"></a>
-    <a href="#"><img src="Images/Banner2.jpg" alt="Phim 5"></a>
-    <a href="#"><img src="Images/Banner3.jpg" alt="Phim 6"></a>
-    <a href="#"><img src="Images/Banner1.jpg" alt="Phim 7"></a>
-    <a href="#"><img src="Images/Banner2.jpg" alt="Phim 8"></a>
-    <a href="#"><img src="Images/Banner3.jpg" alt="Phim 9"></a>
-    <a href="#"><img src="Images/Banner1.jpg" alt="Phim 10"></a>
+    <h2>Top 10</h2>
   </div>
-</div>
-<script>
-let index = 0;
-const list = document.getElementById("top10");
-const items = document.querySelectorAll("#top10 img");
-const visible = 5; // số lượng hiển thị cùng lúc
-const total = items.length;
 
-function slide() {
-  index++;
-  if (index > total - visible) {
-    index = 0; // quay lại đầu khi hết
-  }
-  const offset = -(index * 220); // 200px + 20px margin
-  list.style.transform = `translateX(${offset}px)`;
-}
+  <div class="top10-wrapper">
+    <div class="top10-list" id="top10">
+      <a href="MovieInfo.html?id=1"><img src="Images/Banner1.jpg" alt="Phim 1"></a>
+      <a href="MovieInfo.html?id=2"><img src="Images/Banner2.jpg" alt="Phim 2"></a>
+      <a href="MovieInfo.html?id=3"><img src="Images/Banner3.jpg" alt="Phim 3"></a>
+      <a href="MovieInfo.html?id=1"><img src="Images/Banner1.jpg" alt="Phim 4"></a>
+      <a href="MovieInfo.html?id=2"><img src="Images/Banner2.jpg" alt="Phim 5"></a>
+      <a href="MovieInfo.html?id=3"><img src="Images/Banner3.jpg" alt="Phim 6"></a>
+      <a href="MovieInfo.html?id=1"><img src="Images/Banner1.jpg" alt="Phim 7"></a>
+      <a href="MovieInfo.html?id=2"><img src="Images/Banner2.jpg" alt="Phim 8"></a>
+      <a href="MovieInfo.html?id=3"><img src="Images/Banner3.jpg" alt="Phim 9"></a>
+      <a href="MovieInfo.html?id=1"><img src="Images/Banner1.jpg" alt="Phim 10"></a>
+    </div>
+  </div>
+  <script>
+    let index = 0;
+    const list = document.getElementById("top10");
+    const items = document.querySelectorAll("#top10 img");
+    const visible = 5; // số lượng hiển thị cùng lúc
+    const total = items.length;
 
-setInterval(slide, 3000); // auto trượt mỗi 3s
+    function slide() {
+      index++;
+      if (index > total - visible) {
+        index = 0; // quay lại đầu khi hết
+      }
+      const offset = -(index * 220); // 200px + 20px margin
+      list.style.transform = `translateX(${offset}px)`;
+    }
 
-</script>
+    setInterval(slide, 3000); // auto trượt mỗi 3s
+
+  </script>
 
 
   <!--Hot + Trending-->
@@ -208,7 +205,7 @@ setInterval(slide, 3000); // auto trượt mỗi 3s
         )
         .join("");
       document.getElementById("movie-genres").innerHTML = genresHtml;
-
+       document.getElementById("watch-now").href = `MovieInfo.html?id=${movie.id}`;
       document.querySelector("input[name='movieId']").value =
         movies[imageUrl].id;
     }
