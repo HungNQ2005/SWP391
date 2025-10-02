@@ -1,6 +1,9 @@
+dao\HashUtil.class
 entity\User.class
+dao\EmailUtil.class
 com\mycompany\swp391_webxemphimtructuyen\resources\JakartaEE10Resource.class
 controller\UserController.class
 dao\UserDAO.class
+dao\EmailUtil$1.class
 com\mycompany\swp391_webxemphimtructuyen\JakartaRestConfiguration.class
 dao\DBContext.class

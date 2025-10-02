@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import entity.User;
 import jakarta.servlet.http.HttpSession;
-
+import dao.EmailUtil;
+import dao.HashUtil;
 /**
  *
  * @author Chau Tan Cuong - CE190026
@@ -128,9 +129,52 @@ public class UserController extends HttpServlet {
                 request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
             }
         }
-    }
+        if ("activate".equals(action)) {
+            String token = request.getParameter("token");
+            UserDAO dao = new UserDAO();
+            boolean success = dao.activateUser(token);
+            if (success) {
+                request.setAttribute("message", "Kích hoạt thành công, mời đăng nhập!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Token không hợp lệ hoặc đã được dùng!");
+                request.getRequestDispatcher("signup.jsp").forward(request, response);
+            }
+        }
 
-    
+        if ("emailSignUp".equals(action)) {
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String passwordConfirm = request.getParameter("passwordConfirm");
+
+            if (!password.equals(passwordConfirm)) {
+                request.setAttribute("error", "Mật khẩu không khớp!");
+                request.getRequestDispatcher("signup.jsp").forward(request, response);
+                return;
+            }
+
+            // Hash password
+            
+
+            // Tạo token
+            String token = java.util.UUID.randomUUID().toString();
+
+            // Lưu vào DB (DAO cần có method signUpWithEmail)
+            UserDAO userDAO = new UserDAO();
+            userDAO.signUpWithEmail(username, email, password, token);
+
+            // Gửi mail xác thực
+            String activationLink = "http://localhost:8080/YourApp/user?action=active&token=" + token;
+            EmailUtil.sendEmail(email, "Xác thực tài khoản",
+                    "Chào " + username + ",\n\nVui lòng nhấp vào link để kích hoạt tài khoản: " + activationLink);
+
+            // Thông báo cho user kiểm tra email
+            request.setAttribute("message", "Vui lòng kiểm tra email để kích hoạt tài khoản!");
+            request.getRequestDispatcher("checkEmail.jsp").forward(request, response);
+        }
+
+    }
 
     /**
      * Returns a short description of the servlet.

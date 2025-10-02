@@ -192,6 +192,31 @@ public class UserDAO {
         }
     }
 
-    
+    public boolean activateUser(String token) {
+        try (Connection con = new DBContext().getConnection()) {
+            String sql = "UPDATE Users SET is_active = 1, activation_token = NULL WHERE activation_token = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, token);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void signUpWithEmail(String username, String email, String password, String token) {
+        String sql = "INSERT INTO Users (username, email, password_hash, is_active, activation_token) VALUES (?, ?, ?, 0, ?)";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, email);
+             String hashedPassword = HashUtil.hashPassword(password);
+            ps.setString(3, hashedPassword);
+            ps.setString(4, token);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
