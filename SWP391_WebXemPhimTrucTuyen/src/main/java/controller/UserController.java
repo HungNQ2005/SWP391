@@ -35,7 +35,20 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        String action = request.getParameter("action");
+        
+        if(action.equals("sendLogin")){
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
+        if(action.equals("sendSignUp")){
+            request.getRequestDispatcher("/signup.jsp").forward(request, response);
+        }
+        if("sendFogortPassword".equals(action)){
+            request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
+        }
+        if("sendResetPassword".equals(action)){
+            request.getRequestDispatcher("/resetpassword.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -63,11 +76,11 @@ public class UserController extends HttpServlet {
             }
             request.setAttribute("error", error);
             if (error.length() > 0) {
-                url = "/signup.html";
+                url = "/signup.jsp";
             } else {
                 UserDAO userDAO = new UserDAO();
                 userDAO.signUp(username, email, password, "", "Guest", "default");
-                url += "index.html";
+                url += "index.jsp";
             }
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -85,11 +98,11 @@ public class UserController extends HttpServlet {
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("guest", user);
-                    url = "index.html";
+                    url = "index.jsp";
                 } else {
                     error = "Ten dang nhap hoac mat khau bi sai";
                     request.setAttribute("error", error);
-                    url = "login.html";
+                    url = "login.jsp";
                 }
                 request.getRequestDispatcher(url).forward(request, response);
 
@@ -105,12 +118,15 @@ public class UserController extends HttpServlet {
 
             if (userDAO.findByEmail(email) != null) {
                 String token = userDAO.saveResetToken(email);
-                String resetLink = "http://localhost:8080/YourApp/user?action=resetPassword&token=" + token;
-                request.setAttribute("message", "Link reset mật khẩu: " + resetLink);
+                String resetLink = request.getContextPath() +"/user?action=sendResetPassword";
+                request.setAttribute("token", token);
+                request.getRequestDispatcher("/resetpassword.jsp").forward(request, response);
+                
             } else {
                 request.setAttribute("error", "Email không tồn tại!");
+                request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+            
         }
 
         if ("resetPassword".equals(action)) {
@@ -126,7 +142,7 @@ public class UserController extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Token không hợp lệ hoặc đã hết hạn!");
-                request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
             }
         }
         if ("activate".equals(action)) {
