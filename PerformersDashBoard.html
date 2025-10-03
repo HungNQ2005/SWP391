@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Performers</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/PerformersDashBoard.css" />
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="admin-info">
+        <img
+          src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg"
+          alt="Admin"
+          width="80"
+          height="80"
+        />
+        <h6>Admin</h6>
+      </div>
+      <a href="#">Ads Management</a>
+      <a href="#">Movie Management</a>
+      <a href="#" class="active">Performers Management</a>
+      <a href="AccountDashBoard.html">Accounts Management</a>
+      <a href="CommentDashBoard.html">Comment Management</a>
+      <a href="#">Genres/Tags Management</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Topbar -->
+      <div class="topbar d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Quản lý Diễn viên</h5>
+        <button
+          class="btn btn-netflix btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#addModal"
+        >
+          + Add Performer
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="mb-3">
+        <div class="input-group search-box">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Tìm kiếm diễn viên..."
+          />
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-dark table mb-0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ảnh</th>
+                <th>Tên</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Quốc gia</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/2/25/Chris_Evans_SDCC_2014.jpg"
+                    class="performer-img"
+                    alt="Performer"
+                  />
+                </td>
+                <td>Chris Evans</td>
+                <td>13/06/1981</td>
+                <td>Nam</td>
+                <td>Mỹ</td>
+                <td>
+                  Captain America trong MCU, nổi tiếng với vai diễn anh hùng.
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <img
+                    src="https://media.vogue.co.uk/photos/682db95ee235579a4722634c/2:3/w_2560%2Cc_limit/GettyImages-2216112138.jpg"
+                    class="performer-img"
+                    alt="Performer"
+                  />
+                </td>
+                <td>Scarlett Johansson</td>
+                <td>22/11/1984</td>
+                <td>Nữ</td>
+                <td>Mỹ</td>
+                <td>
+                  Ngôi sao Hollywood, nổi bật với vai Black Widow trong Marvel.
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>
+                  <img
+                    src="https://media.vov.vn/sites/default/files/styles/large/public/2025-04/479495435_18465543118067236_7143650029030881918_n.jpg"
+                    class="performer-img"
+                    alt="Performer"
+                  />
+                </td>
+                <td>Lee Min Ho</td>
+                <td>22/06/1987</td>
+                <td>Nam</td>
+                <td>Hàn Quốc</td>
+                <td>
+                  Nam diễn viên Hàn Quốc nổi tiếng với phim Boys Over Flowers.
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- ADD Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Thêm Diễn viên</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addForm">
+              <div class="mb-3">
+                <label class="form-label">Tên</label
+                ><input type="text" class="form-control bg-dark text-white" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Ngày sinh</label
+                ><input type="date" class="form-control bg-dark text-white" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Giới tính</label
+                ><select class="form-control bg-dark text-white">
+                  <option>Nam</option>
+                  <option>Nữ</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Quốc gia</label
+                ><input type="text" class="form-control bg-dark text-white" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Ảnh URL</label
+                ><input type="text" class="form-control bg-dark text-white" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mô tả</label
+                ><textarea
+                  class="form-control bg-dark text-white"
+                  rows="3"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-netflix w-100">Thêm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Chỉnh sửa Diễn viên</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm">
+              <div class="mb-3">
+                <label class="form-label">Tên</label
+                ><input
+                  type="text"
+                  id="editName"
+                  class="form-control bg-dark text-white"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Ngày sinh</label
+                ><input
+                  type="date"
+                  id="editDOB"
+                  class="form-control bg-dark text-white"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Giới tính</label
+                ><input
+                  type="text"
+                  id="editGender"
+                  class="form-control bg-dark text-white"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Quốc gia</label
+                ><input
+                  type="text"
+                  id="editCountry"
+                  class="form-control bg-dark text-white"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mô tả</label
+                ><textarea
+                  id="editDesc"
+                  class="form-control bg-dark text-white"
+                  rows="3"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-netflix w-100">
+                Lưu thay đổi
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Xóa Diễn viên</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc muốn xóa diễn viên này không?
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button type="button" class="btn btn-netflix">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.querySelectorAll(".editBtn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const row = this.closest("tr");
+          document.getElementById("editName").value = row.cells[2].innerText;
+          document.getElementById("editDOB").value = row.cells[3].innerText;
+          document.getElementById("editGender").value = row.cells[4].innerText;
+          document.getElementById("editCountry").value = row.cells[5].innerText;
+          document.getElementById("editDesc").value = row.cells[6].innerText;
+        });
+      });
+    </script>
+  </body>
+</html>

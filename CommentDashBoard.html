@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Comment</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/CommentDashBoard.css" />
+    <style>
+      .btn-netflix {
+        background-color: #e50914;
+        border: none;
+        color: white;
+      }
+      .btn-netflix:hover {
+        background-color: #f40612;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="admin-info">
+        <img
+          src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg"
+          alt="Admin"
+          width="80"
+          height="80"
+        />
+        <h6>Admin</h6>
+      </div>
+      <a href="#">Ads Management</a>
+      <a href="#">Movie Management</a>
+      <a href="PerformersDashBoard.html">Performers Management</a>
+      <a href="AccountDashBoard.html">Accounts Management</a>
+      <a href="CommentDashBoard.html" class="active">Comment Management</a>
+      <a href="#">Genres/Tags Management</a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Topbar -->
+      <div class="topbar d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Quản lý Bình luận</h5>
+        <button
+          class="btn btn-netflix btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteAllModal"
+        >
+          <i class="bi bi-trash"></i> Xóa tất cả
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="mb-3">
+        <div class="input-group search-box">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Tìm kiếm bình luận..."
+          />
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-dark table-striped mb-0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Người dùng</th>
+                <th>Movie</th>
+                <th>Nội dung</th>
+                <th>Ngày</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Sanh</td>
+                <td>Avengers: Endgame</td>
+                <td>Phim quá hay 🔥</td>
+                <td>2025-09-30</td>
+                <td>
+                  <button
+                    class="btn btn-netflix btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>PYen</td>
+                <td>Spider-Man: No Way Home</td>
+                <td>Cảnh cuối xúc động 😭</td>
+                <td>2025-09-29</td>
+                <td>
+                  <button
+                    class="btn btn-netflix btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Alex</td>
+                <td>The Batman</td>
+                <td>Màu phim hơi tối nhưng hay</td>
+                <td>2025-09-28</td>
+                <td>
+                  <button
+                    class="btn btn-netflix btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete One Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Xóa Bình luận</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc muốn xóa bình luận này không?
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button type="button" class="btn btn-netflix">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete All Modal -->
+    <div class="modal fade" id="deleteAllModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Xóa tất cả bình luận</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc muốn xóa <b>tất cả bình luận</b> không? Hành động này
+            không thể hoàn tác.
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button type="button" class="btn btn-netflix">Xóa tất cả</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
