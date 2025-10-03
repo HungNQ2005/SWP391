@@ -1,0 +1,148 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 3, 2025, 6:33:52 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+.banner {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    margin-top: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.movie-row {
+    scroll-behavior: smooth;
+}
+
+.movie-card {
+    flex: 0 0 auto;
+    width: 160px;
+
+}
+
+.movie-card img {
+    border-radius: 8px;
+}
+
+.movie-card img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.movie-card .card-body {
+    min-height: 50px;
+}
+
+h1.display-4 {
+    font-size: 2rem;
+}
+
+#toggleFilter {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+}
+
+.pagination .page-link {
+    transition: background 0.2s ease;
+}
+
+.pagination .page-link:hover {
+    background: #555;
+}
+
+
+@media (max-width: 768px) {
+    .banner {
+        height: 200px;
+    }
+
+    .banner-overlay h2 {
+        font-size: 1.4rem;
+    }
+}
+
+
+#filterPanel .btn {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out;
+}
+
+#filterPanel .btn-warning {
+    background-color: #e50914;
+
+    border-color: #e50914;
+    color: #fff;
+}
+
+#filterPanel .btn-warning:hover {
+    background-color: #f40612;
+    border-color: #f40612;
+}
+
+#filterPanel .btn-outline-light:hover,
+#filterPanel .btn:hover {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+#toggleFilter {
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#toggleFilter:hover {
+    background-color: #f40612;
+}
+
+#closeFilter {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#closeFilter:hover {
+    background-color: #555;
+}
+
+
+.netflix-btn {
+    border: 1px solid #f5f5f5;
+    color: #f5f5f5;
+    padding: 6px 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.netflix-btn:hover {
+    background-color: #e50914;
+
+    border-color: #e50914;
+    color: #fff;
+    cursor: pointer;
+}
+
+.netflix-btn:active {
+    background-color: #b20710;
+
+    transform: scale(0.98);
+}
