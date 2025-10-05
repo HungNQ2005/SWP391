@@ -1,3 +1,10 @@
+<%-- 
+    Document   : AccountDashboard.jsp
+    Created on : Oct 4, 2025, 10:11:46 AM
+    Author     : Vo Thi Phi Yen - CE190428
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
   <head>
@@ -12,7 +19,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/dashboad.css" />
+    <link href="../asset/css/AccountsDashboard.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <!-- Sidebar -->
@@ -208,7 +215,7 @@
                 <label>UserName</label>
                 <input
                   type="text"
-                  s
+                  
                   class="form-control"
                   id="editUserName"
                   required
