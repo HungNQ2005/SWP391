@@ -265,74 +265,12 @@
     <script>
       let currentDeleteRow = null;
 
-      // Add account
-      document
-        .getElementById("addForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const table = document.querySelector("#accountTable tbody");
-          const rowCount = table.rows.length + 1;
-          const userName = document.getElementById("addUserName").value;
-          const email = document.getElementById("addEmail").value;
-          const role = document.getElementById("addRole").value;
-
-          let badgeClass = role === "Admin" ? "bg-primary" : "bg-secondary";
-
-          const newRow = table.insertRow();
-          newRow.innerHTML = `
-          <td>${rowCount}</td>
-          <td>${userName}</td>
-          <td>${email}</td>
-          <td><span class="badge ${badgeClass}">${role}</span></td>
-          <td>
-            <button class="btn btn-success btn-sm editBtn">Edit</button>
-            <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
-          </td>
-        `;
-          document.getElementById("addForm").reset();
-          bootstrap.Modal.getInstance(
-            document.getElementById("addModal")
-          ).hide();
-        });
-
       // Edit button
       document.addEventListener("click", function (e) {
         if (e.target.classList.contains("editBtn")) {
-          const row = e.target.closest("tr");
-          document.getElementById("editId").value = row.cells[0].innerText;
-          document.getElementById("editUserName").value =
-            row.cells[1].innerText;
-          document.getElementById("editEmail").value = row.cells[2].innerText;
-          document.getElementById("editRole").value =
-            row.cells[3].innerText.trim();
           new bootstrap.Modal(document.getElementById("editModal")).show();
         }
       });
-
-      // Save edit
-      document
-        .getElementById("editForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const id = document.getElementById("editId").value;
-          const userName = document.getElementById("editUserName").value;
-          const email = document.getElementById("editEmail").value;
-          const role = document.getElementById("editRole").value;
-
-          const table = document.querySelector("#accountTable tbody");
-          for (let row of table.rows) {
-            if (row.cells[0].innerText === id) {
-              row.cells[1].innerText = userName;
-              row.cells[2].innerText = email;
-              row.cells[3].innerHTML = `<span class="badge ${
-                role === "Admin" ? "bg-primary" : "bg-secondary"
-              }">${role}</span>`;
-            }
-          }
-          bootstrap.Modal.getInstance(
-            document.getElementById("editModal")
-          ).hide();
-        });
 
       // Delete button
       document.addEventListener("click", function (e) {
@@ -341,19 +279,6 @@
           new bootstrap.Modal(document.getElementById("deleteModal")).show();
         }
       });
-
-      // Confirm delete
-      document
-        .getElementById("confirmDelete")
-        .addEventListener("click", function () {
-          if (currentDeleteRow) {
-            currentDeleteRow.remove();
-            currentDeleteRow = null;
-            bootstrap.Modal.getInstance(
-              document.getElementById("deleteModal")
-            ).hide();
-          }
-        });
     </script>
   </body>
 </html>
