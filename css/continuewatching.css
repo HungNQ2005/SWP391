@@ -1,0 +1,57 @@
+/* Sidebar */
+.sidebar {
+  background-color: #111;
+  border-radius: 12px;
+  min-height: 100%;
+}
+
+.sidebar h5 {
+  font-weight: bold;
+  color: #fff;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #bbb;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a i {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.sidebar ul li a:hover {
+  background-color: #b71c1c; /* đỏ chủ đạo */
+  color: #fff !important;
+}
+
+.sidebar ul li a.text-danger {
+  color: #e53935 !important; /* đỏ nổi bật */
+}
+
+/* Continue Watching Section */
+h3 {
+  font-weight: bold;
+}
+
+.movie-card img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(255, 0, 0, 0.5);
+}
+
+.movie-card p {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}

@@ -1,0 +1,28 @@
+/* Footer Logo */
+.footer-logo {
+  max-height: 60px;
+}
+
+/* Links */
+.footer-link {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s, font-weight 0.3s;
+  font-size: 14px;
+}
+
+.footer-link:hover {
+  color: #e50914; /* đỏ Netflix */
+  font-weight: 600;
+}
+
+/* Social Icons */
+.footer-icon {
+  color: #bbb;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.footer-icon:hover {
+  color: #e50914;
+  transform: scale(1.2);
+}
