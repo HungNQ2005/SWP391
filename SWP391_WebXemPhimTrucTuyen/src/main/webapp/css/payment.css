@@ -1,0 +1,59 @@
+.payment-container {
+  background: #111; /* nền đen */
+  padding: 30px;
+  border-radius: 6px;
+  color: #fff;
+  max-width: 600px; /* căn giữa, không quá rộng */
+}
+
+.payment-info p {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.price {
+  background: red;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Input code */
+.payment-container input {
+  display: block;
+  background: #ddd;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  max-width: 300px; /* ✅ Giới hạn chiều rộng nhỏ hơn */
+}
+
+
+/* Buttons */
+.btn-confirm {
+  background: red;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 25px;
+  border-radius: 6px; /* nhẹ, không bo tròn full */
+  border: none;
+}
+
+.btn-confirm:hover {
+  background: darkred;
+}
+
+.btn-cancel {
+  background: #555;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 25px;
+  border-radius: 6px;
+  border: none;
+}
+
+.btn-cancel:hover {
+  background: #333;
+}
