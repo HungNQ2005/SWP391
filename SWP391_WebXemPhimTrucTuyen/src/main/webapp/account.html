@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản lí tài khoản</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/Header.css" />
+    <link rel="stylesheet" href="css/Account.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Account Page -->
+    <div class="container py-5">
+      <div class="account-container d-flex">
+        <!-- Sidebar -->
+        <aside class="sidebar p-3">
+          <h3>Quản lí tài khoản</h3>
+          <ul>
+            <li><i class="fa-solid fa-plus"></i> Watch List</li>
+            <li><i class="fa-regular fa-clock"></i> Continue watching</li>
+            <li class="active"><i class="fa-solid fa-user"></i> Account</li>
+            <li><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+          </ul>
+        </aside>
+
+        <!-- Account info -->
+        <main class="account-info flex-grow-1 p-3">
+          <h2>Account personal</h2>
+          <div class="info-row d-flex align-items-center">
+            <div class="avatar me-4 text-center">
+              <img
+                src="https://i.pinimg.com/originals/6e/ea/71/6eea71cd65edef17878a46e75d2ee5f7.jpg"
+                alt="Avatar"
+                class="rounded-circle"
+                style="width: 120px; height: 120px; object-fit: cover"
+              />
+              <p class="mt-2">Avatar</p>
+            </div>
+            <div class="details">
+              <p><strong>Email :</strong> yenvtp123@gmail.com</p>
+              <p><strong>Username :</strong> PhiYen</p>
+              <p><strong>Status :</strong> Basic</p>
+              <p><strong>Date :</strong> 25/9/2025</p>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-3">Update</button>
+        </main>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script>
+      // Load Header
+      fetch("include/Header.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+        });
+
+      // Load Footer
+      fetch("include/footer.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("footer-placeholder").innerHTML = data;
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

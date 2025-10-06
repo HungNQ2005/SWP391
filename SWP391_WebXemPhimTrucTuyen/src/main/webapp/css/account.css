@@ -1,0 +1,115 @@
+/* Account Page Styles */
+body {
+  background-color: #141414; /* nền tối */
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/* Container chính */
+.account-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 80px; /* tránh bị che bởi header fixed-top */
+}
+
+/* Sidebar */
+.sidebar {
+  background: #1f1f1f;
+  border-radius: 10px;
+  width: 250px;
+  padding: 20px;
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #e50914; /* đỏ chủ đạo */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li i {
+  margin-right: 10px;
+}
+
+.sidebar ul li:hover {
+  background: #333;
+  color: #e50914;
+}
+
+.sidebar ul li.active {
+  background: #e50914;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Account info */
+.account-info {
+  flex-grow: 1;
+  background: #1f1f1f;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.account-info h2 {
+  margin-bottom: 20px;
+  color: #e50914;
+}
+
+/* Avatar + details ngang hàng */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  text-align: center;
+  flex: 0 0 150px; /* giữ kích thước avatar cố định */
+}
+
+.avatar img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #e50914;
+}
+
+.details {
+  flex: 1;
+}
+
+.details p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+/* Nút update */
+.btn-update,
+.account-info .btn {
+  background: linear-gradient(45deg, #e50914, #b00610);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-update:hover,
+.account-info .btn:hover {
+  background: linear-gradient(45deg, #ff1a25, #cc0f19);
+}
