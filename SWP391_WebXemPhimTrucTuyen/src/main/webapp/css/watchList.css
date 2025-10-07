@@ -1,118 +1,116 @@
-/* Reset Bootstrap background mặc định */
-html, body {
-  height: 100%;
+/* ===== RESET & BASE ===== */
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #000 !important; /* Nền đen */
-  color: #fff !important; /* Chữ trắng */
-  font-family: "Poppins", sans-serif;
 }
 
-/* Container chính */
+/* ===== OUTER WRAPPER (thêm khung đỏ bao ngoài toàn trang) ===== */
+.account-wrapper {
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #b30000;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+  padding: 30px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ===== LAYOUT ===== */
 .account-container {
   display: flex;
-  background-color: #000;
-  color: #fff;
+  gap: 30px;
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 .sidebar {
-  background-color: #111;
+  background-color: #141414;
   border-radius: 12px;
-  min-height: 100%;
-  width: 230px;
-  padding: 20px;
+  width: 240px;
+  padding: 25px 20px;
+  border-right: 3px solid #b30000;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
 }
 
 .sidebar h3 {
-  color: #fff;
   font-weight: 600;
-  margin-bottom: 20px;
+  color: #fff;
+  margin-bottom: 25px;
+  text-align: center;
+  border-bottom: 2px solid #b30000;
+  padding-bottom: 10px;
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
+  padding-left: 0;
   margin: 0;
 }
 
 .sidebar ul li {
-  color: #ccc;
-  padding: 10px 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  padding: 10px 14px;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.3s;
+  color: #ccc;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-/* Active item - đỏ đậm */
+.sidebar ul li:hover,
 .sidebar ul li.active {
-  background-color: #1e1e1e;
-  color: #ff2e2e;
-  border-left: 4px solid #ff2e2e;
-  font-weight: bold;
+  background-color: #b30000;
+  color: #fff;
+  box-shadow: 0 0 12px #ff1a1a;
 }
 
-/* Hover effect */
-.sidebar ul li:hover {
-  background-color: #222;
-  color: #ff2e2e;
+/* ===== MAIN CONTENT ===== */
+.account-info {
+  flex: 1;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid #b30000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
 }
 
-/* Tiêu đề Watch List */
 .account-info h2 {
   font-weight: bold;
-  color: #ff2e2e;
+  color: #ff3333;
+  border-bottom: 2px solid #b30000;
+  padding-bottom: 8px;
+  display: inline-block;
   margin-bottom: 30px;
 }
 
-/* Movie cards */
+/* ===== MOVIE CARDS ===== */
 .movie-card img {
-  border-radius: 10px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 12px;
+  transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
   border: 2px solid transparent;
 }
 
 .movie-card img:hover {
   transform: scale(1.05);
   border-color: #ff2e2e;
-  box-shadow: 0 0 12px #ff2e2e;
+  box-shadow: 0 0 15px #ff2e2e;
 }
 
 .movie-card p {
-  margin-top: 10px;
+  margin-top: 8px;
+  color: #fff;
   font-weight: 500;
-  color: #fff;
+  text-align: center;
 }
 
-/* Footer */
-footer {
-  background-color: #0d0d0d !important;
-  color: #fff !important;
-}
-
-.footer-link {
-  color: #bbb;
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  color: #ff2e2e;
-}
-
-.footer-icon {
-  color: #fff;
-  transition: 0.3s;
-}
-
-.footer-icon:hover {
-  color: #ff2e2e;
-}
-
-/* Loại bỏ màu trắng của Bootstrap */
-.container, .account-info, main {
-  background-color: transparent !important;
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -16,9 +16,6 @@
     />
 
     <!-- Custom CSS -->
-   
-    
-   
     <link rel="stylesheet" href="css/watchList.css" />
   </head>
 
@@ -28,132 +25,88 @@
 
     <!-- Page Content -->
     <div class="container py-5">
-      <div class="account-container d-flex">
-        <!-- Sidebar -->
-        <aside class="sidebar p-3">
-          <h3>Quản lí tài khoản</h3>
-          <ul>
-            <li class="active" onclick="window.location.href='WatchList.html'">
-              <i class="fa-solid fa-plus"></i> Watch List
-            </li>
-            <li onclick="window.location.href='ContinueWatching.html'">
-              <i class="fa-regular fa-clock"></i> Continue watching
-            </li>
-            <li onclick="window.location.href='Account.html'">
-              <i class="fa-solid fa-user"></i> Account
-            </li>
-            <li onclick="window.location.href='Logout.html'">
-              <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </li>
-          </ul>
-        </aside>
+      <div class="account-wrapper">
+        <div class="account-container d-flex">
+          <!-- Sidebar -->
+          <aside class="sidebar p-3">
+            <h3>Quản lí tài khoản</h3>
+            <ul>
+              <li class="active" onclick="window.location.href='WatchList.html'">
+                <i class="fa-solid fa-plus"></i> Watch List
+              </li>
+              <li onclick="window.location.href='ContinueWatching.html'">
+                <i class="fa-regular fa-clock"></i> Continue watching
+              </li>
+              <li onclick="window.location.href='Account.html'">
+                <i class="fa-solid fa-user"></i> Account
+              </li>
+              <li onclick="window.location.href='Logout.html'">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </li>
+            </ul>
+          </aside>
 
-        <!-- Watch List Content -->
-        <main class="account-info flex-grow-1 p-3">
-          <h2>Watch List</h2>
-          <div class="d-flex flex-wrap gap-4">
-            <div class="movie-card text-center">
-              <img
-                src="https://preview.redd.it/what-sonic-character-will-be-at-the-end-of-sonic-movie-3-v0-eylqvtyz3y0e1.jpg?width=1080&crop=smart&auto=webp&s=6efb8ea7d9de23adce6288a59e697439c4b5fb5e"
-                alt="Sonic 3"
-                class="img-fluid rounded"
-                style="max-width: 180px"
-              />
-              <p>Sonic 3</p>
+          <!-- Watch List Content -->
+          <main class="account-info flex-grow-1 p-3">
+            <h2>Watch List</h2>
+            <div class="d-flex flex-wrap gap-4">
+              <div class="movie-card text-center">
+                <img
+                  src="https://preview.redd.it/what-sonic-character-will-be-at-the-end-of-sonic-movie-3-v0-eylqvtyz3y0e1.jpg?width=1080&crop=smart&auto=webp&s=6efb8ea7d9de23adce6288a59e697439c4b5fb5e"
+                  alt="Sonic 3"
+                  class="img-fluid rounded"
+                  style="max-width: 180px"
+                />
+                <p>Sonic 3</p>
+              </div>
+              <div class="movie-card text-center">
+                <img
+                  src="https://bazaarvietnam.vn/wp-content/uploads/2024/08/BZ-ALIEN-ROMULUS-REVIEW-11.jpg"
+                  alt="Alien"
+                  class="img-fluid rounded"
+                  style="max-width: 180px"
+                />
+                <p>Alien</p>
+              </div>
+              <div class="movie-card text-center">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Spider-Man-_Across_the_Spider-Verse_poster.jpg/250px-Spider-Man-_Across_the_Spider-Verse_poster.jpg"
+                  alt="Spider-man Across the Spider-verse"
+                  class="img-fluid rounded"
+                  style="max-width: 180px"
+                />
+                <p>Spider-man Across the Spider-verse</p>
+              </div>
+              <div class="movie-card text-center">
+                <img
+                  src="https://play-lh.googleusercontent.com/TCnJdyDK2C4BMGVgpxnInDY04c7CwSNJ7_JvWgRl1rOVy1aqpm1TPTRPvrafWdxxGjYzz2CI_byPI8L9rRQ"
+                  alt="Black Panther: Wakanda Forever"
+                  class="img-fluid rounded"
+                  style="max-width: 180px"
+                />
+                <p>Black Panther: Wakanda Forever</p>
+              </div>
+              <div class="movie-card text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71s3cEqEZTL._UF894,1000_QL80_.jpg"
+                  alt="Avatar: The Way of Water"
+                  class="img-fluid rounded"
+                  style="max-width: 180px"
+                />
+                <p>Avatar: The Way of Water</p>
+              </div>
             </div>
-            <div class="movie-card text-center">
-              <img
-                src="https://bazaarvietnam.vn/wp-content/uploads/2024/08/BZ-ALIEN-ROMULUS-REVIEW-11.jpg"
-                alt="Alien"
-                class="img-fluid rounded"
-                style="max-width: 180px"
-              />
-              <p>Alien</p>
-            </div>
-            <div class="movie-card text-center">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Spider-Man-_Across_the_Spider-Verse_poster.jpg/250px-Spider-Man-_Across_the_Spider-Verse_poster.jpg"
-                alt="Spider-man Across the Spider-verse"
-                class="img-fluid rounded"
-                style="max-width: 180px"
-              />
-              <p>Spider-man Across the Spider-verse</p>
-            </div>
-            <div class="movie-card text-center">
-              <img
-                src="https://play-lh.googleusercontent.com/TCnJdyDK2C4BMGVgpxnInDY04c7CwSNJ7_JvWgRl1rOVy1aqpm1TPTRPvrafWdxxGjYzz2CI_byPI8L9rRQ"
-                alt="Black Panther: Wakanda Forever"
-                class="img-fluid rounded"
-                style="max-width: 180px"
-              />
-              <p>Black Panther: Wakanda Forever</p>
-            </div>
-            <div class="movie-card text-center">
-              <img
-                src="https://m.media-amazon.com/images/I/71s3cEqEZTL._UF894,1000_QL80_.jpg"
-                alt="Avatar: The Way of Water"
-                class="img-fluid rounded"
-                style="max-width: 180px"
-              />
-              <p>Avatar: The Way of Water</p>
-            </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4 mt-5">
-      <div class="container">
-        <div class="row gy-3">
-          <div class="col-12 col-md-3">
-            <img
-              src="Images/logo.png"
-              class="img-fluid mb-2"
-              alt="Logo"
-              style="max-width: 120px"
-            />
-            <p class="small mb-0">
-              Watch the latest movies and TV shows online anytime, anywhere.
-            </p>
-          </div>
-
-          <div class="col-6 col-md-3">
-            <h6 class="text-white mb-2">Explore</h6>
-            <ul class="list-unstyled mb-0">
-              <li><a href="#" class="footer-link">Movies</a></li>
-              <li><a href="#" class="footer-link">Genres</a></li>
-              <li><a href="#" class="footer-link">FAQ</a></li>
-              <li><a href="#" class="footer-link">Contact Us</a></li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3">
-            <h6 class="text-white mb-2">Contact</h6>
-            <p class="small mb-1">Email: support@netflop.com</p>
-            <p class="small mb-0">Hotline: +1 234 567 890</p>
-          </div>
-
-          <div class="col-12 col-md-3">
-            <h6 class="text-white mb-2">Follow Us</h6>
-            <div class="d-flex gap-3 fs-5">
-              <a href="#" class="footer-icon"><i class="bi bi-facebook"></i></a>
-              <a href="#" class="footer-icon"><i class="bi bi-tiktok"></i></a>
-              <a href="#" class="footer-icon"><i class="bi bi-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <hr class="border-secondary mt-3 mb-2" />
-        <div class="text-center small">
-          © 2025 MovieWeb. All Rights Reserved. |
-          <a href="#" class="footer-link">Terms of Use</a> |
-          <a href="#" class="footer-link">Privacy Policy</a>
-        </div>
+      <div class="container text-center small">
+        © 2025 MovieWeb. All Rights Reserved.
       </div>
     </footer>
-
-    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
