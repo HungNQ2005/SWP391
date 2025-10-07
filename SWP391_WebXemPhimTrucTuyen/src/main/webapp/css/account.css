@@ -1,115 +1,121 @@
-/* Account Page Styles */
 body {
-  background-color: #141414; /* nền tối */
+  font-family: "Poppins", sans-serif;
+  background-color: #111;
   color: #fff;
-  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-/* Container chính */
-.account-container {
-  display: flex;
-  gap: 2rem;
-  margin-top: 80px; /* tránh bị che bởi header fixed-top */
+/* Container tổng */
+.account-box {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
 }
 
 /* Sidebar */
 .sidebar {
-  background: #1f1f1f;
-  border-radius: 10px;
   width: 250px;
-  padding: 20px;
+  background-color: #141414;
+  border-right: 3px solid #b30000;
 }
 
 .sidebar h3 {
-  font-size: 18px;
+  font-size: 20px;
+  color: #f9f4f4;
   margin-bottom: 20px;
-  color: #e50914; /* đỏ chủ đạo */
+  text-align: center;
+  font-weight: 600;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .sidebar ul li {
-  padding: 10px;
+  padding: 12px 18px;
   margin-bottom: 8px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: 0.3s;
 }
 
 .sidebar ul li i {
   margin-right: 10px;
+  color: #ff3333;
 }
 
-.sidebar ul li:hover {
-  background: #333;
-  color: #e50914;
-}
-
+.sidebar ul li:hover,
 .sidebar ul li.active {
-  background: #e50914;
+  background-color: #b30000;
   color: #fff;
-  font-weight: bold;
+  box-shadow: 0 0 10px #ff0000;
 }
 
 /* Account info */
 .account-info {
-  flex-grow: 1;
-  background: #1f1f1f;
-  padding: 30px;
-  border-radius: 10px;
+  flex: 1;
+  background-color: #1f1f1f;
+  border-left: 1px solid #b30000;
+  border-radius: 0 12px 12px 0;
 }
 
 .account-info h2 {
-  margin-bottom: 20px;
-  color: #e50914;
-}
-
-/* Avatar + details ngang hàng */
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 20px;
-}
-
-.avatar {
-  text-align: center;
-  flex: 0 0 150px; /* giữ kích thước avatar cố định */
+  color: #ece7e7;
+  font-weight: 600;
+  border-bottom: 2px solid #b30000;
+  padding-bottom: 6px;
+  display: inline-block;
 }
 
 .avatar img {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  border: 3px solid #e50914;
-}
-
-.details {
-  flex: 1;
-}
-
-.details p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-/* Nút update */
-.btn-update,
-.account-info .btn {
-  background: linear-gradient(45deg, #e50914, #b00610);
-  border: none;
-  color: #fff;
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 8px;
+  object-fit: cover;
+  border: 3px solid #b30000;
+  box-shadow: 0 0 10px #ff1a1a;
   transition: 0.3s;
 }
 
-.btn-update:hover,
-.account-info .btn:hover {
-  background: linear-gradient(45deg, #ff1a25, #cc0f19);
+.avatar img:hover {
+  transform: scale(1.05);
+}
+
+.details p {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* Nút Update */
+.btn-save {
+  background: linear-gradient(90deg, #b30000, #ff1a1a);
+  color: #fff;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-save:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff3333;
+}
+
+/* Hiệu ứng vào trang */
+.account-container {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

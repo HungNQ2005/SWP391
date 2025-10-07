@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -29,18 +29,15 @@
 
     <!-- Payment Section -->
     <div class="container py-5 mt-4">
-      <div class="payment-container mx-auto">
+      <div class="payment-container mx-auto text-center">
         <!-- Title -->
-        <h2 class="text-center mb-4">Payment</h2>
+        <h2 class="mb-4">Payment</h2>
 
         <!-- Info -->
         <div class="payment-info text-start">
           <p><strong>UserName :</strong> YenVTP</p>
           <p><strong>Plan :</strong> Premium</p>
-          <p>
-            <strong>Total :</strong>
-            <span class="price">339.000đ</span>
-          </p>
+          <p><strong>Total :</strong> <span class="price">339.000đ</span></p>
           <p><strong>Enter Code :</strong></p>
           <input
             type="text"
@@ -50,17 +47,18 @@
         </div>
 
         <!-- Buttons -->
-        <div class="d-flex gap-3 mt-3">
-          <button class="btn-confirm">Xác nhận</button>
-          <button class="btn-cancel">Huỷ</button>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <!-- Xác nhận sang success.html -->
+          <a href="success.html" class="btn-confirm">Xác nhận</a>
+
+          <!-- Huỷ trở về trang trước -->
+          <button class="btn-cancel" onclick="history.back()">Huỷ</button>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
     <div id="footer-placeholder"></div>
-
-   
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

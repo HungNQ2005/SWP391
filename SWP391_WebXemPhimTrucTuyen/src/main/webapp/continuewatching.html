@@ -18,7 +18,6 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/Header.css" />
     <link rel="stylesheet" href="css/continuewatching.css" />
   </head>
 
@@ -33,12 +32,26 @@
         <aside class="sidebar p-3">
           <h3>Quản lí tài khoản</h3>
           <ul>
-            <li><i class="fa-solid fa-plus"></i> Watch List</li>
-            <li class="active">
-              <i class="fa-regular fa-clock"></i> Continue watching
+            <li>
+              <a href="watchlist.html">
+                <i class="fa-solid fa-plus"></i> Watch List
+              </a>
             </li>
-            <li><i class="fa-solid fa-user"></i> Account</li>
-            <li><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            <li class="active">
+              <a href="continuewatching.html">
+                <i class="fa-regular fa-clock"></i> Continue watching
+              </a>
+            </li>
+            <li>
+              <a href="account.html">
+                <i class="fa-solid fa-user"></i> Account
+              </a>
+            </li>
+            <li>
+              <a href="logout.html">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </a>
+            </li>
           </ul>
         </aside>
 
@@ -77,17 +90,6 @@
         </main>
       </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-      // Load Header only (Footer removed)
-      fetch("include/Header.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("header-placeholder").innerHTML = data;
-        })
-        .catch((err) => console.error("Error loading header:", err));
-    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,89 +1,71 @@
-/* ===== RESET LÀM MỜ ===== */
-body,
-.container,
-.account-container,
-.account-info,
-.sidebar,
-.movie-card img {
-  opacity: 1 !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-}
-
-#header-placeholder {
-  position: relative;
-  z-index: 100;
-  opacity: 1;
-}
-
-/* ===== GIAO DIỆN CHUNG ===== */
 body {
-  background-color: #000;
+  background-color: #111;
   color: #fff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ===== CONTAINER CHÍNH ===== */
 .account-container {
-  gap: 20px;
+  display: flex;
+  gap: 30px;
 }
 
-/* ===== SIDEBAR ===== */
+/* Sidebar */
 .sidebar {
-  background-color: #111;
+  background-color: #1a1a1a;
   border-radius: 12px;
-  padding: 20px;
-  min-width: 250px;
+  min-height: 100%;
+  width: 240px;
 }
 
 .sidebar h3 {
   font-weight: bold;
   color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-left: 0;
 }
 
 .sidebar ul li {
-  padding: 10px 0;
-  color: #bbb;
-  cursor: pointer;
-  transition: 0.3s;
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
 }
 
-.sidebar ul li:hover,
-.sidebar ul li.active {
+.sidebar ul li a:hover {
+  color: #ff3b3b;
+}
+
+/* Active item */
+.sidebar ul li.active a {
   color: #fff;
-}
-
-/* ===== PHẦN CHÍNH ===== */
-.account-info h2 {
   font-weight: bold;
-  margin-bottom: 20px;
-  color: #fff;
+  background-color: #b80000;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
-/* ===== MOVIE CARD ===== */
+/* Movie cards */
 .movie-card img {
-  max-width: 180px;
-  border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  transition: transform 0.3s;
 }
 
 .movie-card img:hover {
   transform: scale(1.05);
-  box-shadow: 0px 4px 15px rgba(255, 0, 0, 0.5);
 }
 
 .movie-card p {
   margin-top: 8px;
-  font-size: 0.95rem;
   color: #fff;
 }

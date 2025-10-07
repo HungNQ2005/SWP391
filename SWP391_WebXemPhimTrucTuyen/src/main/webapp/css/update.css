@@ -1,0 +1,92 @@
+body {
+  background-color: #0d0d0d;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.update-container {
+  background-color: #1a1a1a;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+  width: 400px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ff4747;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background-color: #111;
+  color: white;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #ff4747;
+  outline: none;
+}
+
+.error-message {
+  color: #ff4d4d;
+  font-size: 13px;
+  display: none;
+  margin-top: 5px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-save,
+.btn-cancel {
+  text-decoration: none;
+  text-align: center;
+  width: 45%;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-save {
+  background-color: #ff0000;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #e60000;
+}
+
+.btn-cancel {
+  background-color: #333;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #444;
+}

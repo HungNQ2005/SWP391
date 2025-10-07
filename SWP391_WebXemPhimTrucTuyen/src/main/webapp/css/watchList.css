@@ -1,0 +1,118 @@
+/* Reset Bootstrap background mặc định */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #000 !important; /* Nền đen */
+  color: #fff !important; /* Chữ trắng */
+  font-family: "Poppins", sans-serif;
+}
+
+/* Container chính */
+.account-container {
+  display: flex;
+  background-color: #000;
+  color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #111;
+  border-radius: 12px;
+  min-height: 100%;
+  width: 230px;
+  padding: 20px;
+}
+
+.sidebar h3 {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  color: #ccc;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+/* Active item - đỏ đậm */
+.sidebar ul li.active {
+  background-color: #1e1e1e;
+  color: #ff2e2e;
+  border-left: 4px solid #ff2e2e;
+  font-weight: bold;
+}
+
+/* Hover effect */
+.sidebar ul li:hover {
+  background-color: #222;
+  color: #ff2e2e;
+}
+
+/* Tiêu đề Watch List */
+.account-info h2 {
+  font-weight: bold;
+  color: #ff2e2e;
+  margin-bottom: 30px;
+}
+
+/* Movie cards */
+.movie-card img {
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid transparent;
+}
+
+.movie-card img:hover {
+  transform: scale(1.05);
+  border-color: #ff2e2e;
+  box-shadow: 0 0 12px #ff2e2e;
+}
+
+.movie-card p {
+  margin-top: 10px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  background-color: #0d0d0d !important;
+  color: #fff !important;
+}
+
+.footer-link {
+  color: #bbb;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #ff2e2e;
+}
+
+.footer-icon {
+  color: #fff;
+  transition: 0.3s;
+}
+
+.footer-icon:hover {
+  color: #ff2e2e;
+}
+
+/* Loại bỏ màu trắng của Bootstrap */
+.container, .account-info, main {
+  background-color: transparent !important;
+}

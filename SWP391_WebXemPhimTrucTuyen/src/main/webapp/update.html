@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Account</title>
+    <link rel="stylesheet" href="css/update.css" />
+  </head>
+
+  <body>
+    <div class="update-container">
+      <h2>Update Account Information</h2>
+
+      <form id="updateForm" action="account.html" method="post" class="update-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="yenvtp123@gmail.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="PhiYen"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <input
+            type="password"
+            id="new-password"
+            name="new-password"
+            placeholder="Enter new password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            placeholder="Confirm new password"
+          />
+          <small id="error-message" class="error-message"></small>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn-save">Save</button>
+          <a href="account.html" class="btn-cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("updateForm");
+      const newPass = document.getElementById("new-password");
+      const confirmPass = document.getElementById("confirm-password");
+      const errorMsg = document.getElementById("error-message");
+
+      form.addEventListener("submit", function (e) {
+        if (newPass.value !== confirmPass.value) {
+          e.preventDefault(); // chặn gửi form
+          errorMsg.textContent = "⚠️ Passwords do not match!";
+          errorMsg.style.display = "block";
+          confirmPass.style.borderColor = "red";
+        } else {
+          errorMsg.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
