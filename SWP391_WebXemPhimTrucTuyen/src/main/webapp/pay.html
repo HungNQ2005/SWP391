@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Account Activation</title>
   <style>
-    /* Toàn bộ trang */
     body {
       background: linear-gradient(145deg, #111, #1a1a1a);
       color: #ffffff;
@@ -16,7 +15,6 @@
       margin: 0;
     }
 
-    /* Khung chính */
     .container {
       background: #1a1a1a;
       padding: 40px 45px;
@@ -61,12 +59,22 @@
       box-shadow: 0 0 0 2px #ff3b3b;
     }
 
-    /* Checkbox */
+    /* Nhóm checkbox */
     .checkbox-group {
-      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
       margin: 10px 0 20px;
       font-size: 13px;
       color: #ccc;
+      text-align: left;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      accent-color: #ff3b3b; /* màu đỏ của ô check */
+      transform: scale(1.2);
+      cursor: pointer;
     }
 
     .checkbox-group a {
@@ -79,7 +87,6 @@
       text-decoration: underline;
     }
 
-    /* Nút */
     input[type="submit"] {
       width: 100%;
       padding: 12px;
@@ -100,7 +107,6 @@
       box-shadow: 0 0 10px rgba(255, 59, 59, 0.6);
     }
 
-    /* Thông báo */
     .message {
       margin-top: 15px;
       background: #2a2a2a;
