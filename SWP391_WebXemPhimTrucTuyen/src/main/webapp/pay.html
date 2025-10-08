@@ -1,66 +1,142 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Payment</title>
+<head>
+  <meta charset="UTF-8" />
+  <title>Account Activation</title>
+  <style>
+    /* Toàn bộ trang */
+    body {
+      background: linear-gradient(145deg, #111, #1a1a1a);
+      color: #ffffff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    /* Khung chính */
+    .container {
+      background: #1a1a1a;
+      padding: 40px 45px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(184, 0, 0, 0.4);
+      width: 380px;
+      text-align: center;
+      border: 1px solid #b80000;
+    }
 
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+    h2 {
+      color: #ff3b3b;
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/Header.css" />
-    <link rel="stylesheet" href="css/footer.css" />
-    <link rel="stylesheet" href="css/payment.css" />
-  </head>
+    label {
+      display: block;
+      text-align: left;
+      margin: 8px 0 5px;
+      font-size: 14px;
+      color: #ccc;
+    }
 
-  <body>
-    <!-- Header -->
-    <div id="header-placeholder"></div>
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #202020;
+      color: white;
+      margin-bottom: 15px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
 
-    <!-- Payment Section -->
-    <div class="container py-5 mt-4">
-      <div class="payment-container mx-auto text-center">
-        <!-- Title -->
-        <h2 class="mb-4">Payment</h2>
+    input[type="text"]:focus {
+      background-color: #292929;
+      box-shadow: 0 0 0 2px #ff3b3b;
+    }
 
-        <!-- Info -->
-        <div class="payment-info text-start">
-          <p><strong>UserName :</strong> YenVTP</p>
-          <p><strong>Plan :</strong> Premium</p>
-          <p><strong>Total :</strong> <span class="price">339.000đ</span></p>
-          <p><strong>Enter Code :</strong></p>
-          <input
-            type="text"
-            class="form-control mb-3"
-            placeholder="Nhập code"
-          />
-        </div>
+    /* Checkbox */
+    .checkbox-group {
+      text-align: left;
+      margin: 10px 0 20px;
+      font-size: 13px;
+      color: #ccc;
+    }
 
-        <!-- Buttons -->
-        <div class="d-flex justify-content-center gap-3 mt-3">
-          <!-- Xác nhận sang success.html -->
-          <a href="success.html" class="btn-confirm">Xác nhận</a>
+    .checkbox-group a {
+      color: #ff3b3b;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-          <!-- Huỷ trở về trang trước -->
-          <button class="btn-cancel" onclick="history.back()">Huỷ</button>
-        </div>
+    .checkbox-group a:hover {
+      text-decoration: underline;
+    }
+
+    /* Nút */
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #b80000, #ff3b3b);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(90deg, #ff3b3b, #b80000);
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(255, 59, 59, 0.6);
+    }
+
+    /* Thông báo */
+    .message {
+      margin-top: 15px;
+      background: #2a2a2a;
+      border-left: 4px solid #b80000;
+      padding: 12px;
+      border-radius: 6px;
+      color: #e5e5e5;
+      font-size: 14px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Activate Premium</h2>
+    <form method="post" action="#">
+      <label>Username</label>
+      <input type="text" name="username" placeholder="Nhập tên tài khoản..." required />
+
+      <label>CD Key</label>
+      <input type="text" name="cdkey" placeholder="XXXXX-XXXXX-XXXXX" required />
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree" name="agree" required />
+        <label for="agree">Tôi đồng ý với <a href="#">Điều khoản sử dụng</a></label>
       </div>
-    </div>
 
-    <!-- Footer -->
-    <div id="footer-placeholder"></div>
+      <input type="submit" value="Kích hoạt ngay" />
+    </form>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <div class="message">💡 Nhập CD Key hợp lệ để kích hoạt Premium.</div>
+  </div>
+</body>
 </html>
