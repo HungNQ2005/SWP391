@@ -27,7 +27,8 @@
 
     <body class="bg-dark text-white">
         <!-- Header -->
-        <div id="header-placeholder"></div>
+        <jsp:include page="/include/Header.jsp" />
+
 
         <!-- Banner -->
         <section
@@ -116,19 +117,19 @@
             <!-- Movie List -->
             <div class="movie-row d-flex flex-nowrap overflow-auto gap-3 pb-3">
                 <!-- Movie Card -->
-                <c:forEach var = "s" items="${listSeries}">
+                <c:forEach var="s" items="${listSeries}">
                     <article class="movie-card bg-dark border-0 text-center">
                         <div class="position-relative" style="width: 160px">
-                            <img
-                                src="${s.posteUrl}"
-                                class="card-img-top"
-                                alt=""
-                                />
+                            <a href="series?action=sendMovieInfo&id=${s.seriesID}">
+                                <img src="${s.posteUrl}" class="card-img-top" alt="${s.title}" />
+                            </a>
                         </div>
                         <div class="card-body p-2">
-                            <a href="#" class="text-light" style="text-decoration: none"
-                               >${s.title}</a
-                            >
+                            <a href="series?action=sendMovieInfo&id=${s.seriesID}"
+                               class="text-light"
+                               style="text-decoration: none">
+                                ${s.title}
+                            </a>
                         </div>
                     </article>
                 </c:forEach>

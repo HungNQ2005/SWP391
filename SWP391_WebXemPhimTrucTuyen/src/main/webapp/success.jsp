@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/login.css" />
     <script>
       setTimeout(function () {
-        window.location.href = "login.html";
+        window.location.href = "login.jsp";
       }, 5000);
     </script>
   </head>

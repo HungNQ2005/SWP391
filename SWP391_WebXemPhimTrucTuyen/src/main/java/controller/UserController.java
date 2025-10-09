@@ -41,7 +41,7 @@ public class UserController extends HttpServlet {
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
         if(action.equals("sendSignUp")){
-            request.getRequestDispatcher("/signup.jsp").forward(request, response);
+            request.getRequestDispatcher("/SignUp.jsp").forward(request, response);
         }
         if("sendFogortPassword".equals(action)){
             request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
@@ -49,6 +49,7 @@ public class UserController extends HttpServlet {
         if("sendResetPassword".equals(action)){
             request.getRequestDispatcher("/resetpassword.jsp").forward(request, response);
         }
+       
     }
 
     /**
@@ -80,7 +81,7 @@ public class UserController extends HttpServlet {
             } else {
                 UserDAO userDAO = new UserDAO();
                 userDAO.signUp(username, email, password, "", "Guest", "default");
-                url += "index.jsp";
+                url += "success.jsp";
             }
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -189,8 +190,10 @@ public class UserController extends HttpServlet {
             request.setAttribute("message", "Vui lòng kiểm tra email để kích hoạt tài khoản!");
             request.getRequestDispatcher("checkEmail.jsp").forward(request, response);
         }
-
+        
     }
+    
+    
 
     /**
      * Returns a short description of the servlet.
