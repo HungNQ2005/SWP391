@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.sql.*;
 import util.DBContext;
 
+/**
+ *
+ * @author Nguyen Quoc Hung - CE190870
+ */
+
 @WebServlet("/activation")
 public class AccountUpgradeController extends HttpServlet {
 
@@ -37,12 +42,8 @@ public class AccountUpgradeController extends HttpServlet {
                 int userId = rs.getInt("user_ID");
                 String userLevel = rs.getString("user_level");
 
-                if (!"USR".equals(userLevel)) {
-                    if ("PRE".equals(userLevel)) {
-                        message = "You Are Already A Premium User!! Thank You For Your Support!";
-                    } else {
-                        message = "Only normal users can upgrade their account status!";
-                    }
+                if (!"USR".equals(userLevel) && !"PRE".equals(userLevel)) {
+                    message = "Only normal users or premium users can activate CD Keys!";
                 } else {
                     // 2. Check CDkey
                     String sqlKey = "SELECT key_ID, key_status FROM CDKey WHERE key_code = ?";
@@ -59,11 +60,29 @@ public class AccountUpgradeController extends HttpServlet {
                         if (!"UNUSED".equalsIgnoreCase(status)) {
                             message = "CD Key already used or invalid!";
                         } else {
-                            // 3. Update user level
-                            String updateUser = "UPDATE [User] SET user_level = 'PRE' WHERE user_ID = ?";
-                            ps = conn.prepareStatement(updateUser);
-                            ps.setInt(1, userId);
-                            ps.executeUpdate();
+                            // Nếu user hiện tại là USR → nâng lên PRE + set hạn = ngày hiện tại + 180 ngày
+                            if ("USR".equalsIgnoreCase(userLevel)) {
+                                String updateUser = "UPDATE [User] "
+                                        + "SET user_level = 'PRE', "
+                                        + "premiumExpireDate = DATEADD(DAY, 180, GETDATE()) "
+                                        + "WHERE user_ID = ?";
+                                ps = conn.prepareStatement(updateUser);
+                                ps.setInt(1, userId);
+                                ps.executeUpdate();
+
+                                message = "Activation successful! User upgraded to Premium (180 days).";
+
+                            // Nếu user hiện tại đã là PRE → giữ nguyên role, cộng thêm 180 ngày vào premiumExpireDate
+                            } else if ("PRE".equalsIgnoreCase(userLevel)) {
+                                String updateUser = "UPDATE [User] "
+                                        + "SET premiumExpireDate = DATEADD(DAY, 180, premiumExpireDate) "
+                                        + "WHERE user_ID = ?";
+                                ps = conn.prepareStatement(updateUser);
+                                ps.setInt(1, userId);
+                                ps.executeUpdate();
+
+                                message = "Premium extended for additional 180 days.";
+                            }
 
                             // 4. Update key status
                             String updateKey = "UPDATE CDKey SET key_status = 'USED' WHERE key_ID = ?";
@@ -77,34 +96,32 @@ public class AccountUpgradeController extends HttpServlet {
                             ps.setInt(1, userId);
                             ps.setInt(2, keyId);
                             ps.executeUpdate();
-
-                            message = "Activation successful! User upgraded to Premium.";
                         }
                     }
                 }
+
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             message = "Error: " + e.getMessage();
         } finally {
             try {
                 if (rs != null) {
                     rs.close();
                 }
-            } catch (Exception ignored) {
+            } catch (SQLException ignored) {
             }
             try {
                 if (ps != null) {
                     ps.close();
                 }
-            } catch (Exception ignored) {
+            } catch (SQLException ignored) {
             }
             try {
                 if (conn != null) {
                     conn.close();
                 }
-            } catch (Exception ignored) {
+            } catch (SQLException ignored) {
             }
         }
 
