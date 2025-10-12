@@ -1,6 +1,7 @@
 com\mycompany\swp391_webxemphimtructuyen\resources\JakartaEE10Resource.class
 controller\UserController.class
 model\CDKey.class
+model\Retail.class
 util\DBContext.class
 dao\HashUtil.class
 controller\CDKeyServlet.class
@@ -9,4 +10,6 @@ dao\UserDAO.class
 com\mycompany\swp391_webxemphimtructuyen\JakartaRestConfiguration.class
 dao\CDKeyDAO.class
 controller\AccountUpgradeController.class
+dao\RetailDAO.class
+controller\RetailController.class
 model\User.class
