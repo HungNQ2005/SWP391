@@ -129,12 +129,13 @@
      /* hover sáng nhẹ */
  }
 
- /* Buttons */
- .btn-danger {
-     background: #e50914;
+
+ .btn-netflix {
+     background-color: #e50914;
      border: none;
+     color: white;
  }
 
- .btn-danger:hover {
-     background: #b20710;
+ .btn-netflix:hover {
+     background-color: #f40612;
  }

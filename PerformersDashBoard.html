@@ -82,7 +82,7 @@
                 <td>1</td>
                 <td>
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/2/25/Chris_Evans_SDCC_2014.jpg"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Chris_Pratt_by_Gage_Skidmore_2.jpg/800px-Chris_Pratt_by_Gage_Skidmore_2.jpg"
                     class="performer-img"
                     alt="Performer"
                   />
@@ -195,38 +195,65 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="addForm">
-              <div class="mb-3">
-                <label class="form-label">Tên</label
-                ><input type="text" class="form-control bg-dark text-white" />
+            <form id="addForm" class="netflix-form">
+              <div class="form-group mb-3">
+                <label for="name">Tên diễn viên</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  placeholder="Nhập tên diễn viên"
+                  required
+                />
               </div>
-              <div class="mb-3">
-                <label class="form-label">Ngày sinh</label
-                ><input type="date" class="form-control bg-dark text-white" />
+
+              <div class="form-group mb-3">
+                <label for="dob">Ngày sinh</label>
+                <input type="date" id="dob" class="form-control" required />
               </div>
-              <div class="mb-3">
-                <label class="form-label">Giới tính</label
-                ><select class="form-control bg-dark text-white">
+
+              <div class="form-group mb-3">
+                <label for="gender">Giới tính</label>
+                <select id="gender" class="form-control" required>
+                  <option value="">-- Chọn giới tính --</option>
                   <option>Nam</option>
                   <option>Nữ</option>
                 </select>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Quốc gia</label
-                ><input type="text" class="form-control bg-dark text-white" />
+
+              <div class="form-group mb-3">
+                <label for="nation">Quốc gia</label>
+                <input
+                  type="text"
+                  id="nation"
+                  class="form-control"
+                  placeholder="Nhập quốc gia"
+                />
               </div>
-              <div class="mb-3">
-                <label class="form-label">Ảnh URL</label
-                ><input type="text" class="form-control bg-dark text-white" />
+
+              <div class="form-group mb-3">
+                <label for="photo">Ảnh URL</label>
+                <input
+                  type="text"
+                  id="photo"
+                  class="form-control"
+                  placeholder="https://..."
+                />
               </div>
-              <div class="mb-3">
-                <label class="form-label">Mô tả</label
-                ><textarea
-                  class="form-control bg-dark text-white"
+
+              <div class="form-group mb-4">
+                <label for="desc">Mô tả</label>
+                <textarea
+                  id="desc"
+                  class="form-control"
                   rows="3"
+                  placeholder="Giới thiệu ngắn gọn..."
                 ></textarea>
               </div>
-              <button type="submit" class="btn btn-netflix w-100">Thêm</button>
+
+              <button type="submit" class="btn btn-netflix w-100">
+                Thêm diễn viên
+              </button>
             </form>
           </div>
         </div>

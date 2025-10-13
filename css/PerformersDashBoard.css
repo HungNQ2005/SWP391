@@ -108,24 +108,50 @@ body {
     border-radius: 6px 0 0 6px;
 }
 
-/* Bảng performers */
+/* Bảng tổng thể */
 .table {
-    background: #000 !important;
-    color: #fff !important;
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0;
 }
 
+/* Header */
 .table thead {
-    background: #e50914 !important;
+    background: linear-gradient(90deg, #b81d24, #e50914);
     color: #fff !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
+.table thead th {
+    padding: 14px 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    border: none;
+}
+
+/* Body */
 .table tbody tr {
-    background: #000 !important;
-    border-bottom: 1px solid #333;
+    background-color: #181818 !important;
+    border-bottom: 1px solid #2c2c2c;
+    transition: all 0.2s ease-in-out;
 }
 
 .table tbody tr:hover {
-    background: #1a1a1a !important;
+    background-color: #242424 !important;
+    transform: scale(1.01);
+}
+
+/* Ô dữ liệu */
+.table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    font-size: 0.9rem;
 }
 
 .performer-img {
@@ -152,4 +178,11 @@ body {
 
 .btn-danger:hover {
     background: #b20710;
+}
+
+/* Netflix-style Modal */
+#addModal .form-control {
+    background-color: #1b1b1b !important;
+    color: #fff !important;
+    border: 1px solid #333 !important;
 }

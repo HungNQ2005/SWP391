@@ -1,0 +1,60 @@
+body {
+    background-color: #141414;
+    color: #fff;
+}
+
+.banner {
+    height: 250px;
+    background: url("https://tse4.mm.bing.net/th/id/OIP.Z0S2QylYPW9VnS1Y1Tct0AHaEK?pid=ImgDet&rs=1") center/cover no-repeat;
+    position: relative;
+}
+
+.banner-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.actor-card {
+    width: 180px;
+    background: transparent;
+    border: none;
+}
+
+.actor-card img {
+    border-radius: 10px;
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.actor-card img:hover {
+    transform: scale(1.05);
+}
+
+.actor-name {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.actor-name:hover {
+    color: #ff0707;
+}
+
+.search-bar {
+    max-width: 400px;
+    color: #fff;
+}
+
+#searchInput::placeholder {
+    color: #bbb;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+
+}
