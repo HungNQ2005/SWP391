@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Account Activation</title>
+  <style>
+    body {
+      background: linear-gradient(145deg, #111, #1a1a1a);
+      color: #ffffff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #1a1a1a;
+      padding: 40px 45px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(184, 0, 0, 0.4);
+      width: 380px;
+      text-align: center;
+      border: 1px solid #b80000;
+    }
+
+    h2 {
+      color: #ff3b3b;
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 8px 0 5px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #202020;
+      color: white;
+      margin-bottom: 15px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      background-color: #292929;
+      box-shadow: 0 0 0 2px #ff3b3b;
+    }
+
+    /* Nhóm checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      margin: 10px 0 20px;
+      font-size: 13px;
+      color: #ccc;
+      text-align: left;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      accent-color: #ff3b3b; /* màu đỏ của ô check */
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .checkbox-group a {
+      color: #ff3b3b;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .checkbox-group a:hover {
+      text-decoration: underline;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #b80000, #ff3b3b);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(90deg, #ff3b3b, #b80000);
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(255, 59, 59, 0.6);
+    }
+
+    .message {
+      margin-top: 15px;
+      background: #2a2a2a;
+      border-left: 4px solid #b80000;
+      padding: 12px;
+      border-radius: 6px;
+      color: #e5e5e5;
+      font-size: 14px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Activate Premium</h2>
+    <form method="post" action="#">
+      <label>Username</label>
+      <input type="text" name="username" placeholder="Nhập tên tài khoản..." required />
+
+      <label>CD Key</label>
+      <input type="text" name="cdkey" placeholder="XXXXX-XXXXX-XXXXX" required />
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree" name="agree" required />
+        <label for="agree">Tôi đồng ý với <a href="#">Điều khoản sử dụng</a></label>
+      </div>
+
+      <input type="submit" value="Kích hoạt ngay" />
+    </form>
+
+    <div class="message">💡 Nhập CD Key hợp lệ để kích hoạt Premium.</div>
+  </div>
+</body>
+</html>
