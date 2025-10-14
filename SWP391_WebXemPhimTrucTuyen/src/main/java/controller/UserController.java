@@ -16,13 +16,28 @@ import entity.User;
 import jakarta.servlet.http.HttpSession;
 import dao.EmailUtil;
 import dao.HashUtil;
+import dao.MovieDAO;
+import entity.Category;
+import entity.Series;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.List;
+
 /**
  *
  * @author Chau Tan Cuong - CE190026
  */
 @WebServlet(name = "UserController", urlPatterns = {"/user"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 10 * 1024 * 1024, // 10MB
+        maxRequestSize = 50 * 1024 * 1024)        // 50MB
 public class UserController extends HttpServlet {
 
+    MovieDAO movieDAO = new MovieDAO();
+    MovieDAO categoryDAO = new MovieDAO();
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -36,20 +51,30 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        
-        if(action.equals("sendLogin")){
+
+        if (action.equals("sendLogin")) {
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
-        if(action.equals("sendSignUp")){
+        if (action.equals("sendSignUp")) {
             request.getRequestDispatcher("/SignUp.jsp").forward(request, response);
         }
-        if("sendFogortPassword".equals(action)){
+        if ("sendFogortPassword".equals(action)) {
             request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
         }
-        if("sendResetPassword".equals(action)){
+        if ("sendResetPassword".equals(action)) {
+            String token = request.getParameter("token");
+            request.setAttribute("token", token);
             request.getRequestDispatcher("/resetpassword.jsp").forward(request, response);
         }
-       
+        if(action.equals("logout")){
+            HttpSession session = request.getSession(false);
+            
+            if(session != null){
+                session.invalidate();
+            }
+            response.sendRedirect("series?action=allOfSeries");
+        }
+
     }
 
     /**
@@ -99,7 +124,11 @@ public class UserController extends HttpServlet {
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("guest", user);
-                    url = "index.jsp";
+                    List<Series> listSeries = movieDAO.getAllSeries();
+                    List<Category> listCategory = categoryDAO.getAllCategories();
+                    request.setAttribute("listCategory", listCategory);
+                    request.setAttribute("listSeries", listSeries);
+                    url = "movie.jsp";
                 } else {
                     error = "Ten dang nhap hoac mat khau bi sai";
                     request.setAttribute("error", error);
@@ -117,17 +146,32 @@ public class UserController extends HttpServlet {
             String email = request.getParameter("email");
             UserDAO userDAO = new UserDAO();
 
+            // Kiểm tra xem email có tồn tại không
             if (userDAO.findByEmail(email) != null) {
+                // Tạo token và lưu vào DB
                 String token = userDAO.saveResetToken(email);
-                String resetLink = request.getContextPath() +"/user?action=sendResetPassword";
-                request.setAttribute("token", token);
-                request.getRequestDispatcher("/resetpassword.jsp").forward(request, response);
-                
+
+                // Tạo link reset password (đưa token vào link)
+                String resetLink = "http://localhost:8080/SWP391_WebXemPhimTrucTuyen/user?action=sendResetPassword&token=" + token;
+
+                // --- Gửi email ---
+                String subject = "Yêu cầu đặt lại mật khẩu";
+                String content = "Xin chào,\n\n"
+                        + "Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.\n"
+                        + "Vui lòng nhấp vào link sau để đặt lại mật khẩu:\n"
+                        + resetLink + "\n\n"
+                        + "Nếu bạn không yêu cầu điều này, vui lòng bỏ qua email này.";
+
+                // Gọi class gửi email
+                EmailUtil.sendEmail(email, subject, content);
+
+                // Thông báo cho user kiểm tra email
+                request.setAttribute("message", "Liên kết đặt lại mật khẩu đã được gửi tới email của bạn!");
+                request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Email không tồn tại!");
                 request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
             }
-            
         }
 
         if ("resetPassword".equals(action)) {
@@ -172,8 +216,6 @@ public class UserController extends HttpServlet {
             }
 
             // Hash password
-            
-
             // Tạo token
             String token = java.util.UUID.randomUUID().toString();
 
@@ -190,10 +232,52 @@ public class UserController extends HttpServlet {
             request.setAttribute("message", "Vui lòng kiểm tra email để kích hoạt tài khoản!");
             request.getRequestDispatcher("checkEmail.jsp").forward(request, response);
         }
-        
+
+        if (action.equals("updateAvatar")) {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("guest");
+
+            if (user == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            Part filePart = request.getPart("avatar");
+            String fileName = getFileName(filePart);
+
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String filePath = uploadPath + File.separator + fileName;
+
+            try (InputStream inputStream = filePart.getInputStream(); FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                inputStream.transferTo(outputStream);
+            }
+
+            String relativePath = "uploads/" + fileName;
+            UserDAO dao = new UserDAO();
+            dao.updateAvatar(user.getUser_id(), relativePath);
+
+            user.setAvatar_url(relativePath);
+            session.setAttribute("guest", user);
+
+            response.sendRedirect("series?action=allOfSeries");
+        }
+
     }
-    
-    
+
+    private String getFileName(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns a short description of the servlet.

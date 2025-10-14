@@ -4,6 +4,7 @@
  */
 package dao;
 
+import entity.Category;
 import entity.Series;
 import java.util.List;
 import entity.User;
@@ -292,6 +293,83 @@ public class AdminDAO {
         }
 
         return success;
+    }
+
+    public List<Integer> getCategoryBySeriesId(int seriesId) {
+        List<Integer> list = new ArrayList<>();
+        String sql = "SELECT category_id "
+                + "FROM Series_Category"
+                + " WHERE series_id = ?";
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, seriesId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getInt("category_id"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void insertSeriesCategories(int seriesId, List<Integer> categoryIds) {
+        String sql = "INSERT INTO Series_Category"
+                + " (series_id, category_id)"
+                + " VALUES (?, ?)";
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            for (int catId : categoryIds) {
+                ps.setInt(1, seriesId);
+                ps.setInt(2, catId);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteSeriesCategories(int seriesId) {
+        String sql = "DELETE FROM Series_Category"
+                + " WHERE series_id = ?";
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, seriesId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Category> getAllCategories() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT category_id, name, description FROM Category";
+
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Category c = new Category();
+                c.setCategory_id(rs.getInt("category_id"));
+                c.setName(rs.getString("name"));
+                c.setDescription(rs.getString("description"));
+                list.add(c);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
 }

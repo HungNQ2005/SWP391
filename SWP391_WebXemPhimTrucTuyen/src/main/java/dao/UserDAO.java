@@ -210,9 +210,26 @@ public class UserDAO {
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, email);
-             String hashedPassword = HashUtil.hashPassword(password);
+            String hashedPassword = HashUtil.hashPassword(password);
             ps.setString(3, hashedPassword);
             ps.setString(4, token);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAvatar(int userId, String avatarPath) {
+        String sql = "UPDATE Users "
+                + "SET avatar_url = ? "
+                + "WHERE user_id = ?";
+        try {
+
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, avatarPath);
+            ps.setInt(2, userId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

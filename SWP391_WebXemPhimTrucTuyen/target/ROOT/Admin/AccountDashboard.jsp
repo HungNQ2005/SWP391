@@ -38,9 +38,9 @@
                 <h6>Admin</h6>
             </div>
             <a href="#">Ads Management</a>
-            <a href="#">Movie Management</a>
+            <a href="adminMovie?action=sendSeriesDashboard">Movie Management</a>
             <a href="PerformersDashBoard.html">Performers Management</a>
-            <a href="#" class="active">Accounts Management</a>
+            <a href="admin?action=sendAccountDashboard" class="active">Accounts Management</a>
             <a href="CommentDashBoard.html">Comment Management</a>
             <a href="#">Genres/Tags Management</a>
         </div>

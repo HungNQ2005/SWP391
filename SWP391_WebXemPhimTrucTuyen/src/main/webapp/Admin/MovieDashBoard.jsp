@@ -31,9 +31,9 @@
                 <h6>Admin</h6>
             </div>
             <a href="#">Ads Management</a>
-            <a href="Test.html" class="active">Movie Management</a>
+            <a href="adminMovie?action=sendSeriesDashboard" class="active">Movie Management</a>
             <a href="PerformersDashBoard.html">Performers Management</a>
-            <a href="#">Accounts Management</a>
+            <a href="admin?action=sendAccountDashboard">Accounts Management</a>
             <a href="CommentDashBoard.html">Comment Management</a>
             <a href="#">Genres/Tags Management</a>
         </div>
@@ -97,19 +97,7 @@
                                     <td><a href="${s.trailerUrl}" target="_blank">Trailer</a></td>
                                     <td>?</td>
                                     <td>
-                                        <button
-                                            class="btn btn-success btn-sm editBtn"
-                                            data-id="${s.seriesID}"
-                                            data-title="${s.title}"
-                                            data-type="${s.typeId}"
-                                            data-year="${s.releaseYear}"
-                                            data-country="${s.country}"
-                                            data-description="${s.description}"
-                                            data-poster="${s.posteUrl}"
-                                            data-trailer="${s.trailerUrl}"
-                                            >
-                                            Edit
-                                        </button>
+                                        <button class="btn btn-success btn-sm editBtn">Edit</button>
                                         <form action="adminMovie" method="get" style="display:inline;">
                                             <input type="hidden" name="action" value="delete" />
                                             <input type="hidden" name="id" value="${s.seriesID}" />
@@ -118,6 +106,7 @@
                                     </td>
                                 </tr>
                             </c:forEach>
+
                         </tbody>
 
                     </table>
@@ -179,6 +168,12 @@
                                 <input type="text" class="form-control" name="trailer_url" />
                             </div>
 
+                            <div class="col-12">
+                                <label>Categories</label><br>
+                                <c:forEach var="c" items="${listCategory}">
+                                    <input type="checkbox" name="category_ids" value="${c.category_id}" /> ${c.name}
+                                </c:forEach>
+                            </div>
                             <div class="mt-3 text-end">
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
@@ -204,71 +199,65 @@
                     <div class="modal-body">
                         <form id="editForm" action="adminMovie" method="post">
                             <input type="hidden" name="action" value="update" />
+                            <input type="hidden" name="series_id" id="editSeriesID" />
+
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label>Title</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="editTitle"
-                                        required
-                                        />
+                                    <input type="text" class="form-control" id="editTitle" name="title" required />
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Type</label>
-                                    <select class="form-select" id="editType">
-                                        <option value="Movie">Movie</option>
-                                        <option value="Series">Series</option>
+                                    <select class="form-select" id="editType" name="type_id">
+                                        <option value="1">Movie</option>
+                                        <option value="2">Series</option>
                                     </select>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Year</label>
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        id="editYear"
-                                        required
-                                        />
+                                    <input type="number" class="form-control" id="editYear" name="release_year" required />
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Country</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="editCountry"
-                                        required
-                                        />
+                                    <input type="text" class="form-control" id="editCountry" name="country" required />
                                 </div>
+
                                 <div class="col-12">
                                     <label>Description</label>
-                                    <textarea
-                                        class="form-control"
-                                        id="editDescription"
-                                        rows="2"
-                                        ></textarea>
+                                    <textarea class="form-control" id="editDescription" name="description" rows="2"></textarea>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Poster URL</label>
-                                    <input type="text" class="form-control" id="editPoster" />
+                                    <input type="text" class="form-control" id="editPoster" name="poster_url" />
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Trailer URL</label>
-                                    <input type="text" class="form-control" id="editTrailer" />
+                                    <input type="text" class="form-control" id="editTrailer" name="trailer_url" />
                                 </div>
+
                                 <div class="col-md-6">
                                     <label>Episode</label>
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        id="editEpisode"
-                                        min="1"
-                                        />
+                                    <input type="number" class="form-control" id="editEpisode" name="episode" min="1" />
+                                </div>
+
+                                <div class="col-12">
+                                    <label>Categories</label><br>
+                                    <c:forEach var="c" items="${listCategory}">
+                                        <input type="checkbox" name="category_ids" value="${c.category_id}" /> ${c.name}
+                                    </c:forEach>
                                 </div>
                             </div>
+
                             <div class="mt-3 text-end">
                                 <button type="submit" class="btn btn-success">Save</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -316,5 +305,37 @@
                 }
             });
         </script>
+        <script>
+            document.addEventListener("click", function (e) {
+                if (e.target.classList.contains("editBtn")) {
+                    const row = e.target.closest("tr");
+                    const seriesID = row.cells[0].innerText;
+                    const title = row.cells[1].innerText;
+                    const typeText = row.cells[2].innerText.trim();
+                    const year = row.cells[3].innerText;
+                    const country = row.cells[4].innerText;
+                    const description = row.cells[5].innerText;
+                    const poster = row.querySelector("img")?.src || "";
+                    const trailer = row.querySelector("a")?.href || "";
+
+                    // Gán dữ liệu vào form
+                    document.getElementById("editSeriesID").value = seriesID;
+                    document.getElementById("editTitle").value = title;
+                    document.getElementById("editYear").value = year;
+                    document.getElementById("editCountry").value = country;
+                    document.getElementById("editDescription").value = description;
+                    document.getElementById("editPoster").value = poster;
+                    document.getElementById("editTrailer").value = trailer;
+
+                    // Gán type
+                    const typeSelect = document.getElementById("editType");
+                    typeSelect.value = typeText === "Movie" ? "1" : "2";
+
+                    // Hiển thị modal
+                    new bootstrap.Modal(document.getElementById("editModal")).show();
+                }
+            });
+        </script>
+
     </body>
 </html>

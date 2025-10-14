@@ -33,39 +33,20 @@
         <div class="login-wrapper">
             <div class="card login-card">
                 <div class="row g-0">
-                    <!-- Hình bên trái -->
                     <div class="col-md-6">
-                        <img
-                            src="Images/imgform.jpg"
-                            alt="Reset Password Image"
-                            class="left-img"
-                            />
+                        <img src="Images/imgform.jpg" alt="Reset Password Image" class="left-img" />
                     </div>
 
-                    <!-- Form bên phải -->
                     <div class="col-md-6 d-flex align-items-center">
                         <div class="p-4 w-100">
                             <h2 class="text-light text-center mb-4">Reset Password</h2>
-                            <p class="text-light text-center mb-3">
-                                Enter your new password below.
-                            </p>
+                            <p class="text-light text-center mb-3">Enter your new password below.</p>
 
                             <form action="user" method="post">
                                 <input type="hidden" name="action" value="resetPassword" />
+                                <!-- Token nh?n t? servlet -->
+                                <input type="hidden" name="token" value="${token}" />
 
-                                <!-- Hi?n th? token cho user th?y, readonly ?? kh�ng s?a ???c -->
-                                <div class="mb-3">
-                                    <label class="form-label text-light">Your Token</label>
-                                    <input
-                                        type="text"
-                                        name="token"
-                                        class="form-control"
-                                        value="${token}"
-                                        readonly
-                                        />
-                                </div>
-
-                                <!-- M?t kh?u m?i -->
                                 <div class="mb-3">
                                     <input
                                         type="password"
@@ -76,8 +57,6 @@
                                         />
                                 </div>
 
-                               
-
                                 <div class="d-grid mb-3">
                                     <button type="submit" class="btn btn-danger">Reset Password</button>
                                 </div>
@@ -86,19 +65,10 @@
                                     <a href="login.jsp" class="text-light">Back to Login</a>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <script>
-            // Script toggle password chỉ cho confirm password
-            function togglePassword(id) {
-                const input = document.getElementById(id);
-                input.type = input.type === "password" ? "text" : "password";
-            }
-        </script>
     </body>
 </html>
