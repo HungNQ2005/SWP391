@@ -1,0 +1,27 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 8, 2025, 8:24:29 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+body {
+    background-color: #141414;
+    color: #e5e5e5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+img {
+    border-radius: 10px;
+    max-height: 400px;
+}
+h2, h5 {
+    color: #fff;
+}
+a {
+    color: #e50914;
+}
+a:hover {
+    text-decoration: underline;
+}
