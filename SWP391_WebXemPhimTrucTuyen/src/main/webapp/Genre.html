@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Genre Management</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/Genre.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="admin-info text-center">
+        <img
+          src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg"
+          alt="Admin"
+          width="80"
+          height="80"
+          class="rounded-circle"
+        />
+        <h6 class="mt-2 text-white">Admin</h6>
+      </div>
+      <a href="#">Ads Management</a>
+      <a href="#">Movie Management</a>
+      <a href="#">Performers Management</a>
+      <a href="#">Accounts Management</a>
+      <a href="#">Comment Management</a>
+      <a href="#" class="active">Genres/Tags Management</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Topbar -->
+      <div
+        class="topbar d-flex justify-content-between align-items-center mb-3"
+      >
+        <h5 class="mb-0">Genres/Tags Management</h5>
+        <button
+          class="btn btn-primary btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#addGenreModal"
+        >
+          + Add Genre
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search..."
+          id="searchInput"
+        />
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Genre Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Action</td>
+                <td>Movies with intense physical activity</td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editGenreModal"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteGenreModal"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Drama</td>
+                <td>Emotionally-driven storytelling</td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editGenreModal"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteGenreModal"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Genre Modal -->
+    <div
+      class="modal fade"
+      id="addGenreModal"
+      tabindex="-1"
+      aria-labelledby="addGenreModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addGenreModalLabel">Add Genre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="genreName" class="form-label">Genre Name</label>
+                <input type="text" class="form-control" id="genreName" />
+              </div>
+              <div class="mb-3">
+                <label for="genreDesc" class="form-label">Description</label>
+                <textarea class="form-control" id="genreDesc"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Genre Modal -->
+    <div
+      class="modal fade"
+      id="editGenreModal"
+      tabindex="-1"
+      aria-labelledby="editGenreModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="editGenreModalLabel">Edit Genre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="editGenreName" class="form-label">Genre Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editGenreName"
+                  value="Action"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editGenreDesc" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="editGenreDesc"
+                >Movies with intense physical activity</textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Genre Modal -->
+    <div
+      class="modal fade"
+      id="deleteGenreModal"
+      tabindex="-1"
+      aria-labelledby="deleteGenreModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="deleteGenreModalLabel">Delete Genre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <p>Are you sure you want to delete this genre?</p>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
