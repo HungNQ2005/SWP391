@@ -9,11 +9,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Admin Performers</title>
+        <title>Performers Management</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
         <link href="http://localhost:8080/Perfomers/asset/css/PerformersDashBoard.css" rel="stylesheet">
@@ -30,7 +30,7 @@
             <a href="#">Movie Management</a>
             <a href="#" class="active">Performers Management</a>
             <a href="AccountDashBoard.jsp">Accounts Management</a>
-            <a href="CommentDashBoard.jsp">Comment Management</a>
+            <a href="CommentDashBoard.jsp">Comments Management</a>
             <a href="#">Genres/Tags Management</a>
         </div>
 
@@ -38,15 +38,14 @@
         <div class="content">
 
             <div class="topbar d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Quản lý Diễn viên</h5>
+                <h5 class="mb-0">Performers Management</h5>
                 <button class="btn btn-netflix btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Performer</button>
             </div>
 
-
             <form action="PerformersAdmin" method="get" class="search-box mb-3 d-flex">
                 <input type="text" name="keyword" class="form-control bg-dark text-white" 
-                       placeholder="Tìm kiếm diễn viên..." value="${keyword}" />
-                <button type="submit" class="btn btn-danger ms-2">Tìm</button>
+                       placeholder="Search performer..." value="${keyword}" />
+                <button type="submit" class="btn btn-danger ms-2">Search</button>
             </form>
 
             <!-- Table -->
@@ -55,15 +54,21 @@
                     <table class="table table-dark table mb-0">
                         <thead>
                             <tr>
-                                <th>NO.</th>
+                                <th>No.</th>
                                 <th>Name</th>
-                                <th>DOB</th>
+                                <th>Date of Birth</th>
                                 <th>Nationality</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <c:if test="${not empty message}">
+                                <tr>
+                                    <td colspan="6" class="text-center text-danger fw-bold">${message}</td>
+                                </tr>
+                            </c:if>
+
                             <c:forEach var="performer" items="${performers}" varStatus="loop">
                                 <tr> 
                                     <td>${performer.performer_id}</td> 
@@ -145,40 +150,40 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title">Thêm Diễn viên</h5>
+                        <h5 class="modal-title">Add Performer</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <form action="PerformersAdmin" method="post">
                             <input type="hidden" name="action" value="add" />
                             <div class="mb-3">
-                                <label class="form-label">Tên</label>
-                                <input type="text" name="name" class="form-control bg-dark text-white" required />
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" placeholder="Enter performer's name" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Ngày sinh</label>
+                                <label class="form-label">Date of Birth</label>
                                 <input type="date" name="date_of_birth" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Giới tính</label>
+                                <label class="form-label">Gender</label>
                                 <select name="gender" class="form-select bg-dark text-white">
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Ảnh URL</label>
-                                <input type="text" name="photo_url" class="form-control bg-dark text-white" required />
+                                <label class="form-label">Photo URL</label>
+                                <input type="text" name="photo_url" placeholder="Enter image URL" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Quốc Gia</label>
-                                <input type="text" name="nationality" class="form-control bg-dark text-white" required />
+                                <label class="form-label">Nationality</label>
+                                <input type="text" name="nationality" placeholder="Enter nationality" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mô tả</label>
-                                <textarea name="description" class="form-control bg-dark text-white" rows="3"></textarea>
+                                <label class="form-label">Description</label>
+                                <textarea name="description" placeholder="Short introduction about performer" class="form-control bg-dark text-white" rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-danger w-100">Thêm</button>
+                            <button type="submit" class="btn btn-danger w-100">Add</button>
                         </form>
                     </div>
                 </div>
@@ -190,7 +195,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title">Chỉnh sửa Diễn viên</h5>
+                        <h5 class="modal-title">Edit Performer</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -200,44 +205,45 @@
                             <input type="hidden" name="currentPage" value="${currentPage}" />
                             <input type="hidden" name="keyword" value="${keyword}" />
                             <div class="mb-3">
-                                <label class="form-label">Tên</label>
+                                <label class="form-label">Name</label>
                                 <input type="text" id="editName" name="name" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Ngày sinh</label>
+                                <label class="form-label">Date of Birth</label>
                                 <input type="date" id="editDOB" name="date_of_birth" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Giới tính</label>
+                                <label class="form-label">Gender</label>
                                 <select id="editGender" name="gender" class="form-select bg-dark text-white" required>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Quốc tịch</label>
+                                <label class="form-label">Nationality</label>
                                 <input type="text" id="editNation" name="nationality" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Ảnh (URL)</label>
+                                <label class="form-label">Photo URL</label>
                                 <input type="text" id="editPhoto" name="photo_url" class="form-control bg-dark text-white" required />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mô tả</label>
+                                <label class="form-label">Description</label>
                                 <textarea id="editDesc" name="description" class="form-control bg-dark text-white" rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-danger w-100">Lưu thay đổi</button>
+                            <button type="submit" class="btn btn-danger w-100">Save Changes</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Delete modal -->
+
+        <!-- DELETE Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title">Xóa Diễn viên</h5>
+                        <h5 class="modal-title">Delete Performer</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <form method="post" action="PerformersAdmin">
@@ -245,10 +251,10 @@
                         <input type="hidden" name="id" id="deleteId" />
                         <input type="hidden" name="currentPage" value="${currentPage}" />
                         <input type="hidden" name="keyword" value="${keyword}" />
-                        <div class="modal-body" id="deleteMessage">Bạn có chắc muốn xóa diễn viên này không?</div>
+                        <div class="modal-body" id="deleteMessage">Are you sure you want to delete this performer?</div>
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="submit" class="btn btn-danger">Xóa</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </div>
                     </form>
                 </div>
@@ -258,23 +264,48 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".edit-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-            document.getElementById("editId").value = this.dataset.id;
-                    document.getElementById("editName").value = this.dataset.name;
-                    document.getElementById("editPhoto").value = this.dataset.photo;
-                    document.getElementById("editDOB").value = this.dataset.dob;
-                    document.getElementById("editNation").value = this.dataset.nation;
-                    document.getElementById("editDesc").value = this.dataset.desc;
-                    document.getElementById("editGender").value = this.dataset.gender;
+
+                document.querySelectorAll(".edit-btn").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const id = this.dataset.id || "";
+                        const name = this.dataset.name || "";
+                        const photo = this.dataset.photo || "";
+                        const dob = this.dataset.dob || "";
+                        const nation = this.dataset.nation || "";
+                        const desc = this.dataset.desc || "";
+                        const gender = this.dataset.gender || "";
+
+                        document.getElementById("editId").value = id;
+                        document.getElementById("editName").value = name;
+                        document.getElementById("editPhoto").value = photo;
+                        document.getElementById("editDOB").value = dob;
+                        document.getElementById("editNation").value = nation;
+                        document.getElementById("editDesc").value = desc;
+                        document.getElementById("editGender").value = gender;
+                    });
+                });
+
+                const deleteModal = document.getElementById('deleteModal');
+                if (deleteModal) {
+                    deleteModal.addEventListener('show.bs.modal', function (event) {
+                        const button = event.relatedTarget;
+                        const performerId = button.getAttribute('data-id');
+                        const performerName = button.getAttribute('data-name') || 'Unknown';
+
+                        document.getElementById('deleteId').value = performerId;
+                        document.getElementById('deleteMessage').innerHTML =
+                                `Are you sure you want to delete <strong>${performerName}</strong>?`;
+                    });
+                }
+
             });
-            });
-                    document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-                    document.getElementById('deleteId').value = button.dataset.id;
-                    const name = button.getAttribute('data-name') || 'không rõ'; // ✅ SỬA!
-                    document.getElementById('deleteMessage').innerHTML =
-                    `Bạn có chắc muốn xóa diễn viên <strong>${name}</strong> không?`;
+
+            document.querySelector('.search-box').addEventListener('submit', function (e) {
+                const keyword = this.querySelector('input[name="keyword"]').value.trim();
+                if (!keyword) {
+                    e.preventDefault();
+                    alert("Please enter a keyword before searching!");
+                }
             });
         </script>
     </body>

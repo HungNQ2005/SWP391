@@ -1,3 +1,4 @@
+D:\Perfomers\src\main\java\servlets\PerformersAdmin.java
 D:\Perfomers\src\main\java\utils\DBContext.java
 D:\Perfomers\src\main\java\servlets\PerformerDetail.java
 D:\Perfomers\src\main\java\utils\DBTest.java
@@ -5,6 +6,5 @@ D:\Perfomers\src\main\java\servlets\PerformersServlet.java
 D:\Perfomers\src\main\java\model\Performers.java
 D:\Perfomers\src\main\java\servlets\PerformerListServlet.java
 D:\Perfomers\src\main\java\com\example\perfomers\JakartaRestConfiguration.java
-D:\Perfomers\src\main\java\servlets\PerformersCRUD.java
 D:\Perfomers\src\main\java\com\example\perfomers\resources\JakartaEE10Resource.java
 D:\Perfomers\src\main\java\dao\PerformersDAO.java

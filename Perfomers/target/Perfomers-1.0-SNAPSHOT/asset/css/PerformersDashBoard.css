@@ -98,8 +98,8 @@ body {
 }
 
 .search-box .form-control::placeholder {
-    color: #777 !important; 
-    opacity: 1;           
+    color: #777 !important;
+    opacity: 1;
 }
 
 .search-box .form-control:focus {
@@ -189,22 +189,115 @@ a.text-white.fw-bold:hover {
 
 /* ====== MODALS ====== */
 .modal-content {
-    background: #141414;
-    border: 1px solid #222;
+    background: linear-gradient(145deg, #0e0e0e, #181818);
+    border: 1px solid #333;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(229, 9, 20, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .modal-header {
+    background: #000;
     border-bottom: 1px solid #333;
+    padding: 16px 20px;
+}
+
+.modal-title {
+    color: #e50914;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.modal-body {
+    padding: 25px;
 }
 
 .modal-footer {
+    background: #0e0e0e;
     border-top: 1px solid #333;
+    padding: 16px;
 }
 
-.btn-close-white {
-    filter: invert(1);
+/* Input fields */
+.modal .form-label {
+    font-weight: 500;
+    color: #e0e0e0;
+    margin-bottom: 6px;
+}
+
+.modal .form-control,
+.modal .form-select,
+.modal textarea {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333;
+    color: #fff !important;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    font-size: 15px;
+}
+
+.modal .form-control:focus,
+.modal .form-select:focus,
+.modal textarea:focus {
+    border-color: #e50914 !important;
+    box-shadow: 0 0 6px rgba(229, 9, 20, 0.6);
+}
+
+
+.modal .form-control::placeholder {
+    color: #777 !important;
+    opacity: 1;
+}
+
+.btn-netflix {
+    background: linear-gradient(135deg, #e50914, #b00610);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 18px;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 0.4px;
+}
+
+
+.btn-netflix:hover {
+    background: linear-gradient(135deg, #b00610, #7a0409);
+    transform: scale(1.03);
+}
+
+.btn-secondary {
+    background: #333;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #444;
+}
+
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #e50914;
+    border-radius: 10px;
+}
+
+.modal.fade .modal-dialog {
+    transform: translateY(30px);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0);
 }
 
 @media (max-width: 768px) {

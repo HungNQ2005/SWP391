@@ -7,5 +7,5 @@ servlets\PerformersServlet.class
 utils\DBTest.class
 com\example\perfomers\resources\JakartaEE10Resource.class
 utils\DBContext.class
-servlets\PerformersCRUD.class
 com\example\perfomers\JakartaRestConfiguration.class
+servlets\PerformersAdmin.class

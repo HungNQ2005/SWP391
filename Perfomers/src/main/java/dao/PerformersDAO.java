@@ -87,6 +87,16 @@ public class PerformersDAO {
         }
     }
 
+    public void deletePerformers(int id) {
+        String sql = "DELETE FROM Performer WHERE performer_id=?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Performers> getPerformersByPage(int page, int pageSize) {
         List<Performers> list = new ArrayList<>();
         int offset = (page - 1) * pageSize;
@@ -125,22 +135,14 @@ public class PerformersDAO {
         return 0;
     }
 
-    public void deletePerformers(int id) {
-        String sql = "DELETE FROM Performer WHERE performer_id=?";
-        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate(); 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public int countPerformersByKeyword(String keyword) {
         String sql = "SELECT COUNT(*) FROM Performer WHERE name LIKE ?";
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt(1);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,13 +160,13 @@ public class PerformersDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Performers(
-                    rs.getInt("performer_id"),
-                    rs.getString("name"),
-                    rs.getString("photo_url"),
-                    rs.getString("gender"),
-                    rs.getString("description"),
-                    rs.getString("date_of_birth"),
-                    rs.getString("nationality")
+                        rs.getInt("performer_id"),
+                        rs.getString("name"),
+                        rs.getString("photo_url"),
+                        rs.getString("gender"),
+                        rs.getString("description"),
+                        rs.getString("date_of_birth"),
+                        rs.getString("nationality")
                 ));
             }
         } catch (Exception e) {
@@ -172,4 +174,21 @@ public class PerformersDAO {
         }
         return list;
     }
+
+    public boolean existsPerformer(String name, String dob, String nationality) {
+        String sql = "SELECT COUNT(*) FROM Performer WHERE name = ? AND date_of_birth = ? AND nationality = ?";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, dob);
+            ps.setString(3, nationality);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
