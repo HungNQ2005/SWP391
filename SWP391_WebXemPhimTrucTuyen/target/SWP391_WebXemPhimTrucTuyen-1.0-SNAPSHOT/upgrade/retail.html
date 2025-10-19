@@ -104,47 +104,59 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const baseUrl = '';
+  const baseUrl = '';
 
-    async function loadRetail() {
-      try {
-        const res = await fetch(baseUrl + '/SWP391_WebXemPhimTrucTuyen/api/retail');
-        const data = await res.json();
+  async function loadRetail() {
+    try {
+      const res = await fetch(baseUrl + '/SWP391_WebXemPhimTrucTuyen/api/retail');
+      const data = await res.json();
 
-        const map = L.map('map').setView([16.047079, 108.206230], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+      const map = L.map('map').setView([16.047079, 108.206230], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
-        const listDiv = document.getElementById('list');
-        const markers = [];
+      const listDiv = document.getElementById('list');
+      const markers = [];
 
-        data.forEach((r, i) => {
-          const div = document.createElement('div');
-          div.className = 'branch';
-          div.innerHTML = `<strong>${escapeHtml(r.name)}</strong><br>
-                           ${escapeHtml(r.address || '')}<br>
-                           ☎️ ${escapeHtml(r.phone || '')}`;
-          div.onclick = () => {
-            map.setView([r.latitude, r.longitude], 15);
-            markers[i].openPopup();
-          };
-          listDiv.appendChild(div);
+      data.forEach((r, i) => {
+        const websiteLink = r.website 
+          ? `<br>🌐 <a href="${escapeHtml(r.website)}" target="_blank" style="color:#2563eb; text-decoration:none;">${escapeHtml(r.website)}</a>` 
+          : '';
 
-          const marker = L.marker([r.latitude, r.longitude]).addTo(map)
-            .bindPopup(`<b>${escapeHtml(r.name)}</b><br>${escapeHtml(r.address || '')}<br>☎️ ${escapeHtml(r.phone || '')}`);
-          markers.push(marker);
-        });
-      } catch (err) {
-        document.getElementById('list').innerText = 'Không thể tải dữ liệu Retail.';
-      }
+        const div = document.createElement('div');
+        div.className = 'branch';
+        div.innerHTML = `<strong>${escapeHtml(r.name)}</strong><br>
+                         ${escapeHtml(r.address || '')}<br>
+                         ☎️ ${escapeHtml(r.phone || '')}
+                         ${websiteLink}`;
+        div.onclick = () => {
+          map.setView([r.latitude, r.longitude], 15);
+          markers[i].openPopup();
+        };
+        listDiv.appendChild(div);
+
+        const popupContent = `<b>${escapeHtml(r.name)}</b><br>
+                              ${escapeHtml(r.address || '')}<br>
+                              ☎️ ${escapeHtml(r.phone || '')}
+                              ${websiteLink}`;
+
+        const marker = L.marker([r.latitude, r.longitude])
+          .addTo(map)
+          .bindPopup(popupContent);
+        markers.push(marker);
+      });
+    } catch (err) {
+      document.getElementById('list').innerText = 'Không thể tải dữ liệu Retail.';
     }
+  }
 
-    function escapeHtml(str) {
-      return String(str || '').replace(/[&<>"']/g, c => (
-        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]
-      ));
-    }
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, c => (
+      {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]
+    ));
+  }
 
-    loadRetail();
-  </script>
+  loadRetail();
+</script>
+
 </body>
 </html>
