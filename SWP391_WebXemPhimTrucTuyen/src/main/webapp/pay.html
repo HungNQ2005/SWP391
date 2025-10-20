@@ -59,7 +59,6 @@
       box-shadow: 0 0 0 2px #ff3b3b;
     }
 
-    /* Nhóm checkbox */
     .checkbox-group {
       display: flex;
       align-items: center;
@@ -72,7 +71,7 @@
     }
 
     .checkbox-group input[type="checkbox"] {
-      accent-color: #ff3b3b; /* màu đỏ của ô check */
+      accent-color: #ff3b3b;
       transform: scale(1.2);
       cursor: pointer;
     }
@@ -81,6 +80,7 @@
       color: #ff3b3b;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .checkbox-group a:hover {
@@ -122,6 +122,45 @@
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Modal styles */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.7); 
+    }
+
+    .modal-content {
+      background-color: #1a1a1a;
+      margin: 10% auto; 
+      padding: 20px;
+      border: 1px solid #b80000;
+      border-radius: 12px;
+      width: 400px; 
+      color: #fff;
+      position: relative;
+      text-align: left;
+    }
+
+    .close {
+      color: #ff3b3b;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #ff6666;
+    }
   </style>
 </head>
 <body>
@@ -136,7 +175,7 @@
 
       <div class="checkbox-group">
         <input type="checkbox" id="agree" name="agree" required />
-        <label for="agree">Tôi đồng ý với <a href="#">Điều khoản sử dụng</a></label>
+        <label for="agree">Tôi đồng ý với <a id="terms-link">Điều khoản sử dụng</a></label>
       </div>
 
       <input type="submit" value="Kích hoạt ngay" />
@@ -144,5 +183,40 @@
 
     <div class="message">💡 Nhập CD Key hợp lệ để kích hoạt Premium.</div>
   </div>
+
+  <!-- Modal Điều khoản -->
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Điều khoản sử dụng</h3>
+      <p>
+        1. Người dùng phải cung cấp thông tin chính xác khi đăng ký.<br>
+        2. CD Key chỉ được sử dụng cho một tài khoản duy nhất.<br>
+        3. Không được chia sẻ hoặc bán CD Key cho người khác.<br>
+        4. Việc vi phạm điều khoản có thể dẫn đến hủy kích hoạt tài khoản.<br>
+        5. Chúng tôi có quyền thay đổi điều khoản mà không cần thông báo trước.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("termsModal");
+    const link = document.getElementById("terms-link");
+    const closeBtn = document.querySelector(".close");
+
+    link.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    closeBtn.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
