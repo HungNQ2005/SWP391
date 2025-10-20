@@ -13,7 +13,7 @@
         <title>Update Profile Picture</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="http://localhost:8080/Perfomers/asset/css/updateAvatar.css" rel="stylesheet" type="text/css"/>
+        <link href="css/updateAvatar.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
