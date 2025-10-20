@@ -2,7 +2,6 @@ model\Performers.class
 servlets\PerformerDetail.class
 dao\PerformersDAO.class
 servlets\PerformerListServlet.class
-servlets\Constants.class
 servlets\PerformersServlet.class
 utils\DBTest.class
 com\example\perfomers\resources\JakartaEE10Resource.class

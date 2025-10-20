@@ -48,6 +48,14 @@
                 <button type="submit" class="btn btn-danger ms-2">Search</button>
             </form>
 
+            <c:if test="${not empty sessionScope.error}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${sessionScope.error}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <c:remove var="error" scope="session" />
+            </c:if>
+
             <!-- Table -->
             <div class="card">
                 <div class="card-body p-0">
@@ -167,6 +175,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Gender</label>
                                 <select name="gender" class="form-select bg-dark text-white">
+                                    <option value="" disabled selected>Select gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -215,6 +224,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Gender</label>
                                 <select id="editGender" name="gender" class="form-select bg-dark text-white" required>
+                                    <option value="" disabled selected>Select gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -251,7 +261,9 @@
                         <input type="hidden" name="id" id="deleteId" />
                         <input type="hidden" name="currentPage" value="${currentPage}" />
                         <input type="hidden" name="keyword" value="${keyword}" />
-                        <div class="modal-body" id="deleteMessage">Are you sure you want to delete this performer?</div>
+                        <div class="modal-body">
+                            <p id="deleteMessage"></p> 
+                        </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -297,6 +309,7 @@
                                 `Are you sure you want to delete <strong>${performerName}</strong>?`;
                     });
                 }
+
 
             });
 

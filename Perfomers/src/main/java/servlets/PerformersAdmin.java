@@ -3,30 +3,21 @@ package servlets;
 import dao.PerformersDAO;
 import model.Performers;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-class Constants {
-
-    static final int PAGE_SIZE = 10;
-    static final String ACTION_ADD = "add";
-    static final String ACTION_EDIT = "edit";
-    static final String ACTION_DELETE = "delete";
-    static final String PARAM_PAGE = "page";
-    static final String PARAM_KEYWORD = "keyword";
-    static final String PARAM_ACTION = "action";
-    static final String PARAM_ID = "id";
-}
-
+/**
+ *
+ * @author Vo Thi Phi Yen - CE190428
+ */
 @WebServlet("/PerformersAdmin")
 public class PerformersAdmin extends HttpServlet {
 
+    private static final int PAGE_SIZE = 10;
     private final PerformersDAO dao = new PerformersDAO();
 
     @Override
@@ -35,39 +26,35 @@ public class PerformersAdmin extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-        String keyword = getKeyword(req);
 
-        int page = 1;
+        String keyword = safe(req.getParameter("keyword"));
+        int page = getValidPage(req.getParameter("page"), keyword);
+
         try {
-            page = getValidPage(req.getParameter(Constants.PARAM_PAGE), keyword);
 
-            List<Performers> performers = keyword.trim().isEmpty()
-                    ? dao.getPerformersByPage(page, Constants.PAGE_SIZE)
-                    : dao.getPerformersByPageAndKeyword(page, Constants.PAGE_SIZE, keyword);
+            List<Performers> performers = keyword.isEmpty()
+                    ? dao.getPerformersByPage(page, PAGE_SIZE)
+                    : dao.getPerformersByPageAndKeyword(page, PAGE_SIZE, keyword);
 
-            int total = keyword.trim().isEmpty()
+            int total = keyword.isEmpty()
                     ? dao.countPerformers()
                     : dao.countPerformersByKeyword(keyword);
 
-            if (total == 0) {
-                req.setAttribute("message", "No performers found matching keyword \"" + keyword + "\"");
+            if (total == 0 && !keyword.isEmpty()) {
+                req.setAttribute("message", "No performers found matching \"" + keyword + "\"");
             }
 
-            int totalPages = (int) Math.ceil((double) total / Constants.PAGE_SIZE);
-
             req.setAttribute("performers", performers);
-            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("totalPages", (int) Math.ceil((double) total / PAGE_SIZE));
             req.setAttribute("currentPage", page);
             req.setAttribute("keyword", keyword);
 
             req.getRequestDispatcher("UI/PerformersDashboard.jsp").forward(req, resp);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            log("Error in doGet (PerformersAdmin): " + e.getMessage(), e);
-            if (!resp.isCommitted()) {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to load performer list.");
-            }
+            log("Error in doGet: ", e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Failed to load performer list.");
         }
     }
 
@@ -78,46 +65,44 @@ public class PerformersAdmin extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
-        String action = req.getParameter(Constants.PARAM_ACTION);
-        String keyword = getKeyword(req);
-        String redirectUrl = "PerformersAdmin";
+        String action = safe(req.getParameter("action"));
+        String keyword = safe(req.getParameter("keyword"));
+        HttpSession session = req.getSession();
 
         try {
-            if (action == null || action.trim().isEmpty()) {
-                log("No valid action received.");
-                resp.sendRedirect("PerformersAdmin");
-                return;
-            }
-
             switch (action) {
-                case Constants.ACTION_ADD ->
-                    handleAdd(req, keyword);
-                case Constants.ACTION_EDIT ->
+                case "add" ->
+                    handleAdd(req);
+                case "edit" ->
                     handleEdit(req);
-                case Constants.ACTION_DELETE ->
+                case "delete" ->
                     handleDelete(req);
                 default ->
-                    log("Unknown action: " + action);
+                    throw new IllegalArgumentException("Unknown action: " + action);
             }
 
+            session.setAttribute("success", switch (action) {
+                case "add" ->
+                    "Performer added successfully!";
+                case "edit" ->
+                    "Performer updated successfully!";
+                case "delete" ->
+                    "Performer deleted successfully!";
+                default ->
+                    null;
+            });
+
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            session.setAttribute("error", ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            log("Error in doPost (PerformersAdmin): " + e.getMessage(), e);
-            req.getSession().setAttribute("error", "An error occurred while processing the request!");
+            log("Error in doPost: ", e);
+            session.setAttribute("error", "An unexpected error occurred!");
         }
 
-        try {
-            redirectUrl = buildRedirectUrl(req, keyword);
-        } catch (Exception e) {
-            log("Error while building redirect URL: " + e.getMessage(), e);
-        }
-
-        if (!resp.isCommitted()) {
-            resp.sendRedirect(redirectUrl);
-        }
+        resp.sendRedirect(buildRedirectUrl(req, keyword));
     }
 
-    private void handleAdd(HttpServletRequest req, String keyword) throws Exception {
+    private void handleAdd(HttpServletRequest req) throws Exception {
         String name = safe(req.getParameter("name"));
         String photo = safe(req.getParameter("photo_url"));
         String gender = safe(req.getParameter("gender"));
@@ -126,23 +111,18 @@ public class PerformersAdmin extends HttpServlet {
         String nation = safe(req.getParameter("nationality"));
 
         if (name.isEmpty() || photo.isEmpty() || gender.isEmpty() || dob.isEmpty() || nation.isEmpty()) {
-            throw new IllegalArgumentException("Missing required performer information.");
+            throw new IllegalArgumentException("All required performer fields must be filled!");
         }
 
-        if (dao.existsPerformer(name, dob, nation)) {
-            throw new IllegalStateException("This performer already exists in the system!");
+        if (dao.existsPerformer(name, dob, nation, gender, photo, desc)) {
+            throw new IllegalStateException("A performer with identical details already exists!");
         }
 
         dao.addPerformers(new Performers(0, name, photo, gender, desc, dob, nation));
     }
 
     private void handleEdit(HttpServletRequest req) throws Exception {
-        String idStr = req.getParameter(Constants.PARAM_ID);
-        if (idStr == null || !idStr.matches("\\d+")) {
-            throw new IllegalArgumentException("Invalid performer ID for editing.");
-        }
-
-        int id = Integer.parseInt(idStr);
+        int id = parseId(req.getParameter("id"), "Invalid performer ID for editing.");
         dao.updatePerformers(new Performers(
                 id,
                 safe(req.getParameter("name")),
@@ -155,18 +135,8 @@ public class PerformersAdmin extends HttpServlet {
     }
 
     private void handleDelete(HttpServletRequest req) throws Exception {
-        String idStr = req.getParameter(Constants.PARAM_ID);
-        if (idStr == null || !idStr.matches("\\d+")) {
-            throw new IllegalArgumentException("Invalid performer ID for deletion.");
-        }
-
-        int id = Integer.parseInt(idStr);
+        int id = parseId(req.getParameter("id"), "Invalid performer ID for deletion.");
         dao.deletePerformers(id);
-    }
-
-    private String getKeyword(HttpServletRequest req) {
-        String kw = req.getParameter(Constants.PARAM_KEYWORD);
-        return kw != null ? kw.trim() : "";
     }
 
     private int getValidPage(String pageParam, String keyword) {
@@ -174,34 +144,35 @@ public class PerformersAdmin extends HttpServlet {
         try {
             if (pageParam != null && pageParam.matches("\\d+")) {
                 page = Integer.parseInt(pageParam);
-                int total = keyword.trim().isEmpty()
+                int total = keyword.isEmpty()
                         ? dao.countPerformers()
                         : dao.countPerformersByKeyword(keyword);
-                int totalPages = (int) Math.ceil((double) total / Constants.PAGE_SIZE);
-                if (page < 1) {
-                    page = 1;
-                }
-                if (page > totalPages && totalPages > 0) {
-                    page = totalPages;
-                }
+                int totalPages = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+                page = Math.min(Math.max(1, page), totalPages);
             }
         } catch (Exception e) {
-            log("Error validating page number: " + e.getMessage(), e);
-            page = 1;
+            log("Invalid page number: " + e.getMessage());
         }
         return page;
     }
 
-    private String buildRedirectUrl(HttpServletRequest req, String keyword) throws IOException {
-        int page = getValidPage(req.getParameter("currentPage"), keyword);
-        String url = "PerformersAdmin?page=" + page;
-        if (!keyword.trim().isEmpty()) {
-            url += "&keyword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+    private int parseId(String idParam, String errorMsg) {
+        if (idParam == null || !idParam.matches("\\d+")) {
+            throw new IllegalArgumentException(errorMsg);
         }
-        return url;
+        return Integer.parseInt(idParam);
     }
 
-    private String safe(String param) {
-        return param == null ? "" : param.trim();
+    private String buildRedirectUrl(HttpServletRequest req, String keyword) throws IOException {
+        int page = getValidPage(req.getParameter("currentPage"), keyword);
+        StringBuilder url = new StringBuilder("PerformersAdmin?page=").append(page);
+        if (!keyword.isEmpty()) {
+            url.append("&keyword=").append(URLEncoder.encode(keyword, StandardCharsets.UTF_8));
+        }
+        return url.toString();
+    }
+
+    private String safe(String s) {
+        return s == null ? "" : s.trim();
     }
 }

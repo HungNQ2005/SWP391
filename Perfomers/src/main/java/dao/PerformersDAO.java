@@ -175,16 +175,29 @@ public class PerformersDAO {
         return list;
     }
 
-    public boolean existsPerformer(String name, String dob, String nationality) {
-        String sql = "SELECT COUNT(*) FROM Performer WHERE name = ? AND date_of_birth = ? AND nationality = ?";
+    public boolean existsPerformer(String name, String dob, String nationality,
+            String gender, String photoUrl, String description) {
+        String sql = """
+        SELECT COUNT(*) FROM Performer
+        WHERE name = ? AND date_of_birth = ? 
+              AND nationality = ? AND gender = ? 
+              AND photo_url = ? AND description = ?
+    """;
         try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, name);
             ps.setString(2, dob);
             ps.setString(3, nationality);
+            ps.setString(4, gender);
+            ps.setString(5, photoUrl);
+            ps.setString(6, description);
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+            
                 return rs.getInt(1) > 0;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

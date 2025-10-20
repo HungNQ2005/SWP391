@@ -99,7 +99,4 @@ public class Performers {
     public String toString() {
         return "Performers{" + "performer_id=" + performer_id + ", name=" + name + ", photo_url=" + photo_url + ", gender=" + gender + ", description=" + description + ", date_of_birth=" + date_of_birth + ", nationality=" + nationality + '}';
     }
-
-  
-
 }
