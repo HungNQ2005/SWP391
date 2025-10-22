@@ -13,32 +13,15 @@
     />
     <link rel="stylesheet" href="css/Header.css" />
     <link rel="stylesheet" href="css/MovieInfo.css" />
+    <link rel="stylesheet" href="css/MovieWatching.css">
   </head>
   <body>
-    <%
-        Movie movie = (Movie) request.getAttribute("movie");
-        if (movie != null) {
-    %>
-        <div class="movie-card">
-            <div class="video">
-                <video src="<%= movie.getVideo() %>" controls></video>
-            </div>
-            <div class="movie-info">
-                <div class="title"><%= movie.getTitle() %></div>
-                <div class="subtitle"><%= movie.getSubtitle() %></div>
-                <div class="stats">
-                    <div class="stars"><%= movie.getStars() %></div>
-                    <div><%= movie.getViews() %></div>
-                </div>
-                <a href="#" class="btn">Đã hoàn thành</a>
-            </div>
+   <div class="container mt-4">
+      <div class="card">
+        <video src="Images/0606 (1).mp4" alt="Poster" class="card-img" controls>
+          </div>
         </div>
-    <%
-        } else {
-    %>
-        <p style="color: white; text-align:center;">❌ Không tìm thấy phim!</p>
-    <%
-        }
-    %>
+      </div>
+   </div>
 </body>
 </html>
