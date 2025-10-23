@@ -15,8 +15,8 @@
     </head>
 
     <body>
-        <!-- Header -->
-       
+
+
 
 
         <!-- Banner -->
@@ -26,7 +26,7 @@
 
             <!-- ThÃ´ng tin phim -->
             <div class="banner-info">
-                <h1 id="movie-title">The Conjuring: Nghi Lá» Cuá»i CÃ¹ng</h1>
+                <h1 id="movie-title">The Conjuring: Nghi Lễ Cuối Cùng</h1>
                 <p id="movie-original" class="movie-original">
                     The Conjuring: Last Rites
                 </p>
@@ -36,7 +36,7 @@
                    “Đến với hồi kết của vũ trụ The Conjuring, Ed và Lorraine Warren đối mặt với thế lực ác quỷ gieo rắc kinh hoàng cho gia đình Smurl...”
                 </p>
                 <div class="banner-buttons">
-                    <a id="watch-now" href="${pageContext.request.contextPath}/series?action=allOfSeries"" class="btn btn-light">
+                    <a id="watch-now" href="${pageContext.request.contextPath}/series?action=allOfSeries" class="btn btn-light">
                         <i class="fa fa-play"></i> Xem ngay
                     </a>
                 </div>
@@ -106,7 +106,7 @@
 
     <!--Hot + Trending-->
     <div class="Title ">
-        <h2>Phim Bá»</h2>
+        <h2>Phim Bộ</h2>
     </div>
 
 
@@ -122,7 +122,7 @@
 
 <!--Phim Äáº·t Sáº¯c-->
 <div class="Title ">
-    <h2>Phim Äáº·t Sáº¯c</h2>
+    <h2>Phim Đặc Sắc</h2>
 </div>
 
 
@@ -139,83 +139,7 @@
 </div>
 </div>
 
-<script>
-    let current = document.getElementById("layer1");
-    let next = document.getElementById("layer2");
 
-    const movies = {
-        "Images/Banner1.jpg": {
-            id: 1,
-            title: "The Conjuring: Nghi Lá» Cuá»i CÃ¹ng",
-            original: "The Conjuring: Last Rites",
-            meta: "2025 | 1h50m",
-            genres: ["Kinh dá»", "TÃ¢m lÃ½"],
-            desc: "Ed vÃ  Lorraine Warren Äá»i máº·t vá»i tháº¿ lá»±c Ã¡c quá»· gieo ráº¯c kinh hoÃ ng...",
-        },
-        "Images/Banner2.jpg": {
-            id: 2,
-            title: "Avengers: Legacy",
-            original: "Avengers: Legacy",
-            meta: "2024 | 2h30m",
-            genres: ["HÃ nh Äá»ng", "Viá»n tÆ°á»ng"],
-            desc: "Äá»i Avengers tháº¿ há» má»i tiáº¿p tá»¥c hÃ nh trÃ¬nh báº£o vá» TrÃ¡i Äáº¥t khá»i hiá»m há»a vÅ© trá»¥...",
-        },
-        "Images/Banner3.jpg": {
-            id: 3,
-            title: "Inside Out 2",
-            original: "Inside Out 2",
-            meta: "2023 | 1h40m |",
-            genres: ["Hoáº¡t hÃ¬nh", "HÃ i hÆ°á»c"],
-            desc: "Nhá»¯ng cáº£m xÃºc quen thuá»c trá» láº¡i cÃ¹ng nhiá»u cáº£m xÃºc má»i trong cuá»c phiÃªu lÆ°u Äáº§y Ã½ nghÄ©a...",
-        },
-        "Images/Banner3.jpg": {
-            id: 4,
-            title: "Inside Out 2",
-            original: "Inside Out 2",
-            meta: "2023 | 1h40m | ",
-            genres: ["Hoáº¡t hÃ¬nh", "HÃ i hÆ°á»c"],
-            desc: "Nhá»¯ng cáº£m xÃºc quen thuá»c trá» láº¡i cÃ¹ng nhiá»u cáº£m xÃºc má»i trong cuá»c phiÃªu lÆ°u Äáº§y Ã½ nghÄ©a...",
-        },
-    };
-
-    function changeBanner(imageUrl) {
-        next.style.backgroundImage = `url(${imageUrl})`;
-
-        // hiá»u á»©ng fade
-        next.classList.add("active");
-        current.classList.remove("active");
-
-        // Äá»i current/next
-        let temp = current;
-        current = next;
-        next = temp;
-
-        let movie = movies[imageUrl];
-
-        // cáº­p nháº­t thÃ´ng tin phim
-        document.getElementById("movie-title").innerText =
-                movies[imageUrl].title;
-        document.getElementById("movie-original").innerText =
-                movies[imageUrl].original;
-        document.getElementById("movie-meta").innerText = movies[imageUrl].meta;
-        document.getElementById("movie-desc").innerText = movies[imageUrl].desc;
-        let genresHtml = movie.genres
-                .map(
-                        (g) =>
-                        `<a href="Genre.jsp?name=\${encodeURIComponent(g)}" class="genre-tag">\${g}</a>`
-                )
-                )
-                .join("");
-        document.getElementById("movie-genres").innerHTML = genresHtml;
-        document.getElementById("watch-now").href = `MovieInfo.html?id=${movie.id}`;
-        document.querySelector("input[name='movieId']").value =
-                movies[imageUrl].id;
-    }
-
-    window.onload = () => {
-        changeBanner("Images/Banner1.jpg");
-    };
-</script>
 
 </body>
 

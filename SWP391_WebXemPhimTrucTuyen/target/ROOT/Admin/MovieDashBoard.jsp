@@ -55,16 +55,24 @@
             </div>
 
             <!-- Search -->
+            <!-- Search -->
+            <!-- Search -->
             <div class="mb-3">
-                <div class="input-group search-box">
+                <form class="input-group search-box" action="adminMovie" method="get">
+                    <input type="hidden" name="action" value="searchFilmAdmin" />
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                     <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Tìm kiếm bộ phim..."
-                        />
-                </div>
+                            type="text"
+                            class="form-control"
+                            name="query"
+                            placeholder="Tìm kiếm bộ phim..."
+                            required
+                    />
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </form>
             </div>
+
+
 
             <!-- Table -->
             <div class="card">
@@ -85,7 +93,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="s" items="${listSeries}">
+                        <c:if test="${empty listSeries}">
+                            <tr>
+                                <td colspan="10" class="text-center text-warning">Không tìm thấy phim nào phù hợp.</td>
+                            </tr>
+                        </c:if>
+
+                        <c:forEach var="s" items="${listSeries}">
                                 <tr>
                                     <td>${s.seriesID}</td>
                                     <td>${s.title}</td>
@@ -110,8 +124,40 @@
                         </tbody>
 
                     </table>
+                    <!-- Pagination -->
+                    </tbody>
+                    </table>
+
+                    </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center my-3">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="adminMovie?action=sendSeriesDashboard&page=${currentPage - 1}">Previous</a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach begin="1" end="${totalPages}" var="p">
+                                    <li class="page-item ${p == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="adminMovie?action=sendSeriesDashboard&page=${p}">${p}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <c:if test="${currentPage < totalPages}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="adminMovie?action=sendSeriesDashboard&page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </div>
+
+
                 </div>
-            </div>
         </div>
 
         <!-- Add Movie Modal -->
@@ -336,6 +382,6 @@
                 }
             });
         </script>
-
+        </div>
     </body>
 </html>

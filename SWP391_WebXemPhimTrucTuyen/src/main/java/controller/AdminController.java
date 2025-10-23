@@ -42,8 +42,22 @@ public class AdminController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null ||action.equals("sendAccountDashboard")) {
-            List<User> users = adminDAO.getAllUsers();
+            int page = 1;
+            int recordsPerPage = 1;
+
+            if(request.getParameter("page") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+            }
+            int totalRecords = adminDAO.getTotalUserCount();
+            int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+
+            int offset = (page - 1) * recordsPerPage;
+            List<User> users = adminDAO.getUsersByPage(offset, recordsPerPage);
+
             request.setAttribute("users", users);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+
             request.getRequestDispatcher("/Admin/AccountDashboard.jsp").forward(request, response);
             return;
         }

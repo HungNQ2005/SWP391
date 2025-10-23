@@ -24,7 +24,7 @@
     
         <link href="http://localhost:8080/SWP391_WebXemPhimTrucTuyen/Admin/AccountDashboard.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
+<body>
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="admin-info text-center mb-3">
@@ -113,6 +113,31 @@
                             </c:forEach>
                         </tbody>
                     </table>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation" class="mt-3">
+                        <ul class="pagination justify-content-center">
+
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="admin?action=sendAccountDashboard&page=${currentPage - 1}">Previous</a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="admin?action=sendAccountDashboard&page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${currentPage < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="admin?action=sendAccountDashboard&page=${currentPage + 1}">Next</a>
+                                </li>
+                            </c:if>
+
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

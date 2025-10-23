@@ -372,4 +372,120 @@ public class AdminDAO {
         return list;
     }
 
+    public List<User> getUsersByPage(int offset, int limit){
+        List<User> list = new ArrayList<>();
+        try(Connection con = new DBContext().getConnection()){
+            String sql = "SELECT * FROM Users " +
+                    "ORDER BY user_id OFFSET ? " +
+                    "ROWS FETCH NEXT ? " +
+                    "ROWS ONLY";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                User u = new User();
+                u.setUser_id(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setUser_level(rs.getString("user_level"));
+                u.setFull_name(rs.getString("full_name"));
+                list.add(u);
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public int getTotalUserCount(){
+        int count = 0;
+        try(Connection con = new DBContext().getConnection()) {
+            String sql = "SELECT count(*) FROM Users";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
+    }
+
+    // ================== PHÂN TRANG CHO SERIES ==================
+    public List<Series> getSeriesByPage(int offset, int limit) {
+        List<Series> list = new ArrayList<>();
+        String sql = "SELECT * FROM Series ORDER BY series_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection con = new DBContext().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Series s = new Series();
+                s.setSeriesID(rs.getInt("series_id"));
+                s.setTitle(rs.getString("title"));
+                s.setDescription(rs.getString("description"));
+                s.setReleaseYear(rs.getShort("release_year"));
+                s.setCountry(rs.getString("country"));
+                s.setPosteUrl(rs.getString("poster_url"));
+                s.setTrailerUrl(rs.getString("trailer_url"));
+                s.setTypeId(rs.getShort("type_id"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getTotalSeriesCount() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM Series";
+        try (Connection con = new DBContext().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public List<Series> searchSeries(String keyword) {
+        List<Series> list = new ArrayList<>();
+        String sql = "SELECT * FROM Series WHERE title LIKE ?";
+        try (Connection con = new DBContext().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Series s = new Series();
+                s.setSeriesID(rs.getInt("series_id"));
+                s.setTitle(rs.getString("title"));
+                s.setDescription(rs.getString("description"));
+                s.setReleaseYear(rs.getInt("release_year"));
+                s.setCountry(rs.getString("country"));
+                s.setPosteUrl(rs.getString("poster_url"));
+                s.setTrailerUrl(rs.getString("trailer_url"));
+                s.setTypeId(rs.getInt("type_id"));
+                list.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
 }

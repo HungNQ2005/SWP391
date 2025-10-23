@@ -8,9 +8,11 @@ dao\DBContext.class
 dao\HashUtil.class
 entity\Category.class
 entity\User.class
+dao\FavoriteDAO.class
 entity\Series.class
 controller\AdminMovieController.class
 controller\SeriesController.class
+controller\WishListController.class
 dao\UserDAO.class
 dao\MovieDAO.class
 com\mycompany\swp391_webxemphimtructuyen\JakartaRestConfiguration.class

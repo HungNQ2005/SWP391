@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,6 +28,22 @@
                                 If you don't have an account,
                                 <a href="${pageContext.request.contextPath}/user?action=sendSignUp">register now</a>
                             </p>
+
+                            <!-- Hiển thị thông báo lỗi -->
+
+                            <c:if test="${not empty errorMsg}">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <c:out value="${errorMsg}" escapeXml="false"/>
+                                </div>
+                            </c:if>
+
+                            <!-- Hiển thị thông báo thành công (nếu có) -->
+
+                            <c:if test="${not empty message}">
+                                <div class="alert alert-success text-center" role="alert">
+                                    <c:out value="${message}" escapeXml="false"/>
+                                </div>
+                            </c:if>
 
                             <form action="${pageContext.request.contextPath}/user" method="post">
                                 <input type="hidden" name="action" value="login">
@@ -72,9 +90,12 @@
                             </div>
 
                             <div class="d-grid mt-3">
-                                <button type="button" class="btn btn-secondary">
-                                    Cancel
-                                </button>
+                                <a href="series?action=allOfSeries">
+                                    <button type="button" class="btn btn-secondary">
+                                        Cancel
+                                    </button>
+                                </a>
+
                             </div>
 
                         </div>
@@ -83,6 +104,6 @@
             </div>
         </div>
 
-        <script src="js/dangnhap.js"></script>
+        <script src="${pageContext.request.contextPath}/js/dangnhap.js"></script>
     </body>
 </html>

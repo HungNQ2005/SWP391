@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,7 +34,7 @@
                                 reset your password.
                             </p>
 
-                            <!-- Thông báo -->
+                            <!-- Thï¿½ng bï¿½o -->
                             <c:if test="${not empty message}">
                                 <div class="alert alert-success text-center">${message}</div>
                             </c:if>
@@ -61,7 +63,7 @@
                                 <div
                                     class="d-flex justify-content-between align-items-center text-light"
                                     >
-                                    <a href="login.html">Back to Login</a>
+                                    <a href="user?action=sendLogin">Back to Login</a>
                                 </div>
 
                                 <div class="d-grid mt-3">
@@ -80,6 +82,6 @@
             </div>
         </div>
 
-        <script src="js/dangnhap.js"></script>
+
     </body>
 </html>

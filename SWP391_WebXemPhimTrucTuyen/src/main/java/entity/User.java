@@ -19,6 +19,7 @@ public class User {
     private String user_level;
     private String avatar_url;
     private String reset_token;
+    private String country;
     private java.sql.Timestamp token_expiry;
     
     
@@ -46,6 +47,27 @@ public class User {
         this.avatar_url = avatar_url;
         this.reset_token = reset_token;
         this.token_expiry = token_expiry;
+    }
+
+    public User(int user_id, String username, String email, String hash_password, String full_name, String user_level, String avatar_url, String reset_token, String country, Timestamp token_expiry) {
+        this.user_id = user_id;
+        this.username = username;
+        this.email = email;
+        this.hash_password = hash_password;
+        this.full_name = full_name;
+        this.user_level = user_level;
+        this.avatar_url = avatar_url;
+        this.reset_token = reset_token;
+        this.country = country;
+        this.token_expiry = token_expiry;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getEmail() {

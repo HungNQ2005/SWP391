@@ -1,14 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
 <!DOCTYPE html>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-bg fixed-top">
         <div class="container-fluid">
             <!--logo-->
-            <a class="navbar-brand" href="Main.html" aria-label="Trang chủ MyWebsite">
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/series?action=allOfSeries" aria-label="Trang chủ MyWebsite">
                 <img
-                    src="../Images/logo.png"
+                    src="${pageContext.request.contextPath}/Images/logo.png"
                     alt="MyWebsite logo"
                     width="60"
                     height="60"
@@ -16,18 +17,16 @@
             </a>
 
             <!--search-->
-            <form class="d-flex" role="search" action="search" method="get">
-                <div class="search-box-wrapper">
-                    <input
-                        class="form-control rounded-pill search-box"
-                        type="search"
-                        name="query"
-                        placeholder="Tìm kiếm phim, diễn viên"
-                        aria-label="Search"
-                        />
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                </div>
+            <form class="d-flex" role="search" action="series" method="get">
+                <input type="hidden" name="action" value="searchFilm" />
+                <input class="form-control rounded-pill search-box"
+                       type="search"
+                       name="query"
+                       placeholder="Tìm kiếm phim"
+                       aria-label="Search"
+                       required />
             </form>
+
 
             <button
                 class="navbar-toggler"
@@ -40,7 +39,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-5">
-                    <li class="nav-item"><a class="nav-link" href="Main.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="series?action=allOfSeries">Trang chủ</a></li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#">Thể loại</a>
@@ -57,21 +56,26 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="#">Phim bộ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Phim lẻ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="series?action=filterByType&typeId=1">Phim bộ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="series?action=filterByType&typeId=2">Phim lẻ</a></li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
                             Quốc gia
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Việt Nam</a></li>
-                            <li><a class="dropdown-item" href="#">Hàn Quốc</a></li>
-                            <li><a class="dropdown-item" href="#">Mỹ</a></li>
-                            <li><a class="dropdown-item" href="#">Nhật Bản</a></li>
-                            <li><a class="dropdown-item" href="#">Trung Quốc</a></li>
+                            <c:forEach var="country" items="${listCountry}">
+                                <li>
+                                    <a class="dropdown-item ${country == selectedCountry ? 'active' : ''}"
+                                       href="series?action=filterByCountry&country=${country}">
+                                            ${country}
+                                    </a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </li>
+
+
 
                     <li class="nav-item">
                         <a class="nav-link" href="#">Lịch chiếu</a>
@@ -116,7 +120,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
                             <li><a class="dropdown-item" href="profile.jsp">Trang cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Danh sách phim của tôi</a></li>
+                            <li><a class="dropdown-item" href="wishlist?action=allOfFilmInFavorite">Danh sách phim của tôi</a></li>
                             <li><a class="dropdown-item" href="updateAvatar.jsp">Update avatar</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

@@ -50,6 +50,12 @@
                     <i class="bi bi-funnel"></i> Filter
                 </button>
             </div>
+            <c:if test="${not empty searchQuery}">
+                <h2 class="text-warning">Kết quả tìm kiếm cho: "${searchQuery}"</h2>
+                <c:if test="${empty listSeries}">
+                    <p class="text-light">Không tìm thấy phim nào phù hợp.</p>
+                </c:if>
+            </c:if>
 
             <!-- Filter Panel -->
             <div class="bg-dark text-light p-3 rounded d-none" id="filterPanel">
@@ -137,42 +143,41 @@
 
             </div>
 
+
             <!-- Pagination -->
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a
-                            class="page-link bg-dark text-white border-secondary"
-                            href="#"
-                            aria-label="Previous"
-                            >
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item active">
-                        <span class="page-link bg-secondary border-secondary">1</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-white border-secondary" href="#"
-                           >2</a
-                        >
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-white border-secondary" href="#"
-                           >3</a
-                        >
-                    </li>
-                    <li class="page-item">
-                        <a
-                            class="page-link bg-dark text-white border-secondary"
-                            href="#"
-                            aria-label="Next"
-                            >
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-center my-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-white border-secondary"
+                                   href="series?action=allOfSeries&page=${currentPage - 1}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach begin="1" end="${totalPages}" var="p">
+                            <li class="page-item ${p == currentPage ? 'active' : ''}">
+                                <a class="page-link ${p == currentPage ? 'bg-warning text-dark border-warning' : 'bg-dark text-white border-secondary'}"
+                                   href="series?action=allOfSeries&page=${p}">
+                                        ${p}
+                                </a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-white border-secondary"
+                                   href="series?action=allOfSeries&page=${currentPage + 1}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+
         </main>
 
         <!-- Footer -->
@@ -182,19 +187,7 @@
 
         <!-- JS -->
         <script>
-            // Header
-            fetch("include/Header.jsp")
-                    .then((res) => res.text())
-                    .then((data) => {
-                        document.getElementById("header-placeholder").innerHTML = data;
-                    });
 
-            // Footer
-            fetch("footer.jsp")
-                    .then((res) => res.text())
-                    .then((data) => {
-                        document.getElementById("footer-placeholder").innerHTML = data;
-                    });
 
             // Filter toggle
             const toggleBtn = document.getElementById("toggleFilter");
@@ -209,8 +202,8 @@
                 filterPanel.classList.add("d-none");
             });
         </script>
-        <script src="js/banner.js"></script>
-        <script src="js/viewphimbanner.js"></script>
+        <script src="${pageContext.request.contextPath}/js/banner.js"></script>
+        <script src="${pageContext.request.contextPath}/js/ViewMovieBanner.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

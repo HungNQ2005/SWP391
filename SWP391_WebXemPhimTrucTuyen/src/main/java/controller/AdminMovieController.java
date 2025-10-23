@@ -43,12 +43,28 @@ public class AdminMovieController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null || action.equals("sendSeriesDashboard")) {
-            List<Series> list = adminDAO.getAllSeriesForAdmin();
+            int page = 1;
+            int limit = 1; // số phim mỗi trang, bạn có thể đổi
+
+            if (request.getParameter("page") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+            }
+
+            int offset = (page - 1) * limit;
+
+            List<Series> list = adminDAO.getSeriesByPage(offset, limit);
+            int totalSeries = adminDAO.getTotalSeriesCount();
+            int totalPages = (int) Math.ceil((double) totalSeries / limit);
+
             List<Category> listCategory = adminDAO.getAllCategories();
+
             request.setAttribute("listCategory", listCategory);
             request.setAttribute("listSeries", list);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+
             request.getRequestDispatcher("/Admin/MovieDashBoard.jsp").forward(request, response);
-            return;
+
         }
         if (action.equals("delete")) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -56,6 +72,37 @@ public class AdminMovieController extends HttpServlet {
             response.sendRedirect("adminMovie?action=sendSeriesDashboard");
             return;
         }
+
+        if (action.equals("searchFilmAdmin")) {
+            String query = request.getParameter("query");
+            if (query != null) {
+                query = query.trim(); // ✅ Cắt bỏ khoảng trắng đầu & cuối
+            }
+
+            if (query == null || query.isEmpty()) {
+                response.sendRedirect("adminMovie?action=sendSeriesDashboard");
+                return;
+            }
+
+            List<Series> listSeries = adminDAO.searchSeries(query);
+            List<Category> listCategory = adminDAO.getAllCategories(); // hoặc categoryDAO nếu bạn có
+
+            // Đếm tổng số trang (nếu có phân trang)
+            int totalSeries = listSeries.size();
+            int currentPage = 1;
+            int totalPages = 1;
+
+            // Gửi dữ liệu về lại JSP
+            request.setAttribute("listSeries", listSeries);
+            request.setAttribute("listCategory", listCategory);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("searchQuery", query);
+
+            request.getRequestDispatcher("/Admin/MovieDashBoard.jsp").forward(request, response);
+            return;
+        }
+
     }
 
     /**

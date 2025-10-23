@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <a href="login.jsp" class="text-light">Back to Login</a>
+                                    <a href="user?action=sendLogin" class="text-light">Back to Login</a>
                                 </div>
                             </form>
                         </div>

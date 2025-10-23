@@ -30,6 +30,18 @@
                                 <a href="${pageContext.request.contextPath}/User/login.jsp">login now</a>
                             </p>
 
+                            <c:if test="${not empty requestScope.errorMsg}">
+                                <div class="alert alert-danger" style="color:red;">
+                                    <c:out value="${requestScope.errorMsg}" escapeXml="false"/>
+                                </div>
+                            </c:if>
+
+                            <c:if test="${not empty requestScope.message}">
+                                <div class="alert alert-success" style="color:green;">
+                                        ${requestScope.message}
+                                </div>
+                            </c:if>
+
                             <form action="${pageContext.request.contextPath}/user" method="post">
                                 <input type="hidden" name="action" value="signUp" />
 
@@ -89,7 +101,7 @@
                             </form>
 
                             <div class="d-grid mt-4">
-                                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-secondary">
+                                <a href="${pageContext.request.contextPath}/series?action=allOfSeries" class="btn btn-secondary">
                                     Cancel
                                 </a>
                             </div>

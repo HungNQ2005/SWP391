@@ -4,18 +4,19 @@
  */
 package dao;
 
-import java.sql.Connection;
+import java.sql.*;
+
 import entity.User;
 /**
  *
  * @author Chau Tan Cuong - CE190026
  */
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UserDAO {
+    private Connection connection;
 
     public int signUp(String username, String email, String password, String full_name, String user_level, String avatar_url) {
         int result = 0;
@@ -234,6 +235,39 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT 1 FROM Users WHERE username = ?";
+
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT 1 FROM Users WHERE email = ?";
+        try  {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
