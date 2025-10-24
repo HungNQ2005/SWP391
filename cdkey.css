@@ -1,0 +1,165 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 21, 2025, 9:55:27 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #141414;
+    color: #fff;
+    margin: 0;
+    padding: 40px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #e50914;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+form {
+    background: rgba(20, 20, 20, 0.9);
+    max-width: 400px;
+    margin: 0 auto 40px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+    text-align: center;
+}
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+input[type="number"] {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    background: #333;
+    color: #fff;
+}
+button {
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+button:hover {
+    background-color: #f40612;
+}
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+.tab {
+    padding: 12px 24px;
+    cursor: pointer;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: #333;
+    color: #bbb;
+    margin: 0 5px;
+    transition: all 0.3s;
+}
+.tab.active {
+    background: #e50914;
+    color: #fff;
+    font-weight: bold;
+}
+.tab-content {
+    display: none;
+    background: #181818;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.tab-content.active {
+    display: block;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background: #222;
+    color: #e50914;
+}
+tr:nth-child(even) {
+    background: #2a2a2a;
+}
+tr:nth-child(odd) {
+    background: #1c1c1c;
+}
+
+/* --- Pagination Netflix style --- */
+.pagination {
+    margin-top: 15px;
+    text-align: center;
+}
+.pagination a, .pagination b {
+    display: inline-block;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #fff;
+    background: #333;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+.pagination a:hover {
+    background: #e50914;
+}
+.pagination b {
+    background: #e50914;
+}
+.pagination .disabled {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+.arrow {
+    background: #222;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin: 0 5px;
+    transition: background 0.3s, transform 0.2s;
+}
+.arrow:hover {
+    background: #e50914;
+    transform: scale(1.1);
+}
+.arrow.disabled {
+    background: #333;
+    color: #777;
+    pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+    .tables-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .table-box {
+        min-width: unset;
+        width: 100%;
+    }
+}
