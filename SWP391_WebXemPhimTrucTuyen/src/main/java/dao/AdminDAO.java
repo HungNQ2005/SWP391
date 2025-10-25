@@ -5,9 +5,13 @@
 package dao;
 
 import entity.Category;
+import entity.Country;
 import entity.Series;
+
 import java.util.List;
+
 import entity.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,13 +27,7 @@ public class AdminDAO {
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        String sql = "SELECT user_id,"
-                + " username,"
-                + " email,"
-                + " full_name,"
-                + " user_level,"
-                + " avatar_url "
-                + "FROM Users";
+        String sql = "SELECT user_id," + " username," + " email," + " full_name," + " user_level," + " avatar_url " + "FROM Users";
         try {
             DBContext db = new DBContext();
             Connection con = db.getConnection();
@@ -54,14 +52,7 @@ public class AdminDAO {
     }
 
     public void insertUser(User user) {
-        String sql = "INSERT INTO Users ("
-                + "username,"
-                + " email,"
-                + " password_hash,"
-                + " full_name,"
-                + " user_level,"
-                + " avatar_url) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (" + "username," + " email," + " password_hash," + " full_name," + " user_level," + " avatar_url) " + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             DBContext db = new DBContext();
@@ -83,13 +74,7 @@ public class AdminDAO {
     }
 
     public void updateUser(User user) {
-        String sql = "UPDATE Users SET"
-                + " username=?,"
-                + " email=?,"
-                + " full_name=?,"
-                + " user_level=?,"
-                + " avatar_url=?"
-                + " WHERE user_id=?";
+        String sql = "UPDATE Users SET" + " username=?," + " email=?," + " full_name=?," + " user_level=?," + " avatar_url=?" + " WHERE user_id=?";
 
         try {
             DBContext db = new DBContext();
@@ -131,15 +116,7 @@ public class AdminDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(
-                        rs.getInt("user_id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("hash_password"),
-                        rs.getString("full_name"),
-                        rs.getString("user_level"),
-                        rs.getString("avatar_url")
-                );
+                return new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("hash_password"), rs.getString("full_name"), rs.getString("user_level"), rs.getString("avatar_url"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -150,12 +127,14 @@ public class AdminDAO {
     public List<Series> getAllSeriesForAdmin() {
         List<Series> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM Series";
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
+                "STRING_AGG(c.country_name, ', ') AS country, " +
+                "s.poster_url, s.trailer_url, s.type_id " +
+                "FROM Series s " +
+                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
+                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
+                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        try (Connection con = new DBContext().getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
                 Series s = new Series();
@@ -177,65 +156,92 @@ public class AdminDAO {
     }
 
     public int insertSeriesForAdmin(Series s) {
-        String sql = "INSERT INTO Series (title, description, release_year, country, poster_url, trailer_url, type_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        int generatedId = -1; // mặc định nếu lỗi
-
+        int generatedId = -1;
+        Connection con = null;
         try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
+            con = new DBContext().getConnection();
+            con.setAutoCommit(false);
 
-            // chỉ định trả về ID tự tăng
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, s.getTitle());
-            ps.setString(2, s.getDescription());
-            ps.setInt(3, s.getReleaseYear());
-            ps.setString(4, s.getCountry());
-            ps.setString(5, s.getPosteUrl());
-            ps.setString(6, s.getTrailerUrl());
-            ps.setInt(7, s.getTypeId());
+            // Insert into Series table
+            String sqlSeries = "INSERT INTO Series (title, description, release_year, poster_url, trailer_url, type_id) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
 
-            ps.executeUpdate();
+            try (PreparedStatement ps = con.prepareStatement(sqlSeries, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, s.getTitle());
+                ps.setString(2, s.getDescription());
+                ps.setInt(3, s.getReleaseYear());
+                ps.setString(4, s.getPosteUrl());
+                ps.setString(5, s.getTrailerUrl());
+                ps.setInt(6, s.getTypeId());
+                ps.executeUpdate();
 
-            // lấy ID được tạo ra
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                generatedId = rs.getInt(1);
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedId = rs.getInt(1);
+
+                        // Insert into Series_Country if country is specified
+                        if (s.getCountry() != null && !s.getCountry().isEmpty()) {
+                            String[] countries = s.getCountry().split(",\\s*");
+                            for (String countryName : countries) {
+                                // Use the transactional helper to get or create the country id
+                                Integer countryId = getOrCreateCountryId(countryName.trim(), con);
+                                if (countryId != null) {
+                                    String sqlCountry = "INSERT INTO Series_Country (series_id, country_id) VALUES (?, ?)";
+                                    try (PreparedStatement psCountry = con.prepareStatement(sqlCountry)) {
+                                        psCountry.setInt(1, generatedId);
+                                        psCountry.setInt(2, countryId);
+                                        psCountry.executeUpdate();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-            rs.close();
-            ps.close();
-            con.close();
+            con.commit();
         } catch (Exception e) {
+            try {
+                if (con != null) con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
         return generatedId;
     }
 
     public Series getSeriesByIdForAdmin(int id) {
-        String sql = "SELECT * "
-                + "FROM Series"
-                + " WHERE series_id = ?";
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
+                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
+                "FROM Series s " +
+                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
+                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
+                "WHERE s.series_id = ? " +
+                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                Series s = new Series();
-                s.setSeriesID(rs.getInt("series_id"));
-                s.setTitle(rs.getString("title"));
-                s.setDescription(rs.getString("description"));
-                s.setReleaseYear(rs.getShort("release_year"));
-                s.setCountry(rs.getString("country"));
-                s.setPosteUrl(rs.getString("poster_url"));
-                s.setTrailerUrl(rs.getString("trailer_url"));
-                s.setTypeId(rs.getShort("type_id"));
-                return s;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Series s = new Series();
+                    s.setSeriesID(rs.getInt("series_id"));
+                    s.setTitle(rs.getString("title"));
+                    s.setDescription(rs.getString("description"));
+                    s.setReleaseYear(rs.getShort("release_year"));
+                    s.setCountry(rs.getString("country"));
+                    s.setPosteUrl(rs.getString("poster_url"));
+                    s.setTrailerUrl(rs.getString("trailer_url"));
+                    s.setTypeId(rs.getShort("type_id"));
+                    return s;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -244,50 +250,123 @@ public class AdminDAO {
     }
 
     public boolean updateSeriesForAdmin(Series s) {
-        String sql = "UPDATE Series SET title=?, description=?, release_year=?, country=?, poster_url=?, trailer_url=?, type_id=? WHERE series_id=?";
+        String sql = "UPDATE Series SET title=?, description=?, release_year=?, poster_url=?, trailer_url=?, type_id=? WHERE series_id=?";
         boolean success = false;
 
+        Connection con = null;
         try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
+            con = new DBContext().getConnection();
+            con.setAutoCommit(false);
 
-            ps.setString(1, s.getTitle());
-            ps.setString(2, s.getDescription());
-            ps.setInt(3, s.getReleaseYear());
-            ps.setString(4, s.getCountry());
-            ps.setString(5, s.getPosteUrl());
-            ps.setString(6, s.getTrailerUrl());
-            ps.setObject(7, s.getTypeId(), java.sql.Types.SMALLINT);
-            ps.setInt(8, s.getSeriesID());
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
 
-            int rows = ps.executeUpdate();
-            success = (rows > 0); // nếu có ít nhất 1 dòng bị ảnh hưởng => thành công
+                ps.setString(1, s.getTitle());
+                ps.setString(2, s.getDescription());
+                ps.setInt(3, s.getReleaseYear());
+                ps.setString(4, s.getPosteUrl());
+                ps.setString(5, s.getTrailerUrl());
+                ps.setObject(6, s.getTypeId(), java.sql.Types.SMALLINT);
+                ps.setInt(7, s.getSeriesID());
 
-            ps.close();
-            con.close();
+                int rows = ps.executeUpdate();
+                success = (rows > 0); // nếu có ít nhất 1 dòng bị ảnh hưởng => thành công
+
+                if (success) {
+                    // cập nhật bảng Series_Country: xóa các mapping cũ (trong cùng 1 connection/transaction)
+                    String delSql = "DELETE FROM Series_Country WHERE series_id = ?";
+                    try (PreparedStatement psDel = con.prepareStatement(delSql)) {
+                        psDel.setInt(1, s.getSeriesID());
+                        psDel.executeUpdate();
+                    }
+
+                    if (s.getCountry() != null && !s.getCountry().isEmpty()) {
+                        String[] countries = s.getCountry().split(",\\s*");
+                        for (String countryName : countries) {
+                            Integer countryId = getOrCreateCountryId(countryName.trim(), con);
+                            if (countryId != null) {
+                                String sqlCountry = "INSERT INTO Series_Country (series_id, country_id) VALUES (?, ?)";
+                                try (PreparedStatement psCountry = con.prepareStatement(sqlCountry)) {
+                                    psCountry.setInt(1, s.getSeriesID());
+                                    psCountry.setInt(2, countryId);
+                                    psCountry.executeUpdate();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            con.commit();
         } catch (SQLException e) {
+            try {
+                if (con != null) con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return success;
     }
 
+    // Helper: lấy country_id từ tên (trả null nếu không tồn tại)
+    private Integer getCountryIdByName(String countryName) {
+        if (countryName == null || countryName.isEmpty()) return null;
+        String sql = "SELECT country_id FROM Country WHERE country_name = ?";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, countryName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("country_id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // New: get or create country_id using the provided connection (used within transactions)
+    private Integer getOrCreateCountryId(String countryName, Connection con) throws SQLException {
+        if (countryName == null || countryName.isEmpty()) return null;
+        // Try to find existing
+        String sel = "SELECT country_id FROM Country WHERE country_name = ?";
+        try (PreparedStatement ps = con.prepareStatement(sel)) {
+            ps.setString(1, countryName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("country_id");
+            }
+        }
+        // Not found -> insert
+        String ins = "INSERT INTO Country (country_name) VALUES (?)";
+        try (PreparedStatement ps = con.prepareStatement(ins, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, countryName);
+            ps.executeUpdate();
+            try (ResultSet gk = ps.getGeneratedKeys()) {
+                if (gk.next()) return gk.getInt(1);
+            }
+        }
+        return null;
+    }
+
+    // delete series (unchanged)
     public boolean deleteSeriesForAdmin(int id) {
         String sql = "DELETE FROM Series WHERE series_id=?";
         boolean success = false;
 
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-
             int rows = ps.executeUpdate();
-            success = (rows > 0); // nếu có ít nhất 1 dòng bị xóa -> thành công
-
-            ps.close();
-            con.close();
+            success = (rows > 0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -297,20 +376,14 @@ public class AdminDAO {
 
     public List<Integer> getCategoryBySeriesId(int seriesId) {
         List<Integer> list = new ArrayList<>();
-        String sql = "SELECT category_id "
-                + "FROM Series_Category"
-                + " WHERE series_id = ?";
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
+        String sql = "SELECT category_id " + "FROM Series_Category" + " WHERE series_id = ?";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, seriesId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(rs.getInt("category_id"));
-
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getInt("category_id"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -319,13 +392,8 @@ public class AdminDAO {
     }
 
     public void insertSeriesCategories(int seriesId, List<Integer> categoryIds) {
-        String sql = "INSERT INTO Series_Category"
-                + " (series_id, category_id)"
-                + " VALUES (?, ?)";
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
+        String sql = "INSERT INTO Series_Category" + " (series_id, category_id)" + " VALUES (?, ?)";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             for (int catId : categoryIds) {
                 ps.setInt(1, seriesId);
@@ -338,14 +406,12 @@ public class AdminDAO {
         }
     }
 
+    // sửa: thực thi deleteSeriesCategories
     public void deleteSeriesCategories(int seriesId) {
-        String sql = "DELETE FROM Series_Category"
-                + " WHERE series_id = ?";
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
+        String sql = "DELETE FROM Series_Category" + " WHERE series_id = ?";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, seriesId);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -372,20 +438,17 @@ public class AdminDAO {
         return list;
     }
 
-    public List<User> getUsersByPage(int offset, int limit){
+    public List<User> getUsersByPage(int offset, int limit) {
         List<User> list = new ArrayList<>();
-        try(Connection con = new DBContext().getConnection()){
-            String sql = "SELECT * FROM Users " +
-                    "ORDER BY user_id OFFSET ? " +
-                    "ROWS FETCH NEXT ? " +
-                    "ROWS ONLY";
+        try (Connection con = new DBContext().getConnection()) {
+            String sql = "SELECT * FROM Users " + "ORDER BY user_id OFFSET ? " + "ROWS FETCH NEXT ? " + "ROWS ONLY";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, offset);
             ps.setInt(2, limit);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 User u = new User();
                 u.setUser_id(rs.getInt("user_id"));
                 u.setUsername(rs.getString("username"));
@@ -394,21 +457,20 @@ public class AdminDAO {
                 u.setFull_name(rs.getString("full_name"));
                 list.add(u);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
     }
 
-    public int getTotalUserCount(){
+    public int getTotalUserCount() {
         int count = 0;
-        try(Connection con = new DBContext().getConnection()) {
+        try (Connection con = new DBContext().getConnection()) {
             String sql = "SELECT count(*) FROM Users";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -420,25 +482,28 @@ public class AdminDAO {
     // ================== PHÂN TRANG CHO SERIES ==================
     public List<Series> getSeriesByPage(int offset, int limit) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT * FROM Series ORDER BY series_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (Connection con = new DBContext().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
+                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
+                "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id " +
+                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id " +
+                "ORDER BY s.series_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, offset);
             ps.setInt(2, limit);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Series s = new Series();
-                s.setSeriesID(rs.getInt("series_id"));
-                s.setTitle(rs.getString("title"));
-                s.setDescription(rs.getString("description"));
-                s.setReleaseYear(rs.getShort("release_year"));
-                s.setCountry(rs.getString("country"));
-                s.setPosteUrl(rs.getString("poster_url"));
-                s.setTrailerUrl(rs.getString("trailer_url"));
-                s.setTypeId(rs.getShort("type_id"));
-                list.add(s);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Series s = new Series();
+                    s.setSeriesID(rs.getInt("series_id"));
+                    s.setTitle(rs.getString("title"));
+                    s.setDescription(rs.getString("description"));
+                    s.setReleaseYear(rs.getShort("release_year"));
+                    s.setCountry(rs.getString("country"));
+                    s.setPosteUrl(rs.getString("poster_url"));
+                    s.setTrailerUrl(rs.getString("trailer_url"));
+                    s.setTypeId(rs.getShort("type_id"));
+                    list.add(s);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -449,9 +514,7 @@ public class AdminDAO {
     public int getTotalSeriesCount() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM Series";
-        try (Connection con = new DBContext().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
@@ -463,18 +526,202 @@ public class AdminDAO {
 
     public List<Series> searchSeries(String keyword) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT * FROM Series WHERE title LIKE ?";
-        try (Connection con = new DBContext().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, "%" + keyword + "%");
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
+                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
+                "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id " +
+                "WHERE s.title LIKE ? OR s.description LIKE ? OR s.series_id IN (SELECT sc2.series_id FROM Series_Country sc2 JOIN Country c2 ON sc2.country_id = c2.country_id WHERE c2.country_name LIKE ?) " +
+                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Series s = new Series();
+                    s.setSeriesID(rs.getInt("series_id"));
+                    s.setTitle(rs.getString("title"));
+                    s.setDescription(rs.getString("description"));
+                    s.setReleaseYear(rs.getInt("release_year"));
+                    s.setCountry(rs.getString("country"));
+                    s.setPosteUrl(rs.getString("poster_url"));
+                    s.setTrailerUrl(rs.getString("trailer_url"));
+                    s.setTypeId(rs.getInt("type_id"));
+                    list.add(s);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // New helper to delete Series_Country mappings for a series
+    public void deleteSeriesCountries(int seriesId) {
+        String sql = "DELETE FROM Series_Country WHERE series_id = ?";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, seriesId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // New helper to batch-insert mappings
+    public void insertSeriesCountries(int seriesId, List<Integer> countryIds) {
+        if (countryIds == null || countryIds.isEmpty()) return;
+        String sql = "INSERT INTO Series_Country (series_id, country_id) VALUES (?, ?)";
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            for (Integer cid : countryIds) {
+                ps.setInt(1, seriesId);
+                ps.setInt(2, cid);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Country> getAllCountries() {
+        List<Country> list = new ArrayList<>();
+        String sql = "SELECT * FROM Country ORDER BY country_name";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Country(rs.getInt("country_id"), rs.getString("country_name")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void insertCategory(String name, String description) {
+        String sql = "INSERT INTO Category (name, description) VALUES (?, ?)";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, description);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCategory(int id, String name, String description) {
+        String sql = "UPDATE Category SET name=?, description=? WHERE category_id=?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, description);
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCategory(int id) {
+        String sql = "DELETE FROM Category WHERE category_id=?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ================== COUNTRY ==================
+
+
+    public void insertCountry(String name) {
+        String sql = "INSERT INTO Country (country_name) VALUES (?)";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCountry(int id, String name) {
+        String sql = "UPDATE Country SET country_name=? WHERE country_id=?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCountry(int id) {
+        String sql = "DELETE FROM Country WHERE country_id=?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Series getSeriesById(int id) {
+        Series series = null;
+        String sql = " SELECT s.series_id, s.title, s.description, s.release_year, \n" +
+                "                   s.poster_url, s.trailer_url, s.type_id,\n" +
+                "                   c.country_name, ca.name AS category_name\n" +
+                "            FROM Series s\n" +
+                "            LEFT JOIN Series_Country sc ON s.series_id = sc.series_id\n" +
+                "            LEFT JOIN Country c ON sc.country_id = c.country_id\n" +
+                "            LEFT JOIN Series_Category sct ON s.series_id = sct.series_id\n" +
+                "            LEFT JOIN Category ca ON sct.category_id = ca.category_id\n" +
+                "            WHERE s.series_id = ?";
+
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                series = new Series();
+                series.setSeriesID(rs.getInt("series_id"));
+                series.setTitle(rs.getString("title"));
+                series.setDescription(rs.getString("description"));
+                series.setReleaseYear(rs.getInt("release_year"));
+                series.setPosteUrl(rs.getString("poster_url"));
+                series.setTrailerUrl(rs.getString("trailer_url"));
+                series.setTypeId(rs.getInt("type_id"));
+                series.setCountryName(rs.getString("country_name"));
+                series.setCategoryName(rs.getString("category_name"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return series;
+    }
+
+    public List<Series> getAllSeries() {
+        List<Series> list = new ArrayList<>();
+        String sql = "SELECT * FROM Series";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Series s = new Series();
                 s.setSeriesID(rs.getInt("series_id"));
                 s.setTitle(rs.getString("title"));
                 s.setDescription(rs.getString("description"));
                 s.setReleaseYear(rs.getInt("release_year"));
-                s.setCountry(rs.getString("country"));
                 s.setPosteUrl(rs.getString("poster_url"));
                 s.setTrailerUrl(rs.getString("trailer_url"));
                 s.setTypeId(rs.getInt("type_id"));
@@ -485,7 +732,5 @@ public class AdminDAO {
         }
         return list;
     }
-
-
 
 }

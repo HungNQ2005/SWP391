@@ -141,7 +141,9 @@ public class UserController extends HttpServlet {
                 return;
             }
 
-            userDAO.signUp(username, email, password, "", "Guest", "default");
+            userDAO.signUp(username, email, password, "", "Guest", "uploads/default.jpg");
+
+             // Gửi mail kích hoạt
 
 
             request.setAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
@@ -219,7 +221,7 @@ public class UserController extends HttpServlet {
                 String token = userDAO.saveResetToken(email);
 
                 // Tạo link reset password (đưa token vào link)
-                String resetLink = "http://localhost:8080/SWP391_WebXemPhimTrucTuyen/user?action=sendResetPassword&token=" + token;
+                String resetLink = "http://localhost:8080/SWP391_WebXemPhimTrucTuyen_war_exploded/user?action=sendResetPassword&token=" + token;
 
                 // --- Gửi email ---
                 String subject = "Yêu cầu đặt lại mật khẩu";
@@ -248,10 +250,20 @@ public class UserController extends HttpServlet {
             UserDAO dao = new UserDAO();
             String email = dao.getEmailByToken(token);
 
-            if (email != null) {
+            if (newPassword.isEmpty()) {
+                request.setAttribute("error", "Mật khẩu không được để trống");
+                request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
+                return;
+            } if (!newPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,32}$")) {
+                request.setAttribute("error", "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt, độ dài 8–32 ký tự");
+                request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
+                return;
+            }
+             if (email != null) {
                 dao.updatePassword(email, newPassword);
                 request.setAttribute("message", "Đặt lại mật khẩu thành công, vui lòng đăng nhập lại!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
             } else {
                 request.setAttribute("error", "Token không hợp lệ hoặc đã hết hạn!");
                 request.getRequestDispatcher("resetpassword.jsp").forward(request, response);

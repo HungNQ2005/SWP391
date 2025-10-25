@@ -21,8 +21,11 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
             rel="stylesheet"
             />
-    
-        <link href="http://localhost:8080/SWP391_WebXemPhimTrucTuyen/Admin/AccountDashboard.css" rel="stylesheet" type="text/css"/>
+
+
+        <!-- NEW -->
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Admin/AccountDashboard.css" />
+
     </head>
 <body>
         <!-- Sidebar -->
@@ -37,6 +40,7 @@
                     />
                 <h6>Admin</h6>
             </div>
+            <a href="series?action=allOfSeries">Home</a>
             <a href="#">Ads Management</a>
             <a href="adminMovie?action=sendSeriesDashboard">Movie Management</a>
             <a href="PerformersDashBoard.html">Performers Management</a>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,6 +43,14 @@
                         <div class="p-4 w-100">
                             <h2 class="text-light text-center mb-4">Reset Password</h2>
                             <p class="text-light text-center mb-3">Enter your new password below.</p>
+                            <%-- Hiển thị thông báo lỗi hoặc thành công --%>
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger text-center" role="alert">
+                                        ${error}
+                                </div>
+                            </c:if>
+
+
 
                             <form action="user" method="post">
                                 <input type="hidden" name="action" value="resetPassword" />

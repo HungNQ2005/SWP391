@@ -18,7 +18,8 @@ public class Series {
     private String trailerUrl;
     private String posteUrl;
     private int typeId;
-    
+    private String countryName;
+    private String categoryName;
     
     public Series() {
     }
@@ -54,9 +55,35 @@ public class Series {
         this.typeId = typeId;
     }
 
-    
-    
-    
+
+    public Series(int seriesID, String categoryName, String countryName, int typeId, String posteUrl, String description, int releaseYear, String trailerUrl, String country, String title) {
+        this.seriesID = seriesID;
+        this.categoryName = categoryName;
+        this.countryName = countryName;
+        this.typeId = typeId;
+        this.posteUrl = posteUrl;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.trailerUrl = trailerUrl;
+        this.country = country;
+        this.title = title;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public String getDescription() {
         return description;

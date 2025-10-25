@@ -1,5 +1,29 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%-- If listCountry is not present (filter didn't run), load it here to ensure header always has data --%>
+<%
+    if (request.getAttribute("listCountry") == null) {
+        try {
+            dao.MovieDAO movieDAO = new dao.MovieDAO();
+            java.util.List<entity.Country> countries = movieDAO.getAllCountry();
+            request.setAttribute("listCountry", countries);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+// Also ensure listCategory exists (some pages may not set it)
+if (request.getAttribute("listCategory") == null) {
+    try {
+        dao.AdminDAO adminDAO = new dao.AdminDAO();
+        java.util.List<entity.Category> categories = adminDAO.getAllCategories();
+        request.setAttribute("listCategory", categories);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+%>
 
 
 <!DOCTYPE html>
@@ -7,33 +31,34 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-bg fixed-top">
         <div class="container-fluid">
             <!--logo-->
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/series?action=allOfSeries" aria-label="Trang chủ MyWebsite">
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/series?action=allOfSeries"
+               aria-label="Trang chủ MyWebsite">
                 <img
-                    src="${pageContext.request.contextPath}/Images/logo.png"
-                    alt="MyWebsite logo"
-                    width="60"
-                    height="60"
-                    />
+                        src="${pageContext.request.contextPath}/Images/logo.png"
+                        alt="MyWebsite logo"
+                        width="60"
+                        height="60"
+                />
             </a>
 
             <!--search-->
             <form class="d-flex" role="search" action="series" method="get">
-                <input type="hidden" name="action" value="searchFilm" />
+                <input type="hidden" name="action" value="searchFilm"/>
                 <input class="form-control rounded-pill search-box"
                        type="search"
                        name="query"
                        placeholder="Tìm kiếm phim"
                        aria-label="Search"
-                       required />
+                       required/>
             </form>
 
 
             <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
-                >
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+            >
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -49,7 +74,7 @@
                                     <a class="dropdown-item
                                        ${cat.category_id == selectedCategory ? 'active' : ''}"
                                        href="series?action=filterByCategory&categoryId=${cat.category_id}">
-                                        ${cat.name}
+                                            ${cat.name}
                                     </a>
                                 </li>
                             </c:forEach>
@@ -66,15 +91,14 @@
                         <ul class="dropdown-menu">
                             <c:forEach var="country" items="${listCountry}">
                                 <li>
-                                    <a class="dropdown-item ${country == selectedCountry ? 'active' : ''}"
-                                       href="series?action=filterByCountry&country=${country}">
-                                            ${country}
+                                    <a class="dropdown-item ${country.country_name == selectedCountry ? 'active' : ''}"
+                                       href="series?action=filterByCountry&country=${country.country_name}">
+                                            ${country.country_name}
                                     </a>
                                 </li>
                             </c:forEach>
                         </ul>
                     </li>
-
 
 
                     <li class="nav-item">
@@ -118,17 +142,24 @@
                             <span class="text-white fw-bold">${sessionScope.guest.username}</span>
                         </a>
 
-                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item" href="profile.jsp">Trang cá nhân</a></li>
-                            <li><a class="dropdown-item" href="wishlist?action=allOfFilmInFavorite">Danh sách phim của tôi</a></li>
-                            <li><a class="dropdown-item" href="updateAvatar.jsp">Update avatar</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/user?action=logout">
-                                    <i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
-                                </a>
-                            </li>
-                        </ul>
+                        <c:if test="${fn:contains(pageContext.request.requestURI, 'movie.jsp')}">
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="profile.jsp">Trang cá nhân</a></li>
+                                <li><a class="dropdown-item" href="wishlist?action=allOfFilmInFavorite">Danh sách phim
+                                    của tôi</a></li>
+                                <li><a class="dropdown-item" href="updateAvatar.jsp">Update avatar</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger"
+                                       href="${pageContext.request.contextPath}/user?action=logout">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
+                        </c:if>
+
                     </div>
                 </c:otherwise>
 
