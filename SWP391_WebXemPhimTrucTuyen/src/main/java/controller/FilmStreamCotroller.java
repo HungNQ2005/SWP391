@@ -1,7 +1,9 @@
-// java
 package controller;
 
 import dao.MovieDAO;
+import dao.EpisodeDAO;
+import entity.Episode;
+import entity.Series;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,13 +12,78 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.List;
 
-@WebServlet("/film")
+@WebServlet(urlPatterns = {"/film", "/playFilm"})
 public class FilmStreamCotroller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        String path = req.getServletPath();
+
+        // Nếu người dùng truy cập /playFilm → hiển thị trang playFilm.jsp
+        if ("/playFilm".equals(path)) {
+            handlePlayPage(req, resp);
+            return;
+        }
+
+        // Còn lại là /film → stream video
+        handleStreamVideo(req, resp);
+    }
+
+    // ✅ 1️⃣ Hiển thị giao diện xem phim
+    private void handlePlayPage(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String seriesIdParam = req.getParameter("id");
+        if (seriesIdParam == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing seriesId");
+            return;
+        }
+
+        int seriesId = Integer.parseInt(seriesIdParam);
+        String epIdParam = req.getParameter("epId");
+
+        MovieDAO movieDAO = new MovieDAO();
+        EpisodeDAO episodeDAO = new EpisodeDAO();
+
+        Series movie = movieDAO.getMovieById(seriesId);
+        if (movie == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Movie not found");
+            return;
+        }
+
+        if (movie.getTypeId() == 1) {
+            // 🔹 Phim lẻ
+            req.setAttribute("movie", movie);
+            req.getRequestDispatcher("playFilm.jsp").forward(req, resp);
+        } else {
+            // 🔹 Phim bộ
+            List<Episode> episodes = episodeDAO.getEpisodesBySeriesId(seriesId);
+            Episode currentEp = null;
+
+            if (epIdParam != null) {
+                try {
+                    currentEp = episodeDAO.getEpisodeById(Integer.parseInt(epIdParam));
+                } catch (NumberFormatException ignored) {}
+            }
+
+            if (currentEp == null && !episodes.isEmpty()) {
+                currentEp = episodes.get(0); // lấy tập đầu tiên nếu chưa chọn
+            }
+
+            req.setAttribute("movie", movie);
+            req.setAttribute("episodes", episodes);
+            req.setAttribute("currentEpisode", currentEp);
+            req.getRequestDispatcher("playFilm.jsp").forward(req, resp);
+        }
+    }
+
+    // ✅ 2️⃣ Stream video (giữ nguyên code cũ của bạn)
+    private void handleStreamVideo(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
 
         String idParam = req.getParameter("id");
         if (idParam == null) {
@@ -32,19 +99,57 @@ public class FilmStreamCotroller extends HttpServlet {
             return;
         }
 
-        String filmUrl = new MovieDAO().getFilmUrlById(id);
+        MovieDAO movieDAO = new MovieDAO();
+        EpisodeDAO episodeDAO = new EpisodeDAO();
+
+        String filmUrl = null;
+
+        // Kiểm tra xem id thuộc series (phim lẻ) hay episode (phim bộ)
+        Series movie = movieDAO.getMovieById(id);
+        Episode episode = null;
+
+        if (movie != null) {
+            if (movie.getTypeId() == 1) {
+                // Phim lẻ
+                filmUrl = movie.getFilmUrl();
+            } else {
+                // Phim bộ
+                String epIdParam = req.getParameter("epId");
+                if (epIdParam != null) {
+                    try {
+                        int epId = Integer.parseInt(epIdParam);
+                        episode = episodeDAO.getEpisodeById(epId);
+                        if (episode != null) {
+                            filmUrl = episode.getEpisodeUrl();
+                        }
+                    } catch (NumberFormatException ignored) {}
+                }
+                if (filmUrl == null) {
+                    Episode firstEp = episodeDAO.getFirstEpisodeBySeriesId(movie.getSeriesID());
+                    if (firstEp != null) {
+                        filmUrl = firstEp.getEpisodeUrl();
+                    }
+                }
+            }
+        } else {
+            episode = episodeDAO.getEpisodeById(id);
+            if (episode != null) {
+                filmUrl = episode.getEpisodeUrl();
+            }
+        }
+
         if (filmUrl == null || filmUrl.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Film not found");
             return;
         }
 
-        // Nếu là link YouTube hoặc link ngoài
+        // Nếu là link ngoài (YouTube, CDN,...)
         if (filmUrl.startsWith("http://") || filmUrl.startsWith("https://")) {
             resp.sendRedirect(filmUrl);
             return;
         }
 
-        // ✅ Tự động tìm đường dẫn thực trong thư mục webapp
+        // ✅ Lấy đường dẫn thật trong project
         String realPath = getServletContext().getRealPath("/" + filmUrl);
         File filmFile = new File(realPath);
 
@@ -53,7 +158,7 @@ public class FilmStreamCotroller extends HttpServlet {
             return;
         }
 
-        // Gửi file video
+        // Truyền video
         String contentType = Files.probeContentType(filmFile.toPath());
         if (contentType == null) contentType = "video/mp4";
         resp.setHeader("Accept-Ranges", "bytes");

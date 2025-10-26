@@ -7,6 +7,7 @@ package dao;
 import entity.Category;
 import entity.Country;
 import entity.Series;
+import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -302,6 +303,37 @@ public class MovieDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public Series getMovieById(int id) {
+        String sql = "SELECT * FROM Series WHERE series_id = ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Series m = new Series();
+                m.setSeriesID(rs.getInt("series_id"));
+                m.setTitle(rs.getString("title"));
+                m.setDescription(rs.getString("description"));
+                m.setReleaseYear(rs.getInt("release_year"));
+                m.setPosteUrl(rs.getString("poster_url"));
+                m.setTrailerUrl(rs.getString("trailer_url"));
+                m.setFilmUrl(rs.getString("film_url"));
+                m.setTypeId(rs.getInt("type_id")); // 1 = phim lẻ, 2 = phim bộ
+                return m;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        MovieDAO dao = new MovieDAO();
+        Series m = dao.getMovieById(2);
+        System.out.println(m);
     }
 
 }

@@ -34,7 +34,7 @@
                 <a href="${movie.trailerUrl}" class="btn-watch" target="_blank">
                     <i class="fa fa-play"></i> Xem trailer
                 </a>
-                <a href="film?id=${movie.seriesID}" class="btn-watch">
+                <a href="playFilm?id=${movie.seriesID}" class="btn-watch">
                     <i class="fa fa-play"></i> Xem ngay
                 </a>
             </div>

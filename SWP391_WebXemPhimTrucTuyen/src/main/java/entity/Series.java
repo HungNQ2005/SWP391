@@ -20,11 +20,45 @@ public class Series {
     private int typeId;
     private String countryName;
     private String categoryName;
-    
+    private String filmUrl;
     public Series() {
     }
-    
-    
+
+    public Series(int seriesID, String title, String description, int releaseYear, String country, String trailerUrl, String posteUrl, int typeId, String filmUrl) {
+        this.seriesID = seriesID;
+        this.title = title;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.country = country;
+        this.trailerUrl = trailerUrl;
+        this.posteUrl = posteUrl;
+        this.typeId = typeId;
+        this.filmUrl = filmUrl;
+    }
+
+  
+
+    public Series(int seriesID, String title, String description, int releaseYear, String country, String trailerUrl, String posteUrl, int typeId, String countryName, String categoryName, String filmUrl) {
+        this.seriesID = seriesID;
+        this.title = title;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.country = country;
+        this.trailerUrl = trailerUrl;
+        this.posteUrl = posteUrl;
+        this.typeId = typeId;
+        this.countryName = countryName;
+        this.categoryName = categoryName;
+        this.filmUrl = filmUrl;
+    }
+
+    public String getFilmUrl() {
+        return filmUrl;
+    }
+
+    public void setFilmUrl(String filmUrl) {
+        this.filmUrl = filmUrl;
+    }
 
     public Series(int seriesID, String title, String description, int releaseYear, String country, String trailerUrl, String posteUrl) {
         this.seriesID = seriesID;
