@@ -139,4 +139,45 @@ public class RetailDAO {
         }
         return false;
     }
+
+    public String getRetailNameById(int id) {
+        String name = "";
+        String sql = "SELECT name FROM Retail WHERE retail_ID = ?";
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    name = rs.getString("name");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+/**
+ * Get all Retail entries from database.
+ * 
+ * @return List of Retail objects
+ */
+public List<Retail> getAllRetailForCDKey() {
+        List<Retail> list = new ArrayList<>();
+        String sql = "SELECT retail_ID, name FROM Retail ORDER BY name";
+
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Retail r = new Retail();
+                r.setId(rs.getInt("retail_ID")); // ✅ vẫn cần dòng này
+                r.setName(rs.getString("name"));
+                list.add(r);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

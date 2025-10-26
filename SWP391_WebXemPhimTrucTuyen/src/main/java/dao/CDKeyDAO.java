@@ -18,7 +18,7 @@ import util.DBContext;
  */
 public class CDKeyDAO {
 
-    // Insert CDKey (giữ nguyên logic cũ)
+    // Insert CDKey
     public void insertCDKey(String code, String status, String generatedBy) {
         String sql = "INSERT INTO CDKey(key_code, key_status, key_generatedBy, key_generatedTime) VALUES (?, ?, ?, GETDATE())";
         try (Connection conn = new DBContext().getConnection();
@@ -32,7 +32,7 @@ public class CDKeyDAO {
         }
     }
 
-    // Lấy danh sách CDKey chưa dùng (phân trang)
+    // Lấy danh sách CDKey chưa dùng
     public List<CDKey> getUnusedKeys(int page, int pageSize) {
         List<CDKey> list = new ArrayList<>();
         int offset = (page - 1) * pageSize;

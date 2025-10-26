@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CDKeyDAO;
+import dao.RetailDAO;
 import static jakarta.persistence.GenerationType.UUID;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import model.CDKey;
@@ -65,6 +67,8 @@ public class CDKeyServlet extends HttpServlet {
         request.setAttribute("usedPage", usedPage);
         request.setAttribute("totalUnusedPages", totalUnusedPages);
         request.setAttribute("totalUsedPages", totalUsedPages);
+        RetailDAO retailDAO = new RetailDAO();
+        request.setAttribute("retailList", retailDAO.getAllRetailForCDKey());
 
         request.getRequestDispatcher("/admin/cdkey.jsp").forward(request, response);
     }
@@ -73,11 +77,14 @@ public class CDKeyServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int count;
+        int count = 0;
+        int retailID = 0;
         try {
             count = Integer.parseInt(request.getParameter("count"));
+            retailID = Integer.parseInt(request.getParameter("retail"));
         } catch (NumberFormatException e) {
-            count = 0;
+            response.sendRedirect(request.getContextPath() + "/admin/cdkey");
+            return;
         }
 
         if (count <= 0) {
@@ -85,14 +92,27 @@ public class CDKeyServlet extends HttpServlet {
             return;
         }
 
-        String user = "admin"; // TODO: lấy từ session khi có auth
+        RetailDAO retailDAO = new RetailDAO();
         CDKeyDAO dao = new CDKeyDAO();
+        String retailName = retailDAO.getRetailNameById(retailID);
+        String createdBy = "ADMIN for " + retailName;
 
+        // generate keys
+        List<CDKey> generatedKeys = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             String code = CDKeyGenerator.generateKey();
-            dao.insertCDKey(code, "unused", user);
+            dao.insertCDKey(code, "unused", createdBy);
+            CDKey k = new CDKey();
+            k.setKeyCode(code);
+            k.setKeyGeneratedBy(createdBy);
+            k.setKeyGeneratedTime(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
+            generatedKeys.add(k);
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/cdkey");
+        // Lưu danh sách vào session để tải
+        request.getSession().setAttribute("generatedKeys", generatedKeys);
+
+        // Chuyển hướng sang servlet download
+        response.sendRedirect(request.getContextPath() + "/admin/downloadcdkey");
     }
 }
