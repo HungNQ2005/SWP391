@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package servlets;
 
 import dao.PerformersDAO;
@@ -15,19 +10,36 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Performers;
 
-/**
- *
- * @author Vo Thi Phi Yen - CE190428
- */
 @WebServlet("/performers")
 public class PerformerListServlet extends HttpServlet {
-  PerformersDAO performerDAO = new PerformersDAO();
+
+    private final PerformersDAO performerDAO = new PerformersDAO();
+    private static final int PAGE_SIZE = 30;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Performers> list = performerDAO.getAllPerformers();
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        try {
+            if (pageParam != null) {
+                currentPage = Integer.parseInt(pageParam);
+            }
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
+        int totalPerformers = performerDAO.countPerformers();
+        int totalPages = (int) Math.ceil((double) totalPerformers / PAGE_SIZE);
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+        if (currentPage > totalPages && totalPages > 0) {
+            currentPage = totalPages;
+        }
+        List<Performers> list = performerDAO.getPerformersByPage(currentPage, PAGE_SIZE);
         request.setAttribute("performers", list);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("/UI/PerformerList.jsp").forward(request, response);
     }
 }

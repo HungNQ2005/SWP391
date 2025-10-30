@@ -1,10 +1,13 @@
 model\Performers.class
 servlets\PerformerDetail.class
+model\Series.class
+utils\DBContext.class
 dao\PerformersDAO.class
 servlets\PerformerListServlet.class
-servlets\PerformersServlet.class
 utils\DBTest.class
 com\example\perfomers\resources\JakartaEE10Resource.class
-utils\DBContext.class
+servlets\PerformerSeries.class
 com\example\perfomers\JakartaRestConfiguration.class
+dao\SeriesDAO.class
 servlets\PerformersAdmin.class
+servlets\PerformersInformation.class

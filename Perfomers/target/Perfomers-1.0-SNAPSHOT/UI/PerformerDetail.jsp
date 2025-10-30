@@ -1,7 +1,7 @@
-    <%-- 
-    Document   : PerformerDetail.
-    Created on : Oct 8, 2025, 8:15:17 PM
-    Author     : Vo Thi Phi Yen - CE190428
+<%-- 
+Document   : PerformerDetail.
+Created on : Oct 8, 2025, 8:15:17 PM
+Author     : Vo Thi Phi Yen - CE190428
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,7 +20,7 @@
 
     <body class="bg-dark text-white">
         <div class="container py-5">
-            <a href="PerformersAdmin" class="text-secondary text-decoration-none mb-4 d-inline-block">
+            <a href="performersadmin" class="text-secondary text-decoration-none mb-4 d-inline-block">
                 <i class="bi bi-arrow-left"></i> Back to list
             </a>
 
@@ -33,15 +33,15 @@
                 <!-- Thông tin chi tiết -->
                 <div class="col-md-8">
                     <h2 class="fw-bold">${performer.name}</h2>
-                    <p class="text-secondary mb-1">Giới tính: <strong>${performer.gender}</strong></p>
-                    <p class="text-secondary mb-1">Ngày sinh: <strong>${performer.date_of_birth}</strong></p>
-                    <p class="text-secondary mb-1">Quốc Tịch: <strong>${performer.nationality}</strong></p>
+                    <p class="text-secondary mb-1">Gender: <strong>${performer.gender}</strong></p>
+                    <p class="text-secondary mb-1">Date of Birth: <strong>${performer.date_of_birth}</strong></p>
+                    <p class="text-secondary mb-1">Nationality: <strong>${performer.nationality}</strong></p>
                     <hr>
-                    <h5 class="mt-3">Tiểu sử</h5>
+                    <h5 class="mt-3">Description</h5>
                     <p>${performer.description}</p>
                 </div>
             </div>
         </div>
-                
+
     </body>
 </html>

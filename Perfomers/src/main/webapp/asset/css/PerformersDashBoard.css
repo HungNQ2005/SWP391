@@ -110,7 +110,7 @@ body {
 .search-box .btn-danger {
     background: #e50914 !important;
     border: 1px solid #e50914 !important;
-    margin-left: 0.5rem;    /* ✅ Giữ khoảng cách */
+    margin-left: 0.5rem;   
 }
 
 .table {

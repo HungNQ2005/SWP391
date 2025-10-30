@@ -18,10 +18,9 @@ import model.Performers;
  *
  * @author Vo Thi Phi Yen - CE190428
  */
-@WebServlet(name="PerformerDetail", urlPatterns={"/PerformerDetail"})
+@WebServlet("/performerdetail")
 public class PerformerDetail extends HttpServlet {
   PerformersDAO performerDAO = new PerformersDAO();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -17,19 +17,23 @@ public class Performers {
     private String description;
     private String date_of_birth;
     private String nationality;
+//    private boolean is_Active;
     public Performers() {
     }
 
-    public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth) {
-        this.performer_id = performer_id;
-        this.name = name;
-        this.photo_url = photo_url;
-        this.gender = gender;
-        this.description = description;
-        this.date_of_birth = date_of_birth;
-    }
-
-    public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth, String nationality) {
+   
+//    public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth, String nationality, boolean is_Active) {
+//        this.performer_id = performer_id;
+//        this.name = name;
+//        this.photo_url = photo_url;
+//        this.gender = gender;
+//        this.description = description;
+//        this.date_of_birth = date_of_birth;
+//        this.nationality = nationality;
+////        this 
+//   .is_Active = is_Active;
+//    }
+  public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth, String nationality) {
         this.performer_id = performer_id;
         this.name = name;
         this.photo_url = photo_url;
@@ -37,6 +41,7 @@ public class Performers {
         this.description = description;
         this.date_of_birth = date_of_birth;
         this.nationality = nationality;
+//        this.is_Active = true;
     }
      
     public int getPerformer_id() {
@@ -95,8 +100,18 @@ public class Performers {
         this.nationality = nationality;
     }
 
-    @Override
-    public String toString() {
-        return "Performers{" + "performer_id=" + performer_id + ", name=" + name + ", photo_url=" + photo_url + ", gender=" + gender + ", description=" + description + ", date_of_birth=" + date_of_birth + ", nationality=" + nationality + '}';
-    }
+//    public boolean isIs_Active() {
+//        return is_Active;
+//    }
+//
+//    public void setIs_Active(boolean is_Active) {
+//        this.is_Active = is_Active;
+//    }
+
+//    @Override
+//    public String toString() {
+//        return "Performers{" + "performer_id=" + performer_id + ", name=" + name + ", photo_url=" + photo_url + ", gender=" + gender + ", description=" + description + ", date_of_birth=" + date_of_birth + ", nationality=" + nationality + ", is_Active=" + is_Active + '}';
+//    }
+
+    
 }

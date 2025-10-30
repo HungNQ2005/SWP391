@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class DBContext {
      private static final String URL
-            = "jdbc:sqlserver://localhost:1433;databaseName=NetFlopDB;encrypt=true;trustServerCertificate=true"; // Nhớ chỉnh database cho đúng
+            = "jdbc:sqlserver://localhost:1433;databaseName=webFilm;encrypt=true;trustServerCertificate=true"; // Nhớ chỉnh database cho đúng
     private static final String USER = "sa";
     private static final String PASSWORD = "12345678";// điền pass của bạn 
 
