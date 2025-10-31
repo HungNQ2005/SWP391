@@ -1,0 +1,157 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 26, 2025, 12:22:14 PM
+    Author     : Nguyen Van Phi - CE190465
+*/
+/* Tổng thể */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background-color: #111;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar a {
+    color: #bbb;
+    text-decoration: none;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: center;
+    display: block;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background-color: #86090d;
+    color: #fff;
+}
+
+.admin-info img {
+    border: 2px solid #a61313;
+}
+
+/* Nội dung chính */
+.content {
+    margin-left: 230px;
+    padding: 25px;
+    background-color: #000;
+    min-height: 100vh;
+}
+
+/* Thanh trên */
+.topbar h5 {
+    color: #fff;
+}
+
+/* Ô tìm kiếm */
+#searchInput {
+    background-color: #111;
+    border: 1px solid #444;
+    color: #fff;
+}
+
+#searchInput::placeholder {
+    color: #999;
+}
+
+/* Bảng */
+.card {
+    background-color: #111;
+    border: 1px solid #444;
+    color: #060101;
+}
+
+.table {
+    color: #222;
+    background-color: #000;
+}
+
+.table thead {
+    background-color: #222;
+    color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #151515;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #1f1f1f;
+}
+
+.table td, .table th {
+    border-color: #444 !important;
+}
+
+/* Nút */
+.btn-primary {
+    background-color: #890606;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #901010;
+}
+
+.btn-success {
+    background-color: #198754;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+}
+
+/* Modal */
+.modal-content {
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.modal-header.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.form-control, textarea.form-control {
+    background-color: #222;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.form-control:focus {
+    background-color: #222;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.text-muted {
+    color: #aaa !important;
+}
