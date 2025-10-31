@@ -1,0 +1,96 @@
+  body {
+                background-color: #141414;
+                color: #fff;
+            }
+
+            .banner {
+                height: 250px;
+                background: url("https://tse4.mm.bing.net/th/id/OIP.Z0S2QylYPW9VnS1Y1Tct0AHaEK?pid=ImgDet&rs=1") center/cover no-repeat;
+                position: relative;
+            }
+
+            .banner-overlay {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .actor-card {
+                width: 180px;
+                background: transparent;
+                border: none;
+            }
+
+            .actor-card img {
+                border-radius: 10px;
+                height: 240px;
+                width: 100%;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+
+            .actor-card img:hover {
+                transform: scale(1.05);
+            }
+
+            .actor-name {
+                color: #fff;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .actor-name:hover {
+                color: #ff0707;
+            }
+
+/*            .search-bar {
+                position: relative;
+                width: 100%;
+                max-width: 550px;
+            }
+
+            .search-input {
+                width: 100%;
+                background-color: #141414;
+                border: 2px solid #e50914;
+                border-radius: 25px;
+                padding: 10px 45px 10px 45px;
+                color: #fff;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+
+            .search-input::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-color: #ff1e2d;
+                box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+            }
+
+            .search-icon {
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #e50914;
+                font-size: 20px;
+                pointer-events: none;
+            }*/
+
+            .page-item.active .page-link {
+                background-color: #dc3545 !important;
+                border-color: #dc3545 !important;
+                color: #fff !important;
+            }
+
+            .page-link:hover {
+                background-color: #b52b38;
+                color: #fff !important;
+            }
