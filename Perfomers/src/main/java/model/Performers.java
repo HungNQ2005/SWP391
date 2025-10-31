@@ -10,46 +10,33 @@ package model;
  */
 public class Performers {
 
-    private int performer_id;
+    private int performerID;
     private String name;
-    private String photo_url;
+    private String photoUrl;
     private String gender;
     private String description;
-    private String date_of_birth;
+    private String dateOfBirth;
     private String nationality;
-//    private boolean is_Active;
+
     public Performers() {
     }
 
-   
-//    public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth, String nationality, boolean is_Active) {
-//        this.performer_id = performer_id;
-//        this.name = name;
-//        this.photo_url = photo_url;
-//        this.gender = gender;
-//        this.description = description;
-//        this.date_of_birth = date_of_birth;
-//        this.nationality = nationality;
-////        this 
-//   .is_Active = is_Active;
-//    }
-  public Performers(int performer_id, String name, String photo_url, String gender, String description, String date_of_birth, String nationality) {
-        this.performer_id = performer_id;
+    public Performers(int performerID, String name, String photoUrl, String gender, String description, String dateOfBirth, String nationality) {
+        this.performerID = performerID;
         this.name = name;
-        this.photo_url = photo_url;
+        this.photoUrl = photoUrl;
         this.gender = gender;
         this.description = description;
-        this.date_of_birth = date_of_birth;
+        this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-//        this.is_Active = true;
-    }
-     
-    public int getPerformer_id() {
-        return performer_id;
     }
 
-    public void setPerformer_id(int performer_id) {
-        this.performer_id = performer_id;
+    public int getPerformerID() {
+        return performerID;
+    }
+
+    public void setPerformerID(int performerID) {
+        this.performerID = performerID;
     }
 
     public String getName() {
@@ -60,12 +47,12 @@ public class Performers {
         this.name = name;
     }
 
-    public String getPhoto_url() {
-        return photo_url;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto_url(String photo_url) {
-        this.photo_url = photo_url;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getGender() {
@@ -84,12 +71,12 @@ public class Performers {
         this.description = description;
     }
 
-    public String getDate_of_birth() {
-        return date_of_birth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDate_of_birth(String date_of_birth) {
-        this.date_of_birth = date_of_birth;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getNationality() {
@@ -100,18 +87,15 @@ public class Performers {
         this.nationality = nationality;
     }
 
-//    public boolean isIs_Active() {
-//        return is_Active;
-//    }
-//
-//    public void setIs_Active(boolean is_Active) {
-//        this.is_Active = is_Active;
-//    }
+    @Override
+    public String toString() {
+        return "Performers{" + "performerID=" + performerID
+                + ", name=" + name
+                + ", photoUrl=" + photoUrl
+                + ", gender=" + gender
+                + ", description=" + description
+                + ", dateOfBirth=" + dateOfBirth
+                + ", nationality=" + nationality + '}';
+    }
 
-//    @Override
-//    public String toString() {
-//        return "Performers{" + "performer_id=" + performer_id + ", name=" + name + ", photo_url=" + photo_url + ", gender=" + gender + ", description=" + description + ", date_of_birth=" + date_of_birth + ", nationality=" + nationality + ", is_Active=" + is_Active + '}';
-//    }
-
-    
 }

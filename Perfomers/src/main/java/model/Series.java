@@ -113,9 +113,4 @@ public class Series {
         this.posteUrl = posteUrl;
     }
 
-    @Override
-    public String toString() {
-        return "Series{" + "seriesID=" + seriesID + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear + ", country=" + country + ", trailerUrl=" + trailerUrl + ", posteUrl=" + posteUrl + '}';
-    }
-
 }
