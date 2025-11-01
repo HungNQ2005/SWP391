@@ -1,0 +1,4 @@
+db\DBContext.class
+Controller\AdsController.class
+model\Ads.class
+dao\AdsDAO.class

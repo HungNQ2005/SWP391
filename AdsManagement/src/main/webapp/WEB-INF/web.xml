@@ -6,7 +6,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AdsController</servlet-name>
-        <url-pattern>/ads</url-pattern>
+        <url-pattern>/Ads</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
