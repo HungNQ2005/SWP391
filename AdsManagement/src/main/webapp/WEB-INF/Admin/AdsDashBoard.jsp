@@ -27,7 +27,7 @@
                     alt="Admin" width="80" height="80" class="rounded-circle"/>
                 <h6>Admin</h6>
             </div>
-            <a href="ads" class="active">Ads Management</a>
+            <a href="Ads" class="active">Ads Management</a>
             <a href="MovieDashBoard.html">Movie Management</a>
             <a href="PerformersDashBoard.html">Performers Management</a>
             <a href="#">Accounts Management</a>
@@ -104,7 +104,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="addForm" action="ads" method="post">
+                <form id="adsForm" action="ads" method="post">
                     <input type="hidden" name="action" value="add"/>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -149,7 +149,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="ads" method="post">
+                        <form action="Ads" method="post" id="adsForm">
                             <input type="hidden" name="action" value="update"/>
                             <input type="hidden" id="editId" name="ads_ID"/>
                             <div class="row g-3">
@@ -183,7 +183,7 @@
         </div>
 
         <!-- Delete Modal -->
-        <form action="ads" method="post">
+        <form action="Ads" method="post">
             <input type="hidden" name="action" value="delete"/>
             <input type="hidden" id="deleteId" name="ads_ID"/>
             <div class="modal fade" id="deleteModal" tabindex="-1">
@@ -232,7 +232,7 @@
         </script>
 
 <script>
-document.getElementById("addForm").addEventListener("submit", function(e) {
+document.getElementById("adsForm").addEventListener("submit", function(e) {
     let hasError = false;
 
     const name = document.getElementById("adsName").value.trim();

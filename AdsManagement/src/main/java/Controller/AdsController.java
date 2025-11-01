@@ -48,6 +48,6 @@ public class AdsController extends HttpServlet {
             dao.deleteAds(id);
         }
 
-        response.sendRedirect("ads");
+        response.sendRedirect("Ads");
     }
 }
