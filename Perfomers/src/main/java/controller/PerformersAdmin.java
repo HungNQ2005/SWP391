@@ -120,13 +120,9 @@ public class PerformersAdmin extends HttpServlet {
         } catch (Exception e) {
             log("Error in doPost", e);
             session.setAttribute("error",
-                    (e instanceof IllegalArgumentException || e instanceof IllegalStateException)
-                            ? e.getMessage()
-                            : "An unexpected error occurred!");
+                    (e instanceof IllegalArgumentException || e instanceof IllegalStateException) ? e.getMessage() : "An unexpected error occurred!");
         }
-
         resp.sendRedirect(buildRedirectUrl(req, currentPage, keyword));
-
     }
 
     private void handleAdd(HttpServletRequest req) throws Exception {
@@ -137,7 +133,8 @@ public class PerformersAdmin extends HttpServlet {
             errors.add("This photo is already used by another performer");
         }
         if (dao.existsPerformer(p.getName(), p.getDateOfBirth(),
-                p.getNationality(), p.getGender(), p.getPhotoUrl(), p.getDescription())) {
+                p.getNationality(), p.getGender(),
+                p.getPhotoUrl(), p.getDescription())) {
             errors.add("A performer with identical details already exists");
         }
 
@@ -197,26 +194,29 @@ public class PerformersAdmin extends HttpServlet {
 
     private Performers extractPerformer(HttpServletRequest req, int id) throws IOException, ServletException {
         String name = req.getParameter("name") != null ? req.getParameter("name").trim() : "";
+
         Part filePart = req.getPart("photo");
         String fileName = extractFileName(filePart);
         String photo = null;
+
         if (fileName != null && !fileName.isEmpty() && filePart.getSize() > 0) {
             String uploadPath = getServletContext().getRealPath("/images");
             java.io.File uploadDir = new java.io.File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
-
             filePart.write(uploadPath + java.io.File.separator + fileName);
             photo = "images/" + fileName;
         } else {
-
             String existingPhoto = req.getParameter("existingPhoto");
-            photo = (existingPhoto != null && !existingPhoto.isEmpty())
-                    ? existingPhoto.trim()
-                    : "";
+            photo = (existingPhoto != null && !existingPhoto.isEmpty()) ? existingPhoto.trim() : null;
         }
+
         String gender = req.getParameter("gender") != null ? req.getParameter("gender").trim() : "";
+        if (!gender.isEmpty()) {
+            gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase();
+        }
+
         String desc = req.getParameter("description") != null ? req.getParameter("description").trim() : "";
         String dob = req.getParameter("date_of_birth") != null ? req.getParameter("date_of_birth").trim() : "";
         String nation = req.getParameter("nationality") != null ? req.getParameter("nationality").trim() : "";
@@ -233,7 +233,7 @@ public class PerformersAdmin extends HttpServlet {
             errors.add("Name must contain only letters and symbols like .'-");
         }
 
-        if (performer.getPhotoUrl().isEmpty()) {
+        if (performer.getPerformerID() == 0 && (performer.getPhotoUrl() == null || performer.getPhotoUrl().isEmpty())) {
             errors.add("Photo URL is required");
         }
 
