@@ -28,7 +28,7 @@
             </div>
             <a href="#">Ads Management</a>
             <a href="#">Movie Management</a>
-            <a href="#" class="active">Performers Management</a>
+            <a href="${pageContext.request.contextPath}/performer/admin" class="active">Performers Management</a>
             <a href="#">Accounts Management</a>
             <a href="#">Comments Management</a>
             <a href="#">Genres/Tags Management</a>
@@ -272,15 +272,12 @@
                                     <input type="file" id="editPhotoFile" name="photo"
                                            class="form-control bg-dark text-white" accept="image/*" />
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label">Description</label>
                                     <textarea id="editDesc" name="description"
-                                              class="form-control bg-dark text-white" rows="3">
-                                    </textarea>
+                                              class="form-control bg-dark text-white" rows="3"></textarea>
                                 </div>
                             </div>
-
                             <div class="modal-footer border-0">
                                 <button type="submit" class="btn btn-danger">Save Changes</button>
                             </div>
