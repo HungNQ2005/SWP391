@@ -141,7 +141,7 @@ public class UserController extends HttpServlet {
                 return;
             }
 
-            userDAO.signUp(username, email, password, "", "Guest", "uploads/default.jpg");
+            userDAO.signUp(username, email, password, "", "User", "uploads/default.jpg");
 
              // Gửi mail kích hoạt
 
