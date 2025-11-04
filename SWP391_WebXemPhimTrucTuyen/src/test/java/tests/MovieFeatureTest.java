@@ -5,6 +5,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import org.openqa.selenium.JavascriptExecutor;
 
 public class MovieFeatureTest {
     private WebDriver driver;
@@ -46,26 +50,48 @@ public class MovieFeatureTest {
     // ✅ TC008 - Thêm phim vào danh sách yêu thích
     @Test(priority = 2)
     public void TC008_AddToWishlist() {
-        // Mở lại trang MovieInfo của 1 phim cụ thể
-        driver.get(BASE_URL + "/series?action=sendMovieInfo&id=1");
+        // Mở trang MovieInfo của phim id=1
+        driver.get(BASE_URL + "/series?action=sendMovieInfo&id=2");
 
-        // Nhấn nút "Yêu thích"
-        WebElement addToFavBtn = driver.findElement(By.cssSelector("a[href*='wishlist?action=addFilmInFavorite']"));
-        addToFavBtn.click();
+        // Tìm nút Yêu thích bằng selector tổng quát hơn
+        By addFavSelector = By.cssSelector("a[href*='wishlist?action=addFilmInFavorite&seriesId=2']");
 
-        try { Thread.sleep(2000); } catch (InterruptedException e) {}
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Mở trang wishlist
+        // Chờ phần tử có mặt trong DOM và visible
+        WebElement addToFavBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(addFavSelector));
+
+        // Scroll vào view (tránh header cố định che phần tử)
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", addToFavBtn);
+
+        // Chờ element clickable
+        wait.until(ExpectedConditions.elementToBeClickable(addFavSelector));
+
+        // Dùng JS click (an toàn khi bị che bởi overlay nhỏ)
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToFavBtn);
+
+        // Chờ server xử lý và redirect/hoặc cập nhật
+        try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+
+        // Mở trang wishlist (dùng URL thật bạn có)
         driver.get(BASE_URL + "/wishlist?action=viewFavorite");
 
-        // Kiểm tra phim đã xuất hiện trong danh sách yêu thích
-        String pageSource = driver.getPageSource();
-        boolean movieAdded = pageSource.toLowerCase().contains("conjuring")
-                || pageSource.toLowerCase().contains("nghi lễ cuối cùng");
+        // Chờ xuất hiện link tới phim (dùng seriesID) trong wishlist
+        By movieLinkInWishlist = By.cssSelector("a[href*='series?action=sendMovieInfo&id=2']");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+        boolean added;
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(movieLinkInWishlist));
+            added = true;
+        } catch (TimeoutException te) {
+            added = false;
+        }
 
-        Assert.assertTrue(movieAdded, "❌ Phim chưa được thêm vào danh sách yêu thích.");
+        Assert.assertTrue(added, "❌ Phim chưa được thêm vào danh sách yêu thích.");
         System.out.println("✅ TC008 - Thêm phim vào danh sách yêu thích thành công.");
     }
+
+
 
     @AfterClass
     public void tearDown() {
