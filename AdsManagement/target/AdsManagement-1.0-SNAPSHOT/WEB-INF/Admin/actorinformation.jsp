@@ -1,9 +1,11 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Thông tin diễn viên</title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,9 +19,11 @@
   </head>
 
   <body>
-    <!---Header-->
-    <div id="header-placeholder"></div>
-    <!--Infor Actor ben trai-->
+
+    <!-- Header -->
+  
+
+    <!-- Actor Info -->
     <div class="container py-5">
       <div class="row justify-content-center align-items-start">
         <div class="col-md-4 mt-5">
@@ -28,6 +32,7 @@
             alt="Tom Holland"
             class="actor-photo"
           />
+
           <div class="actor-details mt-4 text-start">
             <h3 class="text-white">Tom Holland</h3>
             <p>
@@ -41,7 +46,8 @@
             <p><strong>Ngày sinh:</strong> 01/06/1996</p>
           </div>
         </div>
-        <!---List phim ben phai-->
+
+        <!-- Films List -->
         <div class="col-md-8 mt-4 mt-md-0">
           <h3 class="mb-4">Các phim đã tham gia</h3>
 
@@ -108,17 +114,12 @@
                 </p>
               </a>
             </div>
+
           </div>
         </div>
       </div>
     </div>
-    <script>
-      fetch("include/Header.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("header-placeholder").innerHTML = data;
-        });
-    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
