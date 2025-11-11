@@ -22,27 +22,7 @@
     </head>
     <body>
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="admin-info text-center mb-3">
-                <img
-                    src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg"
-                    alt="Admin"
-                    width="80"
-                    height="80"
-                    class="rounded-circle"
-                    />
-                <h6>Admin</h6>
-            </div>
-            z
-            <a href="#">Ads Management</a>
-            <a href="adminMovie?action=sendSeriesDashboard" class="active">Movie Management</a>
-            <a href="PerformersDashBoard.html">Performers Management</a>
-            <a href="admin?action=sendAccountDashboard">Accounts Management</a>
-            <a href="adminCategory?action=list">Category</a>
-            <a href="adminCountry?action=list">Country</a>
-            <a href="CommentDashBoard.html">Comment Management</a>
-            <a href="#">Genres/Tags Management</a>
-        </div>
+        <%@ include file="Sidebar.jsp" %>
 
         <!-- Main Content -->
         <div class="content">

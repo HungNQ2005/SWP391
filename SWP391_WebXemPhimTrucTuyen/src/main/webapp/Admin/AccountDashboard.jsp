@@ -27,28 +27,9 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Admin/AccountDashboard.css" />
 
     </head>
-<body>
+    <body>
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="admin-info text-center mb-3">
-                <img
-                    src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg"
-                    alt="Admin"
-                    width="80"
-                    height="80"
-                    class="rounded-circle"
-                    />
-                <h6>Admin</h6>
-            </div>
-            <a href="series?action=allOfSeries">Home</a>
-            <a href="#">Ads Management</a>
-            <a href="adminMovie?action=sendSeriesDashboard">Movie Management</a>
-            <a href="PerformersDashBoard.html">Performers Management</a>
-            <a href="admin?action=sendAccountDashboard" class="active">Accounts Management</a>
-            <a href="CommentDashBoard.html">Comment Management</a>
-            <a href="#">Genres/Tags Management</a>
-        </div>
-
+        <%@ include file="Sidebar.jsp" %>
         <!-- Main Content -->
         <div class="content">
             <!-- Topbar -->
@@ -169,7 +150,7 @@
                                     name="username"
                                     required/>
                             </div>
-                               <div class="mb-3">
+                            <div class="mb-3">
                                 <label>Password</label>
                                 <input
                                     type="password"
@@ -282,7 +263,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
 
-         
+
             // ======== EDIT FUNCTION ========
             document.addEventListener("click", function (e) {
                 if (e.target.classList.contains("editBtn")) {
