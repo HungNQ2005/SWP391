@@ -69,6 +69,9 @@ public class UserController extends HttpServlet {
         if ("sendFogortPassword".equals(action)) {
             request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
         }
+        if ("sendGmail".equals(action)) {
+            request.getRequestDispatcher("/Gmail.jsp").forward(request, response);
+        }
         if ("sendResetPassword".equals(action)) {
             String token = request.getParameter("token");
             request.setAttribute("token", token);

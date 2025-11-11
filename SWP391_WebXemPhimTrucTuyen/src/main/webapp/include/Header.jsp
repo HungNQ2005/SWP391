@@ -146,6 +146,7 @@ if (request.getAttribute("listCategory") == null) {
                                 <li><a class="dropdown-item" href="wishlist?action=allOfFilmInFavorite">Danh sách phim
                                     của tôi</a></li>
                                 <li><a class="dropdown-item" href="updateAvatar.jsp">Update avatar</a></li>
+                                <li><a class="dropdown-item" href="Gmail.jsp">Update Gmail</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
