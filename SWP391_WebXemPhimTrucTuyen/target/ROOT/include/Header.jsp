@@ -101,9 +101,7 @@ if (request.getAttribute("listCategory") == null) {
                     </li>
 
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Lịch chiếu</a>
-                    </li>
+                    
                 </ul>
             </div>
 

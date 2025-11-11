@@ -127,13 +127,13 @@ public class AdminDAO {
     public List<Series> getAllSeriesForAdmin() {
         List<Series> list = new ArrayList<>();
 
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, " +
-                "s.poster_url, s.trailer_url, s.type_id " +
-                "FROM Series s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, "
+                + "s.poster_url, s.trailer_url, s.type_id "
+                + "FROM Series s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
         try (Connection con = new DBContext().getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
@@ -163,16 +163,18 @@ public class AdminDAO {
             con.setAutoCommit(false);
 
             // Insert into Series table
-            String sqlSeries = "INSERT INTO Series (title, description, release_year, poster_url, trailer_url, type_id) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            String sqlSeries = "INSERT INTO Series (title, description, release_year, poster_url, trailer_url,film_url, type_id) "
+                    + "VALUES (?, ?, ?, ?, ?, ?,?)";
 
             try (PreparedStatement ps = con.prepareStatement(sqlSeries, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, s.getTitle());
                 ps.setString(2, s.getDescription());
                 ps.setInt(3, s.getReleaseYear());
                 ps.setString(4, s.getPosteUrl());
-                ps.setString(5, s.getTrailerUrl());
-                ps.setInt(6, s.getTypeId());
+                ps.setString(5, s.getTrailerUrl());  
+                ps.setString(6, s.getFilmUrl());
+
+                ps.setInt(7, s.getTypeId());
                 ps.executeUpdate();
 
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -201,7 +203,9 @@ public class AdminDAO {
             con.commit();
         } catch (Exception e) {
             try {
-                if (con != null) con.rollback();
+                if (con != null) {
+                    con.rollback();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -220,13 +224,13 @@ public class AdminDAO {
     }
 
     public Series getSeriesByIdForAdmin(int id) {
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
-                "FROM Series s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE s.series_id = ? " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id "
+                + "FROM Series s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "WHERE s.series_id = ? "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -250,7 +254,7 @@ public class AdminDAO {
     }
 
     public boolean updateSeriesForAdmin(Series s) {
-        String sql = "UPDATE Series SET title=?, description=?, release_year=?, poster_url=?, trailer_url=?, type_id=? WHERE series_id=?";
+        String sql = "UPDATE Series SET title=?, description=?, release_year=?, poster_url=?, trailer_url=?,film_url=?, type_id=? WHERE series_id=?";
         boolean success = false;
 
         Connection con = null;
@@ -265,8 +269,9 @@ public class AdminDAO {
                 ps.setInt(3, s.getReleaseYear());
                 ps.setString(4, s.getPosteUrl());
                 ps.setString(5, s.getTrailerUrl());
-                ps.setObject(6, s.getTypeId(), java.sql.Types.SMALLINT);
-                ps.setInt(7, s.getSeriesID());
+                ps.setString(6, s.getFilmUrl());
+                ps.setObject(7, s.getTypeId(), java.sql.Types.SMALLINT);
+                ps.setInt(8, s.getSeriesID());
 
                 int rows = ps.executeUpdate();
                 success = (rows > 0); // nếu có ít nhất 1 dòng bị ảnh hưởng => thành công
@@ -299,7 +304,9 @@ public class AdminDAO {
             con.commit();
         } catch (SQLException e) {
             try {
-                if (con != null) con.rollback();
+                if (con != null) {
+                    con.rollback();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -320,7 +327,9 @@ public class AdminDAO {
 
     // Helper: lấy country_id từ tên (trả null nếu không tồn tại)
     private Integer getCountryIdByName(String countryName) {
-        if (countryName == null || countryName.isEmpty()) return null;
+        if (countryName == null || countryName.isEmpty()) {
+            return null;
+        }
         String sql = "SELECT country_id FROM Country WHERE country_name = ?";
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, countryName);
@@ -337,13 +346,17 @@ public class AdminDAO {
 
     // New: get or create country_id using the provided connection (used within transactions)
     private Integer getOrCreateCountryId(String countryName, Connection con) throws SQLException {
-        if (countryName == null || countryName.isEmpty()) return null;
+        if (countryName == null || countryName.isEmpty()) {
+            return null;
+        }
         // Try to find existing
         String sel = "SELECT country_id FROM Country WHERE country_name = ?";
         try (PreparedStatement ps = con.prepareStatement(sel)) {
             ps.setString(1, countryName);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getInt("country_id");
+                if (rs.next()) {
+                    return rs.getInt("country_id");
+                }
             }
         }
         // Not found -> insert
@@ -352,7 +365,9 @@ public class AdminDAO {
             ps.setString(1, countryName);
             ps.executeUpdate();
             try (ResultSet gk = ps.getGeneratedKeys()) {
-                if (gk.next()) return gk.getInt(1);
+                if (gk.next()) {
+                    return gk.getInt(1);
+                }
             }
         }
         return null;
@@ -482,11 +497,11 @@ public class AdminDAO {
     // ================== PHÂN TRANG CHO SERIES ==================
     public List<Series> getSeriesByPage(int offset, int limit) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
-                "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id " +
-                "ORDER BY s.series_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id "
+                + "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id "
+                + "ORDER BY s.series_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, offset);
@@ -526,11 +541,11 @@ public class AdminDAO {
 
     public List<Series> searchSeries(String keyword) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id " +
-                "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE s.title LIKE ? OR s.description LIKE ? OR s.series_id IN (SELECT sc2.series_id FROM Series_Country sc2 JOIN Country c2 ON sc2.country_id = c2.country_id WHERE c2.country_name LIKE ?) " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.poster_url, s.trailer_url, s.type_id "
+                + "FROM Series s LEFT JOIN Series_Country sc ON s.series_id = sc.series_id LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "WHERE s.title LIKE ? OR s.description LIKE ? OR s.series_id IN (SELECT sc2.series_id FROM Series_Country sc2 JOIN Country c2 ON sc2.country_id = c2.country_id WHERE c2.country_name LIKE ?) "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url, s.trailer_url, s.type_id";
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             String searchPattern = "%" + keyword + "%";
             ps.setString(1, searchPattern);
@@ -569,7 +584,9 @@ public class AdminDAO {
 
     // New helper to batch-insert mappings
     public void insertSeriesCountries(int seriesId, List<Integer> countryIds) {
-        if (countryIds == null || countryIds.isEmpty()) return;
+        if (countryIds == null || countryIds.isEmpty()) {
+            return;
+        }
         String sql = "INSERT INTO Series_Country (series_id, country_id) VALUES (?, ?)";
         try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             for (Integer cid : countryIds) {
@@ -586,9 +603,7 @@ public class AdminDAO {
     public List<Country> getAllCountries() {
         List<Country> list = new ArrayList<>();
         String sql = "SELECT * FROM Country ORDER BY country_name";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new Country(rs.getInt("country_id"), rs.getString("country_name")));
             }
@@ -600,8 +615,7 @@ public class AdminDAO {
 
     public void insertCategory(String name, String description) {
         String sql = "INSERT INTO Category (name, description) VALUES (?, ?)";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, description);
             ps.executeUpdate();
@@ -612,8 +626,7 @@ public class AdminDAO {
 
     public void updateCategory(int id, String name, String description) {
         String sql = "UPDATE Category SET name=?, description=? WHERE category_id=?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, description);
             ps.setInt(3, id);
@@ -625,8 +638,7 @@ public class AdminDAO {
 
     public void deleteCategory(int id) {
         String sql = "DELETE FROM Category WHERE category_id=?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -635,12 +647,9 @@ public class AdminDAO {
     }
 
     // ================== COUNTRY ==================
-
-
     public void insertCountry(String name) {
         String sql = "INSERT INTO Country (country_name) VALUES (?)";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -650,8 +659,7 @@ public class AdminDAO {
 
     public void updateCountry(int id, String name) {
         String sql = "UPDATE Country SET country_name=? WHERE country_id=?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setInt(2, id);
             ps.executeUpdate();
@@ -662,8 +670,7 @@ public class AdminDAO {
 
     public void deleteCountry(int id) {
         String sql = "DELETE FROM Country WHERE country_id=?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -671,22 +678,19 @@ public class AdminDAO {
         }
     }
 
-
     public Series getSeriesById(int id) {
         Series series = null;
-        String sql = " SELECT s.series_id, s.title, s.description, s.release_year, \n" +
-                "                   s.poster_url, s.trailer_url, s.type_id,\n" +
-                "                   c.country_name, ca.name AS category_name\n" +
-                "            FROM Series s\n" +
-                "            LEFT JOIN Series_Country sc ON s.series_id = sc.series_id\n" +
-                "            LEFT JOIN Country c ON sc.country_id = c.country_id\n" +
-                "            LEFT JOIN Series_Category sct ON s.series_id = sct.series_id\n" +
-                "            LEFT JOIN Category ca ON sct.category_id = ca.category_id\n" +
-                "            WHERE s.series_id = ?";
+        String sql = " SELECT s.series_id, s.title, s.description, s.release_year, \n"
+                + "                   s.poster_url, s.trailer_url, s.type_id,\n"
+                + "                   c.country_name, ca.name AS category_name\n"
+                + "            FROM Series s\n"
+                + "            LEFT JOIN Series_Country sc ON s.series_id = sc.series_id\n"
+                + "            LEFT JOIN Country c ON sc.country_id = c.country_id\n"
+                + "            LEFT JOIN Series_Category sct ON s.series_id = sct.series_id\n"
+                + "            LEFT JOIN Category ca ON sct.category_id = ca.category_id\n"
+                + "            WHERE s.series_id = ?";
 
-
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -713,9 +717,7 @@ public class AdminDAO {
     public List<Series> getAllSeries() {
         List<Series> list = new ArrayList<>();
         String sql = "SELECT * FROM Series";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Series s = new Series();
                 s.setSeriesID(rs.getInt("series_id"));

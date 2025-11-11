@@ -25,7 +25,7 @@
           
             <div class="poster-box">
                 <img src="${movie.posteUrl}" alt="Poster" class="small-overlay"/>
-                <a href="#" class="btn-watch">
+                <a href="playFilm?id=${movie.seriesID}" class="btn-watch">
                     <i class="fa fa-play"></i> Xem ngay
                 </a>
             </div>

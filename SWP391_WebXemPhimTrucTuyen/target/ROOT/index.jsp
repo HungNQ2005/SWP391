@@ -33,7 +33,7 @@
                 <p id="movie-meta">2025 | 1h50m |</p>
                 <div id="movie-genres" class="genres"></div>
                 <p id="movie-desc">
-                   “Đến với hồi kết của vũ trụ The Conjuring, Ed và Lorraine Warren đối mặt với thế lực ác quỷ gieo rắc kinh hoàng cho gia đình Smurl...”
+                    “Đến với hồi kết của vũ trụ The Conjuring, Ed và Lorraine Warren đối mặt với thế lực ác quỷ gieo rắc kinh hoàng cho gia đình Smurl...”
                 </p>
                 <div class="banner-buttons">
                     <a id="watch-now" href="${pageContext.request.contextPath}/series?action=allOfSeries" class="btn btn-light">

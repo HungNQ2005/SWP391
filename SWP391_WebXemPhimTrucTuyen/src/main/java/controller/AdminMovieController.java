@@ -19,6 +19,7 @@ import entity.Series;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import dao.MovieDAO;
+import entity.Country;
 import java.util.Set;
 import java.util.LinkedHashSet;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -27,12 +28,11 @@ import jakarta.servlet.annotation.MultipartConfig;
  *
  * @author Chau Tan Cuong - CE190026
  */
-
 @WebServlet(name = "AdminMovieController", urlPatterns = {"/adminMovie"})
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
-        maxFileSize = 1024 * 1024 * 10,       // 10MB
-        maxRequestSize = 1024 * 1024 * 50     // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class AdminMovieController extends HttpServlet {
 
@@ -55,8 +55,6 @@ public class AdminMovieController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
 
-
-
         if (action == null || "sendSeriesDashboard".equals(action)) {
             int page = 1;
             int limit = 10; // bạn đổi số item mỗi trang tùy ý
@@ -75,7 +73,8 @@ public class AdminMovieController extends HttpServlet {
 
             // Lấy danh sách country từ adminDAO (dùng getAllSeriesForAdmin để có trường country)
             List<Series> allSeries = adminDAO.getAllSeriesForAdmin();
-            Set<String> listCountry = buildCountrySet(allSeries);
+
+            List<Country> listCountry = adminDAO.getAllCountries();
 
             request.setAttribute("listCategory", listCategory);
             request.setAttribute("listSeries", list);
@@ -123,7 +122,7 @@ public class AdminMovieController extends HttpServlet {
             request.getRequestDispatcher("/Admin/MovieDashBoard.jsp").forward(request, response);
             return;
         }
-        if("viewDetails".equals(action)){
+        if ("viewDetails".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -140,7 +139,6 @@ public class AdminMovieController extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid movie ID");
             }
         }
-
 
     }
 
@@ -181,7 +179,9 @@ public class AdminMovieController extends HttpServlet {
             // Đường dẫn lưu thật
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator + "movies";
             java.io.File uploadDir = new java.io.File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdirs();
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
 
             // Ghi file vào thư mục
             filePart.write(uploadPath + File.separator + fileName);
@@ -189,12 +189,29 @@ public class AdminMovieController extends HttpServlet {
             // Đường dẫn tương đối lưu vào DB
             String posterRelativePath = "uploads/movies/" + fileName;
             s.setPosteUrl(posterRelativePath);
+
+            // === UPLOAD VIDEO ===
+            jakarta.servlet.http.Part videoPart = request.getPart("video_file");
+            if (videoPart != null && videoPart.getSize() > 0) {
+                String videoName = new File(videoPart.getSubmittedFileName()).getName();
+                String videoUploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator + "filmStream";
+                File videoDir = new File(videoUploadPath);
+                if (!videoDir.exists()) {
+                    videoDir.mkdirs();
+                }
+                videoPart.write(videoUploadPath + File.separator + videoName);
+
+                // Đường dẫn lưu DB
+                String videoRelativePath = "uploads/filmStream/" + videoName;
+                s.setFilmUrl(videoRelativePath); // nhớ thêm trường video_url trong class Series + DB
+            }
+
             s.setTrailerUrl(request.getParameter("trailer_url"));
             s.setTypeId(Integer.parseInt(request.getParameter("type_id")));
 
             int newSeriesId = adminDAO.insertSeriesForAdmin(s);
 
-            // Thêm thể loại (nếu có)
+            // Thêm thể loại
             String[] categoryIds = request.getParameterValues("category_ids");
             if (categoryIds != null) {
                 List<Integer> catList = Arrays.stream(categoryIds)
@@ -202,6 +219,7 @@ public class AdminMovieController extends HttpServlet {
                         .collect(Collectors.toList());
                 seriesCategoryDAO.insertSeriesCategories(newSeriesId, catList);
             }
+
             response.sendRedirect("adminMovie?action=sendSeriesDashboard");
             return;
         }
@@ -231,7 +249,9 @@ public class AdminMovieController extends HttpServlet {
             // Đường dẫn lưu thật
             String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator + "movies";
             java.io.File uploadDir = new java.io.File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdirs();
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
 
             // Ghi file vào thư mục
             filePart.write(uploadPath + File.separator + fileName);
@@ -239,6 +259,25 @@ public class AdminMovieController extends HttpServlet {
             // Đường dẫn tương đối lưu vào DB
             String posterRelativePath = "uploads/movies/" + fileName;
             s.setPosteUrl(posterRelativePath);
+
+            // === UPLOAD VIDEO (optional) ===
+            jakarta.servlet.http.Part videoPart = request.getPart("video_file");
+            if (videoPart != null && videoPart.getSize() > 0) {
+                String videoName = new File(videoPart.getSubmittedFileName()).getName();
+                String videoUploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator + "filmStream";
+                File videoDir = new File(videoUploadPath);
+                if (!videoDir.exists()) {
+                    videoDir.mkdirs();
+                }
+                videoPart.write(videoUploadPath + File.separator + videoName);
+
+                String videoRelativePath = "uploads/filmStream/" + videoName;
+                s.setFilmUrl(videoRelativePath);
+            } else {
+                // Nếu không chọn video mới, giữ nguyên video cũ
+                s.setFilmUrl(request.getParameter("oldVideo"));
+            }
+
             s.setTrailerUrl(request.getParameter("trailer_url"));
             s.setTypeId(Integer.parseInt(request.getParameter("type_id")));
 
@@ -263,7 +302,6 @@ public class AdminMovieController extends HttpServlet {
      *
      * @return a String containing servlet description
      */
-
     @Override
     public String getServletInfo() {
         return "AdminMovieController";
@@ -272,13 +310,17 @@ public class AdminMovieController extends HttpServlet {
     // Helper: build set countries từ list Series (Series.country là country_name)
     private Set<String> buildCountrySet(List<Series> allSeries) {
         Set<String> set = new LinkedHashSet<>();
-        if (allSeries == null) return set;
+        if (allSeries == null) {
+            return set;
+        }
         for (Series s : allSeries) {
             if (s.getCountry() != null && !s.getCountry().isEmpty()) {
                 // nếu có nhiều country trong 1 series, thêm từng phần
                 String[] parts = s.getCountry().split(",\\s*");
                 for (String p : parts) {
-                    if (!p.trim().isEmpty()) set.add(p.trim());
+                    if (!p.trim().isEmpty()) {
+                        set.add(p.trim());
+                    }
                 }
             }
         }
