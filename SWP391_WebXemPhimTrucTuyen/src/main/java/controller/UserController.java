@@ -46,14 +46,13 @@ public class UserController extends HttpServlet {
     MovieDAO categoryDAO = new MovieDAO();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -91,15 +90,20 @@ public class UserController extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         String action = request.getParameter("action");
+
         // unused variables removed
         if (action.equals("signUp")) {
             String username = request.getParameter("username").trim();
@@ -118,9 +122,7 @@ public class UserController extends HttpServlet {
                 errorBuilder.append("Tên người dùng đã tồn tại.<br/>");
             }
 
-
             // Validation email
-
             if (email.isEmpty()) {
                 errorBuilder.append("Email không được để trống.<br/>");
             } else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
@@ -146,9 +148,7 @@ public class UserController extends HttpServlet {
 
             userDAO.signUp(username, email, password, "", "User", "uploads/default.jpg");
 
-             // Gửi mail kích hoạt
-
-
+            // Gửi mail kích hoạt
             request.setAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
@@ -166,12 +166,11 @@ public class UserController extends HttpServlet {
                     errorBuilder.append("Mật khẩu không được để trống.<br/>");
                 }
 
-                if(errorBuilder.length() > 0) {
+                if (errorBuilder.length() > 0) {
                     request.setAttribute("errorMsg", errorBuilder.toString());
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                     return;
                 }
-
 
                 User user;
                 UserDAO userDAO = new UserDAO();
@@ -257,12 +256,13 @@ public class UserController extends HttpServlet {
                 request.setAttribute("error", "Mật khẩu không được để trống");
                 request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
                 return;
-            } if (!newPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,32}$")) {
+            }
+            if (!newPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,32}$")) {
                 request.setAttribute("error", "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt, độ dài 8–32 ký tự");
                 request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
                 return;
             }
-             if (email != null) {
+            if (email != null) {
                 dao.updatePassword(email, newPassword);
                 request.setAttribute("message", "Đặt lại mật khẩu thành công, vui lòng đăng nhập lại!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -356,6 +356,43 @@ public class UserController extends HttpServlet {
             response.sendRedirect("series?action=allOfSeries");
         }
 
+        // 🧩 --- Xử lý update email ---
+        if ("updateEmail".equals(action)) {
+            HttpSession session = request.getSession();
+            UserDAO userDAO = new UserDAO();
+
+            User currentUser = (User) session.getAttribute("guest");
+
+            if (currentUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            String username = request.getParameter("username");
+            String oldEmail = request.getParameter("oldEmail");
+            String newEmail = request.getParameter("newEmail");
+
+            if (oldEmail == null || newEmail == null
+                    || oldEmail.trim().isEmpty() || newEmail.trim().isEmpty()) {
+                request.setAttribute("error", "⚠️ Vui lòng nhập đầy đủ thông tin.");
+                request.getRequestDispatcher("updateEmail.jsp").forward(request, response);
+                return;
+            }
+
+            boolean success = userDAO.updateEmail(username, oldEmail, newEmail);
+
+            if (success) {
+                currentUser.setEmail(newEmail);
+                session.setAttribute("guest", currentUser);
+                request.setAttribute("success", "✅ Cập nhật email thành công!");
+            } else {
+                request.setAttribute("error", "❌ Email hiện tại không đúng hoặc email mới đã tồn tại!");
+            }
+
+            request.getRequestDispatcher("Gmail.jsp").forward(request, response);
+            return;
+        }
+
     }
 
     private String getFileName(Part part) {
@@ -376,5 +413,6 @@ public class UserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }

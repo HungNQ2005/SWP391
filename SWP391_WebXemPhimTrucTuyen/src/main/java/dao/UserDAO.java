@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserDAO {
+
     private Connection connection;
 
     public int signUp(String username, String email, String password, String full_name, String user_level, String avatar_url) {
@@ -237,7 +238,6 @@ public class UserDAO {
         }
     }
 
-
     public boolean existsByUsername(String username) {
         String sql = "SELECT 1 FROM Users WHERE username = ?";
 
@@ -257,7 +257,7 @@ public class UserDAO {
 
     public boolean existsByEmail(String email) {
         String sql = "SELECT 1 FROM Users WHERE email = ?";
-        try  {
+        try {
             DBContext db = new DBContext();
             Connection con = db.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -268,6 +268,70 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public User getUserByUsername(String username) {
+        String sql = "SELECT * FROM Users WHERE username = ?";
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User u = new User();
+                u.setUser_id(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setHash_password(rs.getString("password_hash"));
+                u.setFull_name(rs.getString("full_name"));
+                u.setUser_level(rs.getString("user_level"));
+                return u;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateEmail(String username, String oldEmail, String newEmail) {
+        // kiểm tra email hiện tại đúng chưa
+        User user = getUserByUsername(username);
+        if (user == null || !user.getEmail().equals(oldEmail.trim())) {
+            return false;
+        }
+
+        String sql = "UPDATE Users SET email = ? WHERE username = ?";
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, newEmail);
+            ps.setString(2, username);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        UserDAO dao = new UserDAO();
+
+        // Dữ liệu test
+        String username = "AdminTest1";
+        String oldEmail = "john_new@example.com";
+        String newEmail = "564564564.ce190026@gmail.com";
+
+        boolean result = dao.updateEmail(username, oldEmail, newEmail);
+
+        if (result) {
+            System.out.println("✅ Cập nhật email thành công!");
+        } else {
+            System.out.println("❌ Cập nhật email thất bại (username hoặc email cũ không đúng)");
+        }
     }
 
 }
