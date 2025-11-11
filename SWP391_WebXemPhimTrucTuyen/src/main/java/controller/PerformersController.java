@@ -63,7 +63,7 @@ public class PerformersController extends HttpServlet {
         request.setAttribute("performers", list);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
-        request.getRequestDispatcher("/performers/PerformerList.jsp").forward(request, response);
+        request.getRequestDispatcher("/PerformerList.jsp").forward(request, response);
     }
 
     private void detailPerformer(HttpServletRequest request, HttpServletResponse response)
@@ -89,7 +89,7 @@ public class PerformersController extends HttpServlet {
         List<Series> seriesList = dao.getSeriesByPerformer(performerId);
         request.setAttribute("performer", performer);
         request.setAttribute("seriesList", seriesList);
-        request.getRequestDispatcher("/performers/PerformersInfomation.jsp").forward(request, response);
+        request.getRequestDispatcher("/PerformersInfomation.jsp").forward(request, response);
 
     }
 }

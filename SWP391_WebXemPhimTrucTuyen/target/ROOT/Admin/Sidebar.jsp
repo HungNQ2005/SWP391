@@ -23,7 +23,7 @@
             <a href="series?action=allOfSeries">Home</a>
             <a href="Ads">Ads Management</a>
             <a href="adminMovie?action=sendSeriesDashboard">Movie Management</a>
-            <a href="${pageContext.request.contextPath}/performer/admin">Performers Management</a>
+            <a href="${pageContext.request.contextPath}/performerAdmin">Performers Management</a>
             <a href="admin?action=sendAccountDashboard" class="active">Accounts Management</a>
             <a href="adminCategory?action=list">Category Management</a>
             <a href="adminCountry?action=list">Country Management</a>

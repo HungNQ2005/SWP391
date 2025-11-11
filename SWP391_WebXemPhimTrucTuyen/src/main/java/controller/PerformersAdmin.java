@@ -12,12 +12,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/performer/admin")
+@WebServlet("/performerAdmin")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2,
         maxFileSize = 1024 * 1024 * 10,
         maxRequestSize = 1024 * 1024 * 50
 )
+
 public class PerformersAdmin extends HttpServlet {
 
     private static final int PAGE_SIZE = 10;
@@ -32,7 +33,9 @@ public class PerformersAdmin extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         String keyword = req.getParameter("keyword");
-        if (keyword == null) keyword = "";
+        if (keyword == null) {
+            keyword = "";
+        }
         keyword = keyword.trim();
 
         int page = getValidPage(req.getParameter("page"), keyword);
@@ -72,18 +75,23 @@ public class PerformersAdmin extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         String action = req.getParameter("action");
-        if (action == null) action = "";
+        if (action == null) {
+            action = "";
+        }
 
         String keyword = req.getParameter("keyword");
-        if (keyword == null) keyword = "";
+        if (keyword == null) {
+            keyword = "";
+        }
 
         String currentPage = req.getParameter("currentPage");
-        if (currentPage == null) currentPage = "1";
+        if (currentPage == null) {
+            currentPage = "1";
+        }
 
         HttpSession session = req.getSession();
 
         try {
-            // ✅ dùng switch cũ để tương thích mọi version Java
             switch (action) {
                 case "add":
                     handleAdd(req);
@@ -109,8 +117,6 @@ public class PerformersAdmin extends HttpServlet {
                 case "delete":
                     successMsg = "Performer deleted successfully!";
                     break;
-                default:
-                    break;
             }
 
             if (successMsg != null) {
@@ -124,7 +130,6 @@ public class PerformersAdmin extends HttpServlet {
                             ? e.getMessage()
                             : "An unexpected error occurred!");
         }
-
         resp.sendRedirect(buildRedirectUrl(req, currentPage, keyword));
     }
 
@@ -136,7 +141,8 @@ public class PerformersAdmin extends HttpServlet {
             errors.add("This photo is already used by another performer");
         }
         if (dao.existsPerformer(p.getName(), p.getDateOfBirth(),
-                p.getNationality(), p.getGender(), p.getPhotoUrl(), p.getDescription())) {
+                p.getNationality(), p.getGender(),
+                p.getPhotoUrl(), p.getDescription())) {
             errors.add("A performer with identical details already exists");
         }
 
@@ -178,7 +184,7 @@ public class PerformersAdmin extends HttpServlet {
             session.setAttribute("error", "Invalid performer ID for deletion.");
             return;
         }
-
+  System.out.println(">>> Delete ID = " + idStr);
         int id = Integer.parseInt(idStr);
 
         try {
@@ -194,10 +200,9 @@ public class PerformersAdmin extends HttpServlet {
         }
     }
 
-    private Performers extractPerformer(HttpServletRequest req, int id)
-            throws IOException, ServletException {
-
+    private Performers extractPerformer(HttpServletRequest req, int id) throws IOException, ServletException {
         String name = req.getParameter("name") != null ? req.getParameter("name").trim() : "";
+
         Part filePart = req.getPart("photo");
         String fileName = extractFileName(filePart);
         String photo = null;
@@ -205,18 +210,21 @@ public class PerformersAdmin extends HttpServlet {
         if (fileName != null && !fileName.isEmpty() && filePart.getSize() > 0) {
             String uploadPath = getServletContext().getRealPath("/Images");
             java.io.File uploadDir = new java.io.File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
-
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
             filePart.write(uploadPath + java.io.File.separator + fileName);
             photo = "Images/" + fileName;
         } else {
             String existingPhoto = req.getParameter("existingPhoto");
-            photo = (existingPhoto != null && !existingPhoto.isEmpty())
-                    ? existingPhoto.trim()
-                    : "";
+            photo = (existingPhoto != null && !existingPhoto.isEmpty()) ? existingPhoto.trim() : null;
         }
 
         String gender = req.getParameter("gender") != null ? req.getParameter("gender").trim() : "";
+        if (!gender.isEmpty()) {
+            gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase();
+        }
+
         String desc = req.getParameter("description") != null ? req.getParameter("description").trim() : "";
         String dob = req.getParameter("date_of_birth") != null ? req.getParameter("date_of_birth").trim() : "";
         String nation = req.getParameter("nationality") != null ? req.getParameter("nationality").trim() : "";
@@ -233,7 +241,7 @@ public class PerformersAdmin extends HttpServlet {
             errors.add("Name must contain only letters and symbols like .'-");
         }
 
-        if (performer.getPhotoUrl().isEmpty()) {
+        if (performer.getPerformerID() == 0 && (performer.getPhotoUrl() == null || performer.getPhotoUrl().isEmpty())) {
             errors.add("Photo URL is required");
         }
 
@@ -245,7 +253,7 @@ public class PerformersAdmin extends HttpServlet {
             errors.add("Date of birth is required");
         } else {
             try {
-                java.time.LocalDate date = java.time.LocalDate.parse(performer.getDateOfBirth());
+                var date = java.time.LocalDate.parse(performer.getDateOfBirth());
                 if (date.isAfter(java.time.LocalDate.now())) {
                     errors.add("Date of birth cannot be in the future");
                 } else if (date.isBefore(java.time.LocalDate.now().minusYears(120))) {
@@ -280,11 +288,9 @@ public class PerformersAdmin extends HttpServlet {
         return page;
     }
 
-    private String buildRedirectUrl(HttpServletRequest req, String currentPage, String keyword)
-            throws IOException {
-
+    private String buildRedirectUrl(HttpServletRequest req, String currentPage, String keyword) throws IOException {
         StringBuilder url = new StringBuilder(req.getContextPath())
-                .append("/performer/admin?page=")
+                .append("/performerAdmin?page=")
                 .append(currentPage.isEmpty() ? "1" : currentPage);
 
         if (!keyword.isEmpty()) {
@@ -294,7 +300,9 @@ public class PerformersAdmin extends HttpServlet {
     }
 
     private String extractFileName(Part part) {
-        if (part == null) return null;
+        if (part == null) {
+            return null;
+        }
         String contentDisp = part.getHeader("content-disposition");
         for (String token : contentDisp.split(";")) {
             if (token.trim().startsWith("filename")) {
@@ -303,4 +311,5 @@ public class PerformersAdmin extends HttpServlet {
         }
         return null;
     }
+
 }

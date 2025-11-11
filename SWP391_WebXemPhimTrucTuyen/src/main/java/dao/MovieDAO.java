@@ -24,16 +24,14 @@ public class MovieDAO {
 
     public List<Series> getAllSeries() {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS countries, s.poster_url " +
-                "FROM Series s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "GROUP BY s.series_id, s.title, s.release_year, s.poster_url";
+        String sql = "SELECT s.series_id, s.title, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS countries, s.poster_url "
+                + "FROM Series s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "GROUP BY s.series_id, s.title, s.release_year, s.poster_url";
 
-        try (Connection con = new DBContext().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = new DBContext().getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Series series = new Series();
@@ -49,20 +47,18 @@ public class MovieDAO {
         return list;
     }
 
-
     // 🟩 Lấy danh sách phim theo từng trang
     public List<Series> getSeriesByPage(int offset, int limit) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url " +
-                "FROM [dbo].[Series] s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "GROUP BY s.series_id, s.title, s.release_year, s.poster_url " +
-                "ORDER BY s.series_id " +
-                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT s.series_id, s.title, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.poster_url "
+                + "FROM [dbo].[Series] s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "GROUP BY s.series_id, s.title, s.release_year, s.poster_url "
+                + "ORDER BY s.series_id "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, offset);
             ps.setInt(2, limit);
             try (ResultSet rs = ps.executeQuery()) {
@@ -84,9 +80,7 @@ public class MovieDAO {
     // 🟩 Đếm tổng số phim để tính số trang
     public int getTotalSeriesCount() {
         String sql = "SELECT COUNT(*) FROM [dbo].[Series]";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -98,16 +92,15 @@ public class MovieDAO {
 
     public Series getSeriesById(int id) {
         Series s = null;
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.trailer_url, s.poster_url " +
-                "FROM [dbo].[Series] s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE s.series_id = ? " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.trailer_url, s.poster_url";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.trailer_url, s.poster_url "
+                + "FROM [dbo].[Series] s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "WHERE s.series_id = ? "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.trailer_url, s.poster_url";
 
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -131,9 +124,7 @@ public class MovieDAO {
     public List<Category> getAllCategories() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM Category";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Category c = new Category(
                         rs.getInt("category_id"),
@@ -151,13 +142,12 @@ public class MovieDAO {
     public List<Series> getSeriesByCategoryId(int categoryId) {
         List<Series> list = new ArrayList<>();
 
-        String sql = "SELECT s.series_id, s.title, s.poster_url " +
-                "FROM Series s " +
-                "INNER JOIN Series_Category sc ON s.series_id = sc.series_id " +
-                "WHERE sc.category_id = ?";
+        String sql = "SELECT s.series_id, s.title, s.poster_url "
+                + "FROM Series s "
+                + "INNER JOIN Series_Category sc ON s.series_id = sc.series_id "
+                + "WHERE sc.category_id = ?";
 
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, categoryId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -178,16 +168,15 @@ public class MovieDAO {
 
     public List<Series> getSeriesByTypeId(int typeId) {
         List<Series> s = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.trailer_url, s.poster_url " +
-                "FROM [dbo].[Series] s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE s.type_id = ? " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.trailer_url, s.poster_url";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, "
+                + "STRING_AGG(c.country_name, ', ') AS country, s.trailer_url, s.poster_url "
+                + "FROM [dbo].[Series] s "
+                + "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "LEFT JOIN Country c ON sc.country_id = c.country_id "
+                + "WHERE s.type_id = ? "
+                + "GROUP BY s.series_id, s.title, s.description, s.release_year, s.trailer_url, s.poster_url";
 
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, typeId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -210,15 +199,14 @@ public class MovieDAO {
 
     public List<Series> getSeriesByCountry(String country) {
         List<Series> list = new ArrayList<>();
-        String sql = "SELECT s.series_id, s.title, s.poster_url, " +
-                "STRING_AGG(c.country_name, ', ') AS countries " +
-                "FROM Series s " +
-                "INNER JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "INNER JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE c.country_name = ? " +
-                "GROUP BY s.series_id, s.title, s.poster_url";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT s.series_id, s.title, s.poster_url, "
+                + "STRING_AGG(c.country_name, ', ') AS countries "
+                + "FROM Series s "
+                + "INNER JOIN Series_Country sc ON s.series_id = sc.series_id "
+                + "INNER JOIN Country c ON sc.country_id = c.country_id "
+                + "WHERE c.country_name = ? "
+                + "GROUP BY s.series_id, s.title, s.poster_url";
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, country);
             try (ResultSet rs = ps.executeQuery()) {
@@ -240,20 +228,19 @@ public class MovieDAO {
     public List<Series> searchSeries(String keyword) {
         List<Series> list = new ArrayList<>();
 
-        String sql = "SELECT s.series_id, s.title, s.description, s.release_year, " +
-                "STRING_AGG(c.country_name, ', ') AS country, s.poster_url " +
-                "FROM [dbo].[Series] s " +
-                "LEFT JOIN Series_Country sc ON s.series_id = sc.series_id " +
-                "LEFT JOIN Country c ON sc.country_id = c.country_id " +
-                "WHERE s.title LIKE ? OR s.description LIKE ? OR s.series_id IN (SELECT sc2.series_id FROM Series_Country sc2 JOIN Country c2 ON sc2.country_id = c2.country_id WHERE c2.country_name LIKE ?) " +
-                "GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url";
+        String sql = "SELECT s.series_id, s.title, s.description, s.release_year,\n"
+                + "           STRING_AGG(c.country_name, ', ') AS country, s.poster_url\n"
+                + "    FROM [dbo].[Series] s\n"
+                + "    LEFT JOIN Series_Country sc ON s.series_id = sc.series_id\n"
+                + "    LEFT JOIN Country c ON sc.country_id = c.country_id\n"
+                + "    WHERE s.title LIKE ?\n"
+                + "    GROUP BY s.series_id, s.title, s.description, s.release_year, s.poster_url\n"
+                + "    ;";
 
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             String searchPattern = "%" + keyword + "%";
             ps.setString(1, searchPattern);
-            ps.setString(2, searchPattern);
-            ps.setString(3, searchPattern);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Series s = new Series();
@@ -271,13 +258,10 @@ public class MovieDAO {
         return list;
     }
 
-
     public List<Country> getAllCountry() {
         List<Country> list = new ArrayList<>();
         String sql = "SELECT country_id, country_name FROM Country ORDER BY country_name";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Country c = new Country(rs.getInt("country_id"), rs.getString("country_name"));
                 list.add(c);
@@ -288,11 +272,9 @@ public class MovieDAO {
         return list;
     }
 
-
     public String getFilmUrlById(int id) {
         String sql = "SELECT film_url FROM [dbo].[Series] WHERE series_id = ?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -305,11 +287,9 @@ public class MovieDAO {
         return null;
     }
 
-
     public Series getMovieById(int id) {
         String sql = "SELECT * FROM Series WHERE series_id = ?";
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

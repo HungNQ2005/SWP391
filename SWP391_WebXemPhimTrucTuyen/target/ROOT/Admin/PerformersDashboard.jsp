@@ -16,12 +16,19 @@
         <title>Performers Management</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="http://localhost:8080/Perfomers/css/performersdashboard.css" rel="stylesheet" type="text/css"/>
+        <link href="http://localhost:8080/SWP391_WebXemPhimTrucTuyen/css/performersdashboard.css" rel="stylesheet" type="text/css"/>
+        
     </head>
 
     <body>
         <!-- Sidebar -->
-        <%@ include file="Sidebar.jsp" %>
+        <div class="sidebar">
+            <div class="admin-info">
+                <img src="https://us.oricon-group.com/upimg/sns/5000/5552/img1200/demon-slayer-infinity-castle-akaza-2025.jpg" alt="Admin" width="80" height="80" />
+                <h6>Admin</h6>
+            </div>
+            <%@ include file="Sidebar.jsp" %>
+        </div>
         <!-- Main Content -->
         <div class="content">
             <div class="content">
@@ -30,7 +37,7 @@
                     <button class="btn btn-netflix btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Performer</button>
                 </div>
                 <!-- Searching -->
-                <form action="${pageContext.request.contextPath}/performer/admin" method="get" class="search-box mb-3 d-flex align-items-center">
+                <form action="${pageContext.request.contextPath}/performerAdmin" method="get" class="search-box mb-3 d-flex align-items-center">
                     <input type="text" name="keyword" class="form-control bg-dark text-white" 
                            placeholder="Search performer..." value="${keyword}" />
                     <button type="submit" class="btn btn-danger btn-sm ms-2">Search</button>
@@ -134,7 +141,7 @@
                             <ul class="pagination justify-content-center flex-wrap">
                                 <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                     <a class="page-link bg-dark text-white border-secondary" 
-                                       href="${pageContext.request.contextPath}/performer/admin?page=${currentPage - 1}${not empty keyword ? '&keyword=' : ''}${keyword}" 
+                                       href="${pageContext.request.contextPath}/performerAdmin?page=${currentPage - 1}${not empty keyword ? '&keyword=' : ''}${keyword}" 
                                        tabindex="-1">
                                         <i class="bi bi-chevron-left"></i>
                                     </a>
@@ -142,14 +149,14 @@
                                 <c:forEach var="i" begin="1" end="${totalPages}">
                                     <li class="page-item ${i == currentPage ? 'active' : ''}">
                                         <a class="page-link ${i == currentPage ? 'bg-danger border-danger text-white' : 'bg-dark text-white border-secondary'}" 
-                                           href="${pageContext.request.contextPath}/performer/admin?page=${i}${not empty keyword ? '&keyword=' : ''}${keyword}">
+                                           href="${pageContext.request.contextPath}/performerAdmin?page=${i}${not empty keyword ? '&keyword=' : ''}${keyword}">
                                             ${i}
                                         </a>
                                     </li>
                                 </c:forEach>
                                 <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                     <a class="page-link bg-dark text-white border-secondary" 
-                                       href="${pageContext.request.contextPath}/performer/admin?page=${currentPage + 1}${not empty keyword ? '&keyword=' : ''}${keyword}">
+                                       href="${pageContext.request.contextPath}/performerAdmin?page=${currentPage + 1}${not empty keyword ? '&keyword=' : ''}${keyword}">
                                         <i class="bi bi-chevron-right"></i>
                                     </a>
                                 </li>
@@ -167,7 +174,7 @@
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="${pageContext.request.contextPath}/performer/admin" 
+                            <form action="${pageContext.request.contextPath}/performerAdmin" 
                                   method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="action" value="add" />
                                 <div class="mb-3">
@@ -221,7 +228,7 @@
                         </div>
 
                         <form id="editForm" method="post"
-                              action="${pageContext.request.contextPath}/performer/admin"
+                              action="${pageContext.request.contextPath}/performerAdmin"
                               enctype="multipart/form-data">
                             <input type="hidden" name="action" value="edit" />
                             <input type="hidden" id="editId" name="id" />
@@ -259,17 +266,14 @@
                                 <div class="mb-3">
                                     <label class="form-label">Photo</label>
                                     <input type="file" id="editPhotoFile" name="photo"
-                                           class="form-control bg-dark text-white" accept="image/*" />
+                                           class="form-control bg-dark text-white" accept="Image/*" />
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label">Description</label>
                                     <textarea id="editDesc" name="description"
-                                              class="form-control bg-dark text-white" rows="3">
-                                    </textarea>
+                                              class="form-control bg-dark text-white" rows="3"></textarea>
                                 </div>
                             </div>
-
                             <div class="modal-footer border-0">
                                 <button type="submit" class="btn btn-danger">Save Changes</button>
                             </div>
@@ -286,7 +290,7 @@
                             <h5 class="modal-title">Delete Performer</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
-                        <form method="post" action="${pageContext.request.contextPath}/performer/admin">
+                        <form method="post" action="${pageContext.request.contextPath}/performerAdmin">
                             <input type="hidden" name="action" value="delete" />
                             <input type="hidden" name="id" id="deleteId" />
                             <input type="hidden" name="currentPage" id="deletePage" />
@@ -302,7 +306,60 @@
                     </div>
                 </div>
             </div>
-            <script src="../js/performeradmin.js" type="text/javascript"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+
+                    const editModal = document.getElementById('editModal');
+                    editModal.addEventListener('show.bs.modal', event => {
+                        const button = event.relatedTarget;
+                        const id = button.getAttribute('data-id');
+                        const name = button.getAttribute('data-name');
+                        const dob = button.getAttribute('data-dob');
+                        const gender = button.getAttribute('data-gender');
+                        const nation = button.getAttribute('data-nation');
+                        const desc = button.getAttribute('data-desc');
+                        const photo = button.getAttribute('data-photo');
+
+                        document.getElementById('editId').value = id;
+                        document.getElementById('editName').value = name;
+                        document.getElementById('editDOB').value = dob;
+                        document.getElementById('editGender').value = gender;
+                        document.getElementById('editNation').value = nation;
+                        document.getElementById('editDesc').value = desc.trim();
+                        document.getElementById('existingPhoto').value = photo;
+                    });
+
+                    // --- DELETE Modal ---
+                    const deleteModal = document.getElementById('deleteModal');
+                    if (deleteModal) {
+                        deleteModal.addEventListener('show.bs.modal', function (event) {
+                            const button = event.relatedTarget;
+                            const performerId = button.getAttribute('data-id') || "";
+                            const performerName = button.getAttribute('data-name') || 'Unknown';
+                            const currentPage = button.getAttribute('data-page') || 1;
+                            const keyword = button.getAttribute('data-keyword') || '';
+
+                            document.getElementById('deleteId').value = performerId;
+                            document.getElementById('deletePage').value = currentPage;
+                            document.getElementById('deleteKeyword').value = keyword;
+                            document.getElementById('deleteMessage').innerHTML =
+                                    `Are you sure you want to delete <strong>${performerName}</strong>?`;
+                        });
+                    }
+
+                    // --- SEARCH FORM ---
+                    const searchForm = document.querySelector('.search-box');
+                    if (searchForm) {
+                        searchForm.addEventListener('submit', function (e) {
+                            const keyword = this.querySelector('input[name="keyword"]').value.trim();
+                            if (!keyword) {
+                                e.preventDefault();
+                                alert("Please enter a keyword before searching!");
+                            }
+                        });
+                    }
+
+                });</script> 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

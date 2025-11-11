@@ -20,7 +20,7 @@ Author     : Vo Thi Phi Yen - CE190428
 
     <body class="bg-dark text-white">
         <div class="container py-5">
-            <a href="${pageContext.request.contextPath}/performer/admin" class="text-secondary text-decoration-none mb-4 d-inline-block">
+            <a href="${pageContext.request.contextPath}/performerAdmin" class="text-secondary text-decoration-none mb-4 d-inline-block">
                 <i class="bi bi-arrow-left"></i> Quay Lại
             </a>
             <div class="row g-5">

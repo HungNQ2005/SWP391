@@ -26,7 +26,6 @@
         .container-box {
             display: flex;
             min-height: 100vh;
-            box-shadow: 0 0 25px rgba(255,0,0,0.2);
         }
 
         /* Sidebar */
@@ -69,40 +68,64 @@
         /* Main content */
         .main-content {
             flex: 1;
-            padding: 50px 60px;
+            display: flex;
+            justify-content: center; /* căn giữa ngang */
+            align-items: center;     /* căn giữa dọc */
             background-color: #1a1a1a;
             box-shadow: inset 0 0 25px rgba(255,0,0,0.15);
+            padding: 40px;
         }
 
-        .main-content h1 {
+        /* Card chứa thông tin */
+        .profile-card {
+            background-color: #111;
+            border-radius: 20px;
+            padding: 40px 60px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-card h1 {
             color: #fff;
             font-weight: 700;
-            font-size: 32px;
+            font-size: 28px;
             border-bottom: 3px solid #ff1a1a;
             display: inline-block;
             padding-bottom: 8px;
-            margin-bottom: 40px;
-        }
-
-        .profile-info {
-            display: flex;
-            align-items: center;
-            gap: 50px;
+            margin-bottom: 25px;
         }
 
         .avatar-box img {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             border: 4px solid #ff1a1a;
             box-shadow: 0 0 20px #ff3333;
             object-fit: cover;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px #ff3333; }
+            50% { box-shadow: 0 0 25px #ff6666; }
+            100% { box-shadow: 0 0 10px #ff3333; }
         }
 
         .avatar-box p {
-            text-align: center;
             margin-top: 10px;
             color: #ccc;
+        }
+
+        .info-box {
+            margin-top: 25px;
         }
 
         .info-box p {
@@ -112,12 +135,10 @@
 
         .info-box p strong {
             color: #ff4d4d;
-            width: 120px;
-            display: inline-block;
         }
 
         .btn-update {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 10px 25px;
             border: none;
             border-radius: 25px;
@@ -126,6 +147,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .btn-update:hover {
@@ -137,14 +159,12 @@
 <body>
 <div class="container-box">
     <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="series">Back home</a>
-    </div>
+  
 
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Thông tin cá nhân</h1>
-        <div class="profile-info">
+        <div class="profile-card">
+            <h1>Thông tin cá nhân</h1>
             <div class="avatar-box">
                 <img src="<%= user.getAvatar_url() != null ? user.getAvatar_url() : "https://i.pinimg.com/originals/6e/ea/71/6eea71cd65edef17878a46e75d2ee5f7.jpg" %>" alt="Avatar"/>
                 <p>Avatar</p>
@@ -152,7 +172,8 @@
             <div class="info-box">
                 <p><strong>Email:</strong> <%= user.getEmail() %></p>
                 <p><strong>Username:</strong> <%= user.getUsername() %></p>
-                <p><strong>Status:</strong> <%= user.getUser_level() %></p>                      
+                <p><strong>Status:</strong> <%= user.getUser_level() %></p>
+                <a href="series" class="btn-update">⬅ Back Home</a>
             </div>
         </div>
     </div>

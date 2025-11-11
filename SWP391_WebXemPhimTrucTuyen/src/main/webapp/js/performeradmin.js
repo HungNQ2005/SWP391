@@ -1,19 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const editModal = document.getElementById('editModal');
-    if (editModal) {
-        editModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            console.log("👉 Button clicked:", button);
-            console.log("👉 Data received:", button.dataset);
-            document.getElementById("editId").value = button.dataset.id || "";
-            document.getElementById("editName").value = button.dataset.name || "";
-            document.getElementById("editDOB").value = button.dataset.dob || "";
-            document.getElementById("editGender").value = button.dataset.gender || "";
-            document.getElementById("editNation").value = button.dataset.nation || "";
-            document.getElementById("editDesc").value = button.dataset.desc || "";
-        });
-    }
+    editModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const dob = button.getAttribute('data-dob');
+        const gender = button.getAttribute('data-gender');
+        const nation = button.getAttribute('data-nation');
+        const desc = button.getAttribute('data-desc');
+        const photo = button.getAttribute('data-photo'); 
+
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editDOB').value = dob;
+        document.getElementById('editGender').value = gender;
+        document.getElementById('editNation').value = nation;
+        document.getElementById('editDesc').value = desc.trim();
+        document.getElementById('existingPhoto').value = photo; 
+    });
+
     // --- DELETE Modal ---
     const deleteModal = document.getElementById('deleteModal');
     if (deleteModal) {
