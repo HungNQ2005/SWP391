@@ -1,0 +1,196 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 5, 2025, 1:54:51 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+body {
+    display: flex;
+    background: #141414;
+    color: #e5e5e5;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 230px;
+    background: #000;
+    padding: 15px 0;
+    flex-shrink: 0;
+}
+
+.sidebar .admin-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .admin-info img {
+    width: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #e50914;
+
+}
+
+.sidebar h6 {
+    color: #fff;
+    font-weight: bold;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: #e5e5e5;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar a.active {
+    color: #e50914;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+
+.topbar {
+    background: #000;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-left: 5px solid #e50914;
+
+}
+
+.topbar h5 {
+    color: #fff;
+    font-weight: bold;
+}
+
+.topbar button {
+    background: #e50914;
+    border: none;
+    color: #fff;
+}
+
+.topbar button:hover {
+    background: #b20710;
+}
+
+/* Search */
+.form-control {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.form-control:focus {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #e50914;
+    box-shadow: 0 0 5px #e50914;
+}
+
+/* Table */
+.table {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.table thead {
+    background: #e50914;
+    color: #fff;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #141414;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+
+.badge {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+}
+
+.badge.bg-secondary {
+    background: #6d6d6e;
+}
+
+.badge.bg-primary {
+    background: #e50914;
+}
+
+/* Buttons */
+.btn-success {
+    background: #46d369;
+    border: none;
+}
+
+.btn-success:hover {
+    background: #32a852;
+}
+
+.btn-danger {
+    background: #e50914;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #b20710;
+}
+
+.input-group-text {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+}
+
+/* Search box */
+/* Search box Netflix style */
+.search-box .input-group-text {
+    background: #1a1a1a !important;
+    border: 1px solid #333 !important;
+    color: #888 !important;
+}
+
+.search-box .form-control {
+    background: #1a1a1a !important;
+    color: #fff !important;
+    border: 1px solid #333 !important;
+    border-left: none !important;
+    border-radius: 0 6px 6px 0;
+}
+
+.search-box .form-control::placeholder {
+    color: #777;
+}
+
+.search-box .form-control:focus {
+    background: #1a1a1a !important;
+    color: #fff !important;
+    border-color: #e50914 !important;
+    box-shadow: 0 0 6px #e50914 !important;
+}
+
+.search-box .input-group-text {
+    border-radius: 6px 0 0 6px;
+}
