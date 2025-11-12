@@ -71,6 +71,9 @@ public class UserController extends HttpServlet {
         if ("sendGmail".equals(action)) {
             request.getRequestDispatcher("/Gmail.jsp").forward(request, response);
         }
+        if ("profile".equals(action)) {
+            request.getRequestDispatcher("/profile.jsp").forward(request, response);
+        }
         if ("sendResetPassword".equals(action)) {
             String token = request.getParameter("token");
             request.setAttribute("token", token);
@@ -182,6 +185,7 @@ public class UserController extends HttpServlet {
                     session.setAttribute("user_id", user.getUser_id());
                     session.setAttribute("username", user.getUsername());
                     session.setAttribute("guest", user);
+
                     List<Series> listSeries = movieDAO.getAllSeries();
                     List<Category> listCategory = categoryDAO.getAllCategories();
 
@@ -197,7 +201,14 @@ public class UserController extends HttpServlet {
 
                     request.setAttribute("listCategory", listCategory);
                     request.setAttribute("listSeries", listSeries);
-                    response.sendRedirect("series?action=allOfSeries");
+           
+                    String redirectURL = (String) session.getAttribute("redirectAfterLogin");
+                    if (redirectURL != null) {
+                        session.removeAttribute("redirectAfterLogin");
+                        request.getRequestDispatcher(redirectURL).forward(request, response);
+                    } else {
+                        response.sendRedirect("series?action=allOfSeries");
+                    }
                     return; // prevent further forwarding after redirect
                 } else {
                     request.setAttribute("errorMsg", "Tên đăng nhập hoặc mật khẩu không đúng.<br/>");
@@ -413,6 +424,5 @@ public class UserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

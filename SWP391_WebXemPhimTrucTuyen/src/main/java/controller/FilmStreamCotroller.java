@@ -14,7 +14,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/film", "/playFilm"})
+@WebServlet(urlPatterns = {"/film", "/showFilm"})
 public class FilmStreamCotroller extends HttpServlet {
 
     @Override
@@ -24,7 +24,7 @@ public class FilmStreamCotroller extends HttpServlet {
         String path = req.getServletPath();
 
         // Nếu người dùng truy cập /playFilm → hiển thị trang playFilm.jsp
-        if ("/playFilm".equals(path)) {
+        if ("/showFilm".equals(path)) {
             handlePlayPage(req, resp);
             return;
         }

@@ -25,9 +25,10 @@
           
             <div class="poster-box">
                 <img src="${movie.posteUrl}" alt="Poster" class="small-overlay"/>
-                <a href="playFilm?id=${movie.seriesID}" class="btn-watch">
+                <a href="${pageContext.request.contextPath}/showFilm?id=${movie.seriesID}" class="btn-watch">
                     <i class="fa fa-play"></i> Xem ngay
                 </a>
+
             </div>
         </div>
     </div>

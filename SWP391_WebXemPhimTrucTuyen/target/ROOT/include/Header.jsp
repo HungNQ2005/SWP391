@@ -142,7 +142,7 @@ if (request.getAttribute("listCategory") == null) {
 
                         <c:if test="${fn:contains(pageContext.request.requestURI, 'movie.jsp')}">
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
-                                <li><a class="dropdown-item" href="profile.jsp">Trang cá nhân</a></li>
+                                <li><a class="dropdown-item" href="user?action=profile">Trang cá nhân</a></li>
                                 <li><a class="dropdown-item" href="wishlist?action=allOfFilmInFavorite">Danh sách phim
                                     của tôi</a></li>
                                 <li><a class="dropdown-item" href="updateAvatar.jsp">Update avatar</a></li>
