@@ -79,7 +79,7 @@
         <!-- Create form -->
         <form id="generate" action="${pageContext.request.contextPath}/admin/cdkey" method="post">
             <label>Số lượng Key:</label>
-            <input type="number" name="count" min="1" required />
+            <input type="number" name="count" min="1" max="50" required />
 
             <label>Đại lý:</label>
             <select name="retail" required>
