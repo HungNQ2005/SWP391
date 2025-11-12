@@ -3,7 +3,7 @@ package controller;
 import dao.PerformersDAO;
 import entity.Series;
 
-import model.Performers;
+import entity.Performers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

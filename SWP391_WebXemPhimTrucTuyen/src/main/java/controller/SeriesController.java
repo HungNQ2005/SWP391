@@ -21,7 +21,9 @@ import java.util.Set;
 
 import entity.Series;
 import dao.MovieDAO;
+import dao.PerformersDAO;
 import entity.Category;
+import entity.Performers;
 
 /**
  *
@@ -31,7 +33,7 @@ import entity.Category;
 public class SeriesController extends HttpServlet {
 
     private final MovieDAO dao = new MovieDAO();
-
+    private final PerformersDAO performersDAO = new PerformersDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,12 +79,13 @@ public class SeriesController extends HttpServlet {
             int id = Integer.parseInt(idFlim);
             Series movie = dao.getSeriesById(id);
             List<Category> listCategory = dao.getAllCategories();
-
+            List<Performers> listPerformer = performersDAO.getPerformersBySeries(id);
             List<Country> listCountry = dao.getAllCountry();
             if (movie == null) {
                 response.sendRedirect("error.jsp");
                 return;
             }
+            request.setAttribute("listPerformer", listPerformer);
             request.setAttribute("listCategory", listCategory);
             request.setAttribute("movie", movie);
             request.setAttribute("listCountry", listCountry);

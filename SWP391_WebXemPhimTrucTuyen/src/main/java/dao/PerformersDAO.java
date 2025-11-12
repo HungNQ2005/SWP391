@@ -3,14 +3,14 @@ package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Performers;
+import entity.Performers;
 import entity.Series;
 
 
 public class PerformersDAO {
 
-    public List<model.Performers> getAllPerformers() {
-        List<model.Performers> list = new ArrayList<>();
+    public List<entity.Performers> getAllPerformers() {
+        List<entity.Performers> list = new ArrayList<>();
         String sql = "SELECT performer_id, name, photo_url, gender, description, \n" +
                 "                   date_of_birth, nationality\n" +
                 "            FROM Performer\n" +
@@ -366,4 +366,6 @@ public class PerformersDAO {
             e.printStackTrace();
         }
     }
+    
+    
 }

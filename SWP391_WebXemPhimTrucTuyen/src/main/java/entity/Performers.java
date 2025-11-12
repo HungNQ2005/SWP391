@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package entity;
 
 /**
  *
@@ -20,6 +20,15 @@ public class Performers {
 
     public Performers() {
     }
+
+    public Performers(int performerID, String name, String photoUrl, String gender, String description) {
+        this.performerID = performerID;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.gender = gender;
+        this.description = description;
+    }
+    
 
     public Performers(int performerID, String name, String photoUrl, String gender, String description, String dateOfBirth, String nationality) {
         this.performerID = performerID;
