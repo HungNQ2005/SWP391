@@ -45,7 +45,7 @@
                         <c:forEach var="s" items="${seriesList}">
                             <div class="col-6 col-md-4 col-lg-3">
                                 <a href="seriesDetail?id=${s.seriesID}" class="film-link">
-                                    <img src="${s.posteUrl}"
+                                    <img src="${pageContext.request.contextPath}/${s.posteUrl}"
                                          alt="${s.title}"
                                          class="img-fluid rounded shadow-sm"/>
                                     <p class="mt-2 text-center text-white">${s.title}</p>
