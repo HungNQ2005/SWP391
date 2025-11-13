@@ -20,9 +20,17 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Admin/MovieDashBoard.css"/>
 
         <style>
-          /* Simple error styling */
-          .field-error { color: #ff6b6b; font-size: 0.9rem; display: none; margin-top: 4px; }
-          .is-invalid-custom { border-color: #ff6b6b !important; box-shadow: none !important; }
+            /* Simple error styling */
+            .field-error {
+                color: #ff6b6b;
+                font-size: 0.9rem;
+                display: none;
+                margin-top: 4px;
+            }
+            .is-invalid-custom {
+                border-color: #ff6b6b !important;
+                box-shadow: none !important;
+            }
         </style>
 
     </head>
@@ -115,12 +123,7 @@
                         </tbody>
 
                     </table>
-                    <!-- Pagination -->
-                    </tbody>
-                    </table>
 
-                    </tbody>
-                    </table>
 
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center my-3">
@@ -182,8 +185,7 @@
                                 <div class="col-md-6 mb-2">
                                     <label>Type</label>
                                     <select class="form-select" name="type_id" id="type_id">
-                                        <option value="1">Movie</option>
-                                        <option value="2">Series</option>
+                                        <option value="1">Movie</option>                
                                     </select>
                                     <div id="err-type" class="field-error"></div>
                                 </div>
@@ -191,7 +193,7 @@
                                 <div class="col-md-6 mb-2">
                                     <label>Year</label>
                                     <input type="number" name="release_year" id="release_year" 
-                                           class="form-control" required min="1900" max="2100">
+                                           class="form-control" required>
                                     <div id="err-year" class="field-error"></div>
                                 </div>
 
@@ -276,6 +278,7 @@
                                     <div class="col-md-6">
                                         <label>Title</label>
                                         <input type="text" class="form-control" id="editTitle" name="title" required/>
+                                        <div id="err-edit-title" class="field-error"></div>
                                     </div>
 
                                     <div class="col-md-6">
@@ -284,65 +287,74 @@
                                             <option value="1">Movie</option>
                                             <option value="2">Series</option>
                                         </select>
+                                        <div id="err-edit-type" class="field-error"></div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Year</label>
                                         <input type="number" class="form-control" id="editYear" name="release_year" required/>
+                                        <div id="err-edit-year" class="field-error"></div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Country</label>
-                                        <!-- Multi-select populated from listCountry -->
                                         <select class="form-select" id="editCountries" name="countries" multiple size="5">
                                             <c:forEach var="c" items="${listCountry}">
                                                 <option value="${c.country_id}">${c.country_name}</option>
                                             </c:forEach>
                                         </select>
-                                        <!-- fallback single input for compatibility -->
                                         <input type="hidden" id="editCountryHidden" name="country"/>
+                                        <div id="err-edit-countries" class="field-error"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label>Description</label>
                                         <textarea class="form-control" id="editDescription" name="description"
                                                   rows="2"></textarea>
+                                        <div id="err-edit-description" class="field-error"></div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Poster</label><br>
-                                        <!-- Hiển thị ảnh cũ -->
                                         <img id="editPosterPreview" src="" alt="Current Poster"
                                              style="width: 100px; height: auto; display: block; margin-bottom: 10px; border-radius: 8px;">
 
-                                        <!-- Input chọn ảnh mới -->
                                         <input type="file" class="form-control" id="editPoster" name="poster_file" accept="image/*" required/>
 
-                                        <!-- Input ẩn để lưu đường dẫn ảnh cũ -->
                                         <input type="hidden" id="oldPoster" name="oldPoster"/>
+                                        <div id="err-edit-poster" class="field-error"></div>
                                     </div>
 
 
                                     <div class="col-md-6">
                                         <label>Trailer URL</label>
                                         <input type="text" class="form-control" id="editTrailer" name="trailer_url"/>
+                                        <div id="err-edit-trailer" class="field-error"></div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Upload Video</label>
-                                        <input type="file" class="form-control" name="video_file" accept="video/*" />
+                                        <div class="mb-2">
+                                            <small class="text-info" id="currentVideoLabel">
+                                            </small>
+                                        </div>
+                                        <input type="file" class="form-control" id="editVideoFile" name="video_file" accept="video/*" required/>
+                                        <input type="hidden" id="oldVideo" name="oldVideo"/>
+                                        <div id="err-edit-video" class="field-error"></div>
                                     </div>
 
 
-                                    <div class="col-md-6">
-                                        <label>Episode</label>
-                                        <input type="number" class="form-control" id="editEpisode" name="episode" min="1"/>
-                                    </div>
 
-                                    <div class="col-12">
+
+                                    <div class="col-12" id="editCategoriesContainer">
                                         <label>Categories</label><br>
                                         <c:forEach var="c" items="${listCategory}">
-                                            <input type="checkbox" name="category_ids" value="${c.category_id}"/> ${c.name}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="editCat${c.category_id}" 
+                                                       name="category_ids" value="${c.category_id}"/>
+                                                <label class="form-check-label" for="editCat${c.category_id}">${c.name}</label>
+                                            </div>
                                         </c:forEach>
+                                        <div id="err-edit-categories" class="field-error"></div>
                                     </div>
                                 </div>
 
@@ -350,7 +362,6 @@
                                     <button type="submit" class="btn btn-success">Save</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -396,12 +407,13 @@
                 }
 
                 // --- VALIDATION for ADD form ---
-                (function() {
+                (function () {
                     const addForm = document.getElementById("addForm");
 
                     function showError(id, message) {
                         const el = document.getElementById(id);
-                        if (!el) return;
+                        if (!el)
+                            return;
                         el.textContent = message || "";
                         el.style.display = message ? "block" : "none";
                         // highlight the associated input if possible
@@ -420,8 +432,10 @@
                         if (inputID) {
                             const input = document.getElementById(inputID) || document.querySelector(`[name='${inputID}']`);
                             if (input) {
-                                if (message) input.classList.add("is-invalid-custom");
-                                else input.classList.remove("is-invalid-custom");
+                                if (message)
+                                    input.classList.add("is-invalid-custom");
+                                else
+                                    input.classList.remove("is-invalid-custom");
                             }
                         }
                     }
@@ -429,7 +443,8 @@
                     function isValidURL(url) {
                         // simple URL check
                         try {
-                            if (!url) return false;
+                            if (!url)
+                                return false;
                             const u = new URL(url);
                             return ["http:", "https:"].includes(u.protocol);
                         } catch (e) {
@@ -438,7 +453,7 @@
                     }
 
                     if (addForm) {
-                        addForm.addEventListener("submit", function(e) {
+                        addForm.addEventListener("submit", function (e) {
                             // Clear previous errors
                             showError("err-title", "");
                             showError("err-type", "");
@@ -483,8 +498,9 @@
                             // Countries (at least one)
                             let countriesSelected = 0;
                             if (addCountries) {
-                                for (let i=0;i<addCountries.options.length;i++){
-                                    if (addCountries.options[i].selected) countriesSelected++;
+                                for (let i = 0; i < addCountries.options.length; i++) {
+                                    if (addCountries.options[i].selected)
+                                        countriesSelected++;
                                 }
                             }
                             if (countriesSelected === 0) {
@@ -506,8 +522,9 @@
 
                             // Categories at least one
                             let catSelected = 0;
-                            for (let i=0;i<categoryChecks.length;i++){
-                                if (categoryChecks[i].checked) catSelected++;
+                            for (let i = 0; i < categoryChecks.length; i++) {
+                                if (categoryChecks[i].checked)
+                                    catSelected++;
                             }
                             if (catSelected === 0) {
                                 showError("err-categories", "Phải chọn ít nhất 1 category.");
@@ -562,6 +579,156 @@
                     });
                 }
 
+                // --- VALIDATION for EDIT form (MỚI) ---
+                (function () {
+                    const editForm = document.getElementById("editForm");
+
+                    // Hàm showError riêng cho Edit form
+                    function showEditError(id, message) {
+                        const el = document.getElementById(id);
+                        if (!el)
+                            return;
+                        el.textContent = message || "";
+                        el.style.display = message ? "block" : "none";
+
+                        // Map ID lỗi sang ID input của Edit Form
+                        const inputMap = {
+                            "err-edit-title": "editTitle",
+                            "err-edit-type": "editType",
+                            "err-edit-year": "editYear",
+                            "err-edit-countries": "editCountries",
+                            "err-edit-description": "editDescription",
+                            "err-edit-poster": "editPoster",
+                            "err-edit-trailer": "editTrailer",
+                            "err-edit-video": "editVideoFile",
+                            "err-edit-categories": "editCategoriesContainer"
+                        };
+
+                        const inputID = inputMap[id];
+                        if (inputID) {
+                            const input = document.getElementById(inputID) || document.querySelector(`[name='${inputID}']`);
+                            if (input) {
+                                if (message)
+                                    input.classList.add("is-invalid-custom");
+                                else
+                                    input.classList.remove("is-invalid-custom");
+                            }
+                        }
+                    }
+
+                    if (editForm) {
+                        editForm.addEventListener("submit", function (e) {
+                            // Clear previous errors
+                            showEditError("err-edit-title", "");
+                            showEditError("err-edit-type", "");
+                            showEditError("err-edit-year", "");
+                            showEditError("err-edit-countries", "");
+                            showEditError("err-edit-description", "");
+                            showEditError("err-edit-poster", "");
+                            showEditError("err-edit-trailer", "");
+                            showEditError("err-edit-video", "");
+                            showEditError("err-edit-categories", "");
+
+                            let firstInvalid = null;
+                            const title = document.getElementById("editTitle").value.trim();
+                            const yearVal = document.getElementById("editYear").value.trim();
+                            const editCountries = document.getElementById("editCountries");
+                            const posterInput = document.getElementById("editPoster"); // Input file ảnh mới
+                            const trailer = document.getElementById("editTrailer").value.trim();
+                            const videoInput = document.getElementById("editVideoFile");
+                            const categoryChecks = editForm.querySelectorAll("input[name='category_ids']");
+
+                            // Title
+                            if (!title) {
+                                showEditError("err-edit-title", "Tên phim không được để trống.");
+                                firstInvalid = firstInvalid || document.getElementById("editTitle");
+                            } else if (title.length < 2 || title.length > 100) {
+                                showEditError("err-edit-title", "Tên phim phải từ 2 đến 100 ký tự.");
+                                firstInvalid = firstInvalid || document.getElementById("editTitle");
+                            }
+
+                            // Year
+                            if (!yearVal) {
+                                showEditError("err-edit-year", "Năm phát hành không được để trống.");
+                                firstInvalid = firstInvalid || document.getElementById("editYear");
+                            } else {
+                                const yearNum = Number(yearVal);
+                                if (!Number.isInteger(yearNum) || yearNum < 1900 || yearNum > 2100) {
+                                    showEditError("err-edit-year", "Năm phải là số nguyên hợp lệ (1900-2100).");
+                                    firstInvalid = firstInvalid || document.getElementById("editYear");
+                                }
+                            }
+
+                            // Countries (at least one)
+                            let countriesSelected = 0;
+                            if (editCountries) {
+                                for (let i = 0; i < editCountries.options.length; i++) {
+                                    if (editCountries.options[i].selected)
+                                        countriesSelected++;
+                                }
+                            }
+                            if (countriesSelected === 0) {
+                                showEditError("err-edit-countries", "Phải chọn ít nhất 1 quốc gia.");
+                                firstInvalid = firstInvalid || document.getElementById("editCountries");
+                            }
+
+                            // Poster (KHÁC BIỆT: không bắt buộc, nhưng nếu chọn file mới thì phải là ảnh)
+                            if (posterInput && posterInput.files && posterInput.files.length > 0) {
+                                const f = posterInput.files[0];
+                                if (!f.type.startsWith("image/")) {
+                                    showEditError("err-edit-poster", "Tập tin poster mới phải là ảnh (jpg, png, ...).");
+                                    firstInvalid = firstInvalid || posterInput;
+                                }
+                            }
+
+                            // Categories at least one
+                            let catSelected = 0;
+                            for (let i = 0; i < categoryChecks.length; i++) {
+                                if (categoryChecks[i].checked)
+                                    catSelected++;
+                            }
+                            if (catSelected === 0) {
+                                showEditError("err-edit-categories", "Phải chọn ít nhất 1 category.");
+                                firstInvalid = firstInvalid || document.getElementById("editCategoriesContainer");
+                            }
+
+                            // Trailer URL optional but if provided must be valid URL
+                            if (trailer) {
+                                if (!isValidURL(trailer)) {
+                                    showEditError("err-edit-trailer", "Trailer URL không hợp lệ (phải bắt đầu bằng http/https).");
+                                    firstInvalid = firstInvalid || document.getElementById("editTrailer");
+                                }
+                            }
+
+                            // Video optional but if provided must be video mime
+                            if (videoInput && videoInput.files && videoInput.files.length > 0) {
+                                const vf = videoInput.files[0];
+                                if (!vf.type.startsWith("video/")) {
+                                    showEditError("err-edit-video", "Tập tin upload phải là video.");
+                                    firstInvalid = firstInvalid || videoInput;
+                                }
+                            }
+
+                            if (firstInvalid) {
+                                e.preventDefault();
+                                firstInvalid.focus();
+                                return false;
+                            }
+
+                            // *** Logic cũ đã có: gán chuỗi vào hidden input name="country" ***
+                            const hiddenCountry = document.getElementById("editCountryHidden");
+                            if (editCountries && hiddenCountry) {
+                                hiddenCountry.value = joinSelectedOptions(editCountries);
+                            }
+
+                            // allow submit
+                            return true;
+                        });
+                    }
+                })();
+
+                // (Code cũ xử lý Edit form submit đã được gộp vào block validation bên trên)
+
                 // Mở modal Edit: lấy dữ liệu trong row và pre-select các option trong multi-select
                 document.addEventListener("click", function (e) {
                     if (e.target.classList.contains("editBtn")) {
@@ -570,7 +737,7 @@
                         const title = row.cells[1].innerText.trim();
                         const typeText = row.cells[2].innerText.trim();
                         const year = row.cells[3].innerText.trim();
-                        const country = row.cells[4].innerText.trim();
+                        const country = row.cells[4].innerText.trim(); // Đây là chuỗi "Value1, Value2"
                         const description = row.cells[5].innerText.trim();
                         const poster = row.querySelector("img")?.src || "";
                         const trailer = row.querySelector("a")?.href || "";
@@ -590,18 +757,29 @@
 
                         // Reset file input (để không lỗi)
                         document.getElementById("editPoster").value = "";
+                        document.getElementById("editVideoFile").value = "";
 
                         // Xử lý countries
                         const editCountries = document.getElementById("editCountries");
                         if (editCountries) {
+                            // 1. Bỏ chọn tất cả
                             for (let i = 0; i < editCountries.options.length; i++) {
                                 editCountries.options[i].selected = false;
                             }
+
+                            // 2. Chọn lại dựa trên chuỗi 'country'
                             if (country && country.length > 0) {
+                                // Tách chuỗi theo dấu phẩy và khoảng trắng (ví dụ: "1, 2" hoặc "1,2")
                                 const parts = country.split(/,\s*/);
+
                                 for (const p of parts) {
+                                    const trimmedValue = p.trim();
+                                    // Tìm option có value khớp
                                     for (let i = 0; i < editCountries.options.length; i++) {
-                                        if (editCountries.options[i].value === p.trim()) {
+                                        // **QUAN TRỌNG**: So sánh TEXT (tên nước) thay vì VALUE (ID)
+                                        // Vì 'country' từ cell[4] là TÊN, không phải ID.
+                                        // Nếu cell[4] chứa ID, dùng: editCountries.options[i].value === trimmedValue
+                                        if (editCountries.options[i].text === trimmedValue) {
                                             editCountries.options[i].selected = true;
                                             break;
                                         }
@@ -609,6 +787,15 @@
                                 }
                             }
                         }
+
+                        // Xử lý categories (Cần fetch từ server hoặc truyền data vào row)
+                        // Tạm thời reset all
+                        const categoryChecks = editForm.querySelectorAll("input[name='category_ids']");
+                        for (let i = 0; i < categoryChecks.length; i++) {
+                            categoryChecks[i].checked = false;
+                        }
+                        // TODO: Bạn cần một cách để lấy category IDs của phim này (ví dụ: AJAX hoặc data attribute)
+                        // và check các ô tương ứng.
 
                         // Hiển thị modal
                         const editModal = new bootstrap.Modal(document.getElementById("editModal"));

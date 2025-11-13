@@ -171,7 +171,7 @@ public class AdminDAO {
                 ps.setString(2, s.getDescription());
                 ps.setInt(3, s.getReleaseYear());
                 ps.setString(4, s.getPosteUrl());
-                ps.setString(5, s.getTrailerUrl());  
+                ps.setString(5, s.getTrailerUrl());
                 ps.setString(6, s.getFilmUrl());
 
                 ps.setInt(7, s.getTypeId());
@@ -655,6 +655,46 @@ public class AdminDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Country findCountryByName(String name) {
+        String sql = "SELECT * FROM [dbo].[Country] WHERE [country_name] = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            // Thay thế 'DBConnect.getConnection()' bằng cách lấy connection của bạn
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Country country = new Country();
+                country.setCountry_id(rs.getInt("country_id"));
+                country.setCountry_name(rs.getString("country_name"));
+                return country;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng các tài nguyên
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return null; // Không tìm thấy
     }
 
     public void updateCountry(int id, String name) {

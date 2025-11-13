@@ -106,13 +106,7 @@
                                 </a>
                             </div>
 
-                            <!-- Thông báo lỗi nếu có -->
-                            <c:if test="${not empty requestScope.errorMsg}">
-                                <div class="alert alert-danger mt-3">
-                                    ${requestScope.errorMsg}
-                                </div>
-                            </c:if>
-
+                           
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 controller\FilmStreamCotroller.class
-model\Performers.class
 controller\UserController.class
 model\CDKey.class
 dao\EmailUtil$1.class
@@ -29,6 +28,7 @@ controller\PerformersAdmin.class
 controller\AdminCountryController.class
 com\mycompany\swp391_webxemphimtructuyen\resources\JakartaEE10Resource.class
 controller\PerformersController.class
+entity\Performers.class
 controller\AdsController.class
 dao\AdsDAO.class
 dao\DBContext.class

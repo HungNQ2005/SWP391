@@ -5,6 +5,7 @@
 package controller;
 
 import dao.AdminDAO;
+import dao.EmailUtil;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,11 +42,11 @@ public class AdminController extends HttpServlet {
 
         String action = request.getParameter("action");
 
-        if (action == null ||action.equals("sendAccountDashboard")) {
+        if (action == null || action.equals("sendAccountDashboard")) {
             int page = 1;
-            int recordsPerPage = 1;
+            int recordsPerPage = 10;
 
-            if(request.getParameter("page") != null) {
+            if (request.getParameter("page") != null) {
                 page = Integer.parseInt(request.getParameter("page"));
             }
             int totalRecords = adminDAO.getTotalUserCount();
@@ -84,31 +85,94 @@ public class AdminController extends HttpServlet {
         String action = request.getParameter("action");
         if ("insert".equals(action)) {
             User u = new User();
-            u.setUsername(request.getParameter("username"));
-            u.setEmail(request.getParameter("email"));
-            u.setFull_name(request.getParameter("full_name"));
-            u.setUser_level(request.getParameter("user_level"));
-            u.setHash_password(request.getParameter("password")); // tạm set password mặc định
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String fullName = request.getParameter("full_name");
+            String userLevel = request.getParameter("user_level");
+            String rawPassword = request.getParameter("password");
+
+            u.setUsername(username);
+            u.setEmail(email);
+            u.setFull_name(fullName);
+            u.setUser_level(userLevel);
+            u.setHash_password(rawPassword); // tạm set password mặc định
             u.setAvatar_url("default.jpg");
             adminDAO.insertUser(u);
+
+            if (email != null && !email.trim().isEmpty()) {
+                final String to = email;
+                final String subject = "Thông tin tài khoản admin";
+                final StringBuilder body = new StringBuilder();
+                body.append("Xin chào ").append(fullName == null ? "" : fullName).append(",\n\n");
+                body.append("Tài khoản admin của bạn đã được tạo. Thông tin đăng nhập:\n");
+                body.append("username: ").append(username).append("\n");
+                u.setHash_password(rawPassword);
+                body.append("Vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.\n\n");
+                body.append("Trân trọng,\nAdmin Team");
+
+                new Thread(() -> {
+                    try {
+                        EmailUtil.sendEmail(to, subject, body.toString());
+                    } catch (Exception ex) {
+                        // Log lỗi (hiện tại in stacktrace)
+                        ex.printStackTrace();
+                    }
+                }).start();
+            }
             response.sendRedirect("admin?action=sendAccountDashboard");
-        } 
-        
-        
-        else if ("update".equals(action)) {
+        } else if ("update".equals(action)) {
             User u = new User();
-            u.setUser_id(Integer.parseInt(request.getParameter("user_id")));
-            u.setUsername(request.getParameter("username"));
-            u.setEmail(request.getParameter("email"));
-            u.setFull_name(request.getParameter("full_name"));
-            u.setUser_level(request.getParameter("user_level"));
+            int userId = Integer.parseInt(request.getParameter("user_id"));
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String fullName = request.getParameter("full_name");
+            String userLevel = request.getParameter("user_level");
+            String rawPassword = request.getParameter("password");
+
+            // từ edit form (có thể rỗng)
+            u.setUser_id(userId);
+            u.setUsername(username);
+            u.setEmail(email);
+            u.setFull_name(fullName);
+            u.setUser_level(userLevel);
+
+            // Nếu có password mới (không rỗng) thì cập nhật password
+            boolean passwordChanged = false;
+            if (rawPassword != null && !rawPassword.trim().isEmpty()) {
+                u.setHash_password(rawPassword);
+                passwordChanged = true;
+            }
             adminDAO.updateUser(u);
+
+            // Gửi email thông báo cập nhật (nếu có email)
+            if (email != null && !email.trim().isEmpty()) {
+                final String to = email;
+                final String subject = "Thông báo: Tài khoản admin đã được cập nhật";
+                final StringBuilder body = new StringBuilder();
+                body.append("Xin chào ").append(fullName == null ? "" : fullName).append(",\n\n");
+                body.append("Tài khoản admin của bạn đã được cập nhật. Thông tin hiện tại:\n");
+                body.append("username: ").append(username).append("\n");
+                body.append("role: ").append(userLevel == null ? "" : userLevel).append("\n");
+                if (passwordChanged) {
+                    body.append("password (mới): ").append(rawPassword).append("\n\n");
+                    body.append("Vui lòng đổi mật khẩu nếu đây không phải bạn.\n\n");
+                } else {
+                    body.append("\n");
+                }
+                body.append("Trân trọng,\nAdmin Team");
+
+                new Thread(() -> {
+                    try {
+                        EmailUtil.sendEmail(to, subject, body.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }).start();
+            }
             response.sendRedirect("admin?action=sendAccountDashboard");
         }
 
     }
-    
-    
 
     /**
      * Returns a short description of the servlet.

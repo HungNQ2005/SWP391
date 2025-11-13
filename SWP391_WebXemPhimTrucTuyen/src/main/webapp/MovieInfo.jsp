@@ -41,7 +41,9 @@
                 </div>
             </div>
         </div>
-
+        <a href="wishlist?action=addFilmInFavorite&seriesId=${movie.seriesID}" class="btn btn-outline-danger">
+            Yêu thích
+        </a>
 
 
         <!-- Diễn Viên -->

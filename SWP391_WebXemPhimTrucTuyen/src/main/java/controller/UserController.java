@@ -128,7 +128,7 @@ public class UserController extends HttpServlet {
             // Validation email
             if (email.isEmpty()) {
                 errorBuilder.append("Email không được để trống.<br/>");
-            } else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            } else if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$")) {
                 errorBuilder.append("Định dạng email không hợp lệ.<br/>");
             } else if (userDAO.existsByEmail(email)) {
                 errorBuilder.append("Email đã tồn tại.<br/>");

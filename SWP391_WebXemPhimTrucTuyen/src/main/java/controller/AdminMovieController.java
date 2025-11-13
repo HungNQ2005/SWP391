@@ -280,7 +280,7 @@ public class AdminMovieController extends HttpServlet {
 
             s.setTrailerUrl(request.getParameter("trailer_url"));
             s.setTypeId(Integer.parseInt(request.getParameter("type_id")));
-
+            
             adminDAO.updateSeriesForAdmin(s);
 
             seriesCategoryDAO.deleteSeriesCategories(s.getSeriesID());

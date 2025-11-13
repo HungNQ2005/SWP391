@@ -19,10 +19,7 @@ import java.util.List;
 public class FavoriteDAO {
 
     public boolean addFavorite(int userId, int seriesId) {
-        if(isFavoriteExists(seriesId, userId)) {
-            System.out.println("Phim đã có trong danh sách yêu thích, bỏ qua thêm mới!");
-            return false;
-        }
+        
         String sql = "INSERT INTO Wishlist (user_id, series_id) "
                 + "VALUES (?, ?)";
 
@@ -117,28 +114,7 @@ public class FavoriteDAO {
         return false;
     }
 
-    public static void main(String[] args) {
-        FavoriteDAO dao = new FavoriteDAO();
-
-        int testUserId = 19;
-        int testSeriesId = 2;
-
-        System.out.println("=== Bắt đầu test FavoriteDAO ===");
-
-        boolean added = dao.addFavorite(testUserId, testSeriesId);
-        System.out.println("addFavorite returned: " + added);
-
-        boolean exists = dao.isFavoriteExists(testUserId, testSeriesId);
-        System.out.println("isFavoriteExists = " + exists);
-
-        System.out.println("\nDanh sách favorites hiện tại:");
-        printFavorites(dao.getFavoritesByUser(testUserId));
-
-        boolean removed = dao.removeFavorite(testUserId, testSeriesId);
-        System.out.println("\nremoveFavorite returned: " + removed);
-
-        System.out.println("\n=== Kết thúc test ===");
-    }
+  
 
     private static void printFavorites(List<Series> list) {
         if (list == null || list.isEmpty()) {
