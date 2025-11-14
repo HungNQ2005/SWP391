@@ -1,0 +1,13 @@
+footer a {
+    color: #ddd;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #0066ff;
+    font-weight: 700;
+}
+
+footer img {
+    max-height: 50px;
+}

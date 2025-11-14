@@ -1,0 +1,156 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 10, 2025, 10:29:44 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+
+body {
+    background-color: #121212;
+    color: #f1f1f1;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 40px;
+}
+
+h2 {
+    color: #e50914;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+form {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+label {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+input, select {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #e50914;
+}
+
+button {
+    background-color: #e50914;
+    border: none;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: #ff0f1d;
+}
+
+table {
+    width: 100%;
+    margin-top: 15px;
+}
+
+th {
+    background-color: #222;
+    color: #e50914;
+    font-weight: bold;
+}
+
+td {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+
+tr:nth-child(even) td {
+    background-color: #222;
+}
+
+.tabs {
+    margin-top: 25px;
+    border-bottom: 2px solid #333;
+    display: flex;
+    gap: 10px;
+}
+
+.tab {
+    background-color: #1f1f1f;
+    color: #bbb;
+    padding: 10px 20px;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+}
+
+.tab.active {
+    background-color: #e50914;
+    color: white;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 0 8px 8px 8px;
+    border: 1px solid #333;
+    margin-top: -1px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.pagination {
+    margin-top: 15px;
+}
+
+.pagination a, .pagination b {
+    background-color: #1f1f1f;
+    color: #f1f1f1;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+.pagination b {
+    background-color: #e50914;
+}
+
+.pagination a:hover {
+    background-color: #e50914;
+}
+
+.form-control, .form-select {
+    background-color: #2b2b2b;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
+}
+
+.btn-danger {
+    background-color: #e50914;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #b00610;
+}
+

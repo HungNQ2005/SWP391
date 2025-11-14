@@ -1,0 +1,167 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 14, 2025, 2:03:18 PM
+    Author     : Chau Tan Cuong - CE190026
+*/
+
+/* ===== RESET & BASE ===== */
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== OUTER WRAPPER (thêm khung đỏ bao ngoài toàn trang) ===== */
+.account-wrapper {
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid #b30000;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+  padding: 30px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ===== LAYOUT ===== */
+.account-container {
+  display: flex;
+  gap: 30px;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background-color: #141414;
+  border-radius: 12px;
+  width: 240px;
+  padding: 25px 20px;
+  border-right: 3px solid #b30000;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
+}
+
+.sidebar h3 {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 25px;
+  text-align: center;
+  border-bottom: 2px solid #b30000;
+  padding-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  background-color: #b30000;
+  color: #fff;
+  box-shadow: 0 0 12px #ff1a1a;
+}
+
+/* ===== MAIN CONTENT ===== */
+.account-info {
+  flex: 1;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid #b30000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+}
+
+.account-info h2 {
+  font-weight: bold;
+  color: #ff3333;
+  border-bottom: 2px solid #b30000;
+  padding-bottom: 8px;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+/* ===== MOVIE CARDS ===== */
+.movie-card img {
+  border-radius: 12px;
+  transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+  border: 2px solid transparent;
+}
+
+.movie-card img:hover {
+  transform: scale(1.05);
+  border-color: #ff2e2e;
+  box-shadow: 0 0 15px #ff2e2e;
+}
+
+.movie-card p {
+  margin-top: 10px;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+}
+.btn-exit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(180deg, #3a0000 0%, #b30000 100%);
+    color: #fff;
+    border: 1px solid rgba(255, 77, 77, 0.9);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(179, 0, 0, 0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+}
+.btn-exit:hover,
+.btn-exit:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(179, 0, 0, 0.28);
+    opacity: 0.98;
+    text-decoration: none;
+    color: #fff;
+}
+.btn-exit:active {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(179, 0, 0, 0.22);
+}
+.btn-exit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(179, 0, 0, 0.12);
+}
+.btn-exit i {
+    font-size: 0.95em;
+}
+
+/* Responsive tweak */
+@media (max-width: 576px) {
+    .btn-exit {
+        padding: 6px 10px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
