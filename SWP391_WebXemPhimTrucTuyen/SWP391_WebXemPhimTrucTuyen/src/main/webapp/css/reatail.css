@@ -1,0 +1,113 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 10, 2025, 10:32:15 PM
+    Author     : Vo Thi Phi Yen - CE190428
+*/
+
+body {
+    background-color: #141414;
+    color: #e5e5e5;
+    font-family: Arial, sans-serif;
+    padding-top: 20px;
+}
+
+h2 {
+    color: #e50914;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+form.card {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+    border-radius: 10px;
+}
+
+.form-label {
+    color: #fff;
+    font-weight: 500;
+}
+
+.form-control {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #fff;
+}
+
+.form-control:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 5px rgba(229,9,20,0.5);
+}
+
+.btn-primary {
+    background-color: #e50914;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #b00610;
+}
+
+.btn-secondary {
+    background-color: #333;
+    border: none;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+}
+
+table {
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead.table-dark {
+    background-color: #e50914;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #2b2b2b;
+}
+
+tbody tr:hover {
+    background-color: #333;
+}
+
+td, th {
+    vertical-align: middle;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #e50914;
+}
+
+.btn-warning {
+    background-color: #f5c518;
+    border: none;
+    color: #000;
+}
+
+.btn-warning:hover {
+    background-color: #d4aa0c;
+}
+
+.btn-danger {
+    background-color: #e50914;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #b20710;
+}
